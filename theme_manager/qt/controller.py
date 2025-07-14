@@ -8,16 +8,21 @@ from pathlib import Path
 
 # Import handling for Qt libraries
 qt_available = False
+PYQT_AVAILABLE = False
+PYSIDE_AVAILABLE = False
+
 try:
     from PyQt5.QtWidgets import QWidget, QApplication
     from PyQt5.QtCore import QObject, pyqtSignal
     qt_available = True
+    PYQT_AVAILABLE = True
     qt_framework = "PyQt5"
 except ImportError:
     try:
         from PySide6.QtWidgets import QWidget, QApplication  
         from PySide6.QtCore import QObject, Signal as pyqtSignal
         qt_available = True
+        PYSIDE_AVAILABLE = True
         qt_framework = "PySide6"
     except ImportError:
         # Create stub classes for when Qt is not available

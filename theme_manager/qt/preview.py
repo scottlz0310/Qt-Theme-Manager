@@ -6,20 +6,20 @@ Provides sample widget window to preview themes with theme switching buttons.
 from typing import Optional, Union
 from pathlib import Path
 
+# Import Qt availability from controller
+from .controller import qt_available, qt_framework
+
 # Import handling for Qt libraries  
-try:
-    from PyQt5.QtWidgets import (
-        QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-        QPushButton, QLabel, QLineEdit, QTextEdit, QComboBox, QListWidget,
-        QGroupBox, QFrame, QToolBar, QStatusBar, QListWidgetItem, QScrollArea,
-        QGridLayout
-    )
-    from PyQt5.QtCore import Qt
-    from PyQt5.QtGui import QAction
-    qt_available = True
-    qt_framework = "PyQt5"
-except ImportError:
+if qt_available:
     try:
+        from PyQt5.QtWidgets import (
+            QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
+            QPushButton, QLabel, QLineEdit, QTextEdit, QComboBox, QListWidget,
+            QGroupBox, QFrame, QToolBar, QStatusBar, QListWidgetItem, QScrollArea,
+            QGridLayout, QAction
+        )
+        from PyQt5.QtCore import Qt
+    except ImportError:
         from PySide6.QtWidgets import (
             QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
             QPushButton, QLabel, QLineEdit, QTextEdit, QComboBox, QListWidget,
@@ -28,11 +28,6 @@ except ImportError:
         )
         from PySide6.QtCore import Qt
         from PySide6.QtGui import QAction
-        qt_available = True
-        qt_framework = "PySide6"
-    except ImportError:
-        qt_available = False
-        qt_framework = "None"
 
 from .controller import ThemeController
 
