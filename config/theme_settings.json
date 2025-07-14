@@ -1,0 +1,377 @@
+{
+  "current_theme": "high_contrast",
+  "last_selected_theme": "high_contrast",
+  "theme_switching_enabled": true,
+  "remember_theme_choice": true,
+  "version": "0.0.1",
+  "available_themes": {
+    "dark": {
+      "name": "dark",
+      "display_name": "ダークモード",
+      "description": "暗い背景の低負荷テーマ",
+      "primaryColor": "#222831",
+      "accentColor": "#00adb5",
+      "backgroundColor": "#1a1a1a",
+      "textColor": "#eeeeee",
+      "button": {
+        "background": "#4a5568",
+        "text": "#ffffff",
+        "hover": "#00adb5",
+        "pressed": "#2d3748",
+        "border": "#718096"
+      },
+      "panel": {
+        "background": "#23272f",
+        "border": "#393e46",
+        "header": {
+          "background": "#2d3748",
+          "text": "#ffffff",
+          "border": "#4a5568"
+        }
+      },
+      "text": {
+        "primary": "#ffffff",
+        "secondary": "#e2e8f0",
+        "muted": "#a0aec0",
+        "heading": "#ffffff",
+        "link": "#00adb5",
+        "success": "#68d391",
+        "warning": "#fbb948",
+        "error": "#fc8181"
+      },
+      "input": {
+        "background": "#2d3748",
+        "text": "#ffffff",
+        "border": "#4a5568",
+        "focus": "#00adb5",
+        "placeholder": "#a0aec0"
+      },
+      "toolbar": {
+        "background": "#2d3748",
+        "text": "#ffffff",
+        "border": "#4a5568",
+        "button": {
+          "background": "#4a5568",
+          "text": "#ffffff",
+          "hover": "#00adb5",
+          "pressed": "#2d3748"
+        }
+      },
+      "status": {
+        "background": "#2d3748",
+        "text": "#e2e8f0",
+        "border": "#4a5568"
+      }
+    },
+    "light": {
+      "name": "light",
+      "display_name": "ライトモード",
+      "description": "明るい背景の標準テーマ",
+      "primaryColor": "#007acc",
+      "accentColor": "#0078d4",
+      "backgroundColor": "#ffffff",
+      "textColor": "#000000",
+      "button": {
+        "background": "#f0f0f0",
+        "text": "#000000",
+        "hover": "#e0e0e0",
+        "pressed": "#d0d0d0",
+        "border": "#cccccc"
+      },
+      "panel": {
+        "background": "#f8f8f8",
+        "border": "#ddd",
+        "header": {
+          "background": "#e2e8f0",
+          "text": "#2d3748",
+          "border": "#cbd5e0"
+        }
+      },
+      "text": {
+        "primary": "#2d3748",
+        "secondary": "#4a5568",
+        "muted": "#718096",
+        "heading": "#1a202c",
+        "link": "#0078d4",
+        "success": "#38a169",
+        "warning": "#d69e2e",
+        "error": "#e53e3e"
+      },
+      "input": {
+        "background": "#ffffff",
+        "text": "#2d3748",
+        "border": "#e2e8f0",
+        "focus": "#0078d4",
+        "placeholder": "#a0aec0"
+      },
+      "toolbar": {
+        "background": "#f7fafc",
+        "text": "#2d3748",
+        "border": "#e2e8f0",
+        "button": {
+          "background": "#ffffff",
+          "text": "#2d3748",
+          "hover": "#0078d4",
+          "pressed": "#e2e8f0"
+        }
+      },
+      "status": {
+        "background": "#f7fafc",
+        "text": "#4a5568",
+        "border": "#e2e8f0"
+      }
+    },
+    "high_contrast": {
+      "name": "high_contrast",
+      "display_name": "ハイコントラスト",
+      "description": "アクセシビリティ対応の高コントラストテーマ",
+      "primaryColor": "#ffff00",
+      "accentColor": "#00ffff",
+      "backgroundColor": "#000000",
+      "textColor": "#ffffff",
+      "button": {
+        "background": "#ffff00",
+        "text": "#000000",
+        "hover": "#eeee00"
+      },
+      "panel": {
+        "background": "#111111",
+        "border": "#ffffff"
+      }
+    },
+    "blue": {
+      "name": "blue",
+      "display_name": "ブルーモード",
+      "description": "プロフェッショナルなブルーベーステーマ",
+      "primaryColor": "#4a90e2",
+      "accentColor": "#3182ce",
+      "backgroundColor": "#1e3a5f",
+      "textColor": "#ffffff",
+      "button": {
+        "background": "#3182ce",
+        "text": "#ffffff",
+        "hover": "#2c5282"
+      },
+      "panel": {
+        "background": "#1a365d",
+        "border": "#2d5a87"
+      }
+    },
+    "green": {
+      "name": "green",
+      "display_name": "グリーンモード",
+      "description": "自然なグリーンベーステーマ",
+      "primaryColor": "#4ade80",
+      "accentColor": "#38a169",
+      "backgroundColor": "#1a2e1a",
+      "textColor": "#ffffff",
+      "button": {
+        "background": "#38a169",
+        "text": "#ffffff",
+        "hover": "#2f855a"
+      },
+      "panel": {
+        "background": "#1a2e1a",
+        "border": "#2d5016"
+      }
+    },
+    "purple": {
+      "name": "purple",
+      "display_name": "パープルモード",
+      "description": "エレガントなパープルベーステーマ",
+      "primaryColor": "#9f7aea",
+      "accentColor": "#805ad5",
+      "backgroundColor": "#2d1b45",
+      "textColor": "#ffffff",
+      "button": {
+        "background": "#805ad5",
+        "text": "#ffffff",
+        "hover": "#6b46c1"
+      },
+      "panel": {
+        "background": "#2d1b45",
+        "border": "#4c1d95"
+      }
+    },
+    "orange": {
+      "name": "orange",
+      "display_name": "オレンジモード",
+      "description": "温かみのあるオレンジベーステーマ",
+      "primaryColor": "#ff8c00",
+      "accentColor": "#e67300",
+      "backgroundColor": "#2d1f0e",
+      "textColor": "#ffffff",
+      "button": {
+        "background": "#ff8c00",
+        "text": "#ffffff",
+        "hover": "#ff7700"
+      },
+      "panel": {
+        "background": "#3d2f1e",
+        "border": "#5d4f3e"
+      }
+    },
+    "pink": {
+      "name": "pink",
+      "display_name": "ピンクモード",
+      "description": "可愛らしいピンクベーステーマ",
+      "primaryColor": "#ff69b4",
+      "accentColor": "#e055a0",
+      "backgroundColor": "#2d1a28",
+      "textColor": "#ffffff",
+      "button": {
+        "background": "#ff69b4",
+        "text": "#ffffff",
+        "hover": "#ff55aa"
+      },
+      "panel": {
+        "background": "#3d2a38",
+        "border": "#5d4a58"
+      }
+    },
+    "red": {
+      "name": "red",
+      "display_name": "レッドモード",
+      "description": "情熱的なレッドベーステーマ",
+      "primaryColor": "#dc143c",
+      "accentColor": "#b22234",
+      "backgroundColor": "#2d1318",
+      "textColor": "#ffffff",
+      "button": {
+        "background": "#dc143c",
+        "text": "#ffffff",
+        "hover": "#cc1133"
+      },
+      "panel": {
+        "background": "#3d2328",
+        "border": "#5d3348"
+      }
+    },
+    "teal": {
+      "name": "teal",
+      "display_name": "ティールモード",
+      "description": "落ち着いたティールベーステーマ",
+      "primaryColor": "#20b2aa",
+      "accentColor": "#17a2b8",
+      "backgroundColor": "#1a2b2a",
+      "textColor": "#ffffff",
+      "button": {
+        "background": "#20b2aa",
+        "text": "#ffffff",
+        "hover": "#1aa2aa"
+      },
+      "panel": {
+        "background": "#2a3b3a",
+        "border": "#4a5b5a"
+      }
+    },
+    "yellow": {
+      "name": "yellow",
+      "display_name": "イエローモード",
+      "description": "明るいイエローベーステーマ",
+      "primaryColor": "#ffd700",
+      "accentColor": "#e6c200",
+      "backgroundColor": "#2d2d1a",
+      "textColor": "#000000",
+      "button": {
+        "background": "#ffd700",
+        "text": "#000000",
+        "hover": "#eec700"
+      },
+      "panel": {
+        "background": "#3d3d2a",
+        "border": "#5d5d4a"
+      }
+    },
+    "gray": {
+      "name": "gray",
+      "display_name": "グレーモード",
+      "description": "シンプルなグレーベーステーマ",
+      "primaryColor": "#708090",
+      "accentColor": "#5a6a7a",
+      "backgroundColor": "#2d2d2d",
+      "textColor": "#ffffff",
+      "button": {
+        "background": "#708090",
+        "text": "#ffffff",
+        "hover": "#607080"
+      },
+      "panel": {
+        "background": "#3d3d3d",
+        "border": "#5d5d5d"
+      }
+    },
+    "sepia": {
+      "name": "sepia",
+      "display_name": "セピアモード",
+      "description": "目に優しいセピア調テーマ",
+      "primaryColor": "#8b4513",
+      "accentColor": "#a0522d",
+      "backgroundColor": "#fdf6e3",
+      "textColor": "#5c4317",
+      "button": {
+        "background": "#deb887",
+        "text": "#5c4317",
+        "hover": "#cdaa7d"
+      },
+      "panel": {
+        "background": "#f5f0e3",
+        "border": "#d2b48c"
+      }
+    },
+    "cyberpunk": {
+      "name": "cyberpunk",
+      "display_name": "サイバーパンク",
+      "description": "ネオンが映えるサイバーパンクテーマ",
+      "primaryColor": "#00ff41",
+      "accentColor": "#ff0080",
+      "backgroundColor": "#0a0a0a",
+      "textColor": "#00ff41",
+      "button": {
+        "background": "#001122",
+        "text": "#00ff41",
+        "hover": "#ff0080"
+      },
+      "panel": {
+        "background": "#111122",
+        "border": "#00ff41"
+      }
+    },
+    "forest": {
+      "name": "forest",
+      "display_name": "フォレスト",
+      "description": "自然の森をイメージしたテーマ",
+      "primaryColor": "#228b22",
+      "accentColor": "#32cd32",
+      "backgroundColor": "#1e3a1e",
+      "textColor": "#f0fff0",
+      "button": {
+        "background": "#2e7d32",
+        "text": "#f0fff0",
+        "hover": "#388e3c"
+      },
+      "panel": {
+        "background": "#2e4a2e",
+        "border": "#4e6a4e"
+      }
+    },
+    "ocean": {
+      "name": "ocean",
+      "display_name": "オーシャン",
+      "description": "深海をイメージした青いテーマ",
+      "primaryColor": "#0077be",
+      "accentColor": "#0099dd",
+      "backgroundColor": "#001122",
+      "textColor": "#e6f3ff",
+      "button": {
+        "background": "#004466",
+        "text": "#e6f3ff",
+        "hover": "#0066aa"
+      },
+      "panel": {
+        "background": "#002244",
+        "border": "#004488"
+      }
+    }
+  }
+}
