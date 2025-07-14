@@ -58,36 +58,6 @@ theme_manager/
 
 ### 🧪 設定ファイル仕様（`theme_settings.json`）
 
-```json
-{
-  "current_theme": "light",
-  "last_selected_theme": "light",
-  "available_themes": {
-    "light": {
-      "name": "light",
-      "display_name": "ライトモード",
-      "description": "明るい背景の標準テーマ",
-      "primaryColor": "#007acc",
-      "accentColor": "#0078d4",
-      "backgroundColor": "#ffffff",
-      "textColor": "#000000",
-      "button": {
-        "background": "#f0f0f0",
-        "text": "#000000",
-        "hover": "#e0e0e0"
-      },
-      "panel": {
-        "background": "#f8f8f8",
-        "border": "#ddd"
-      }
-    },
-    ...
-  }
-}
-```
-
----
-
 ### 🔮 将来的な拡張余地
 
 - 他のUIフレームワーク（Tkinter, Kivy, Web）への対応
