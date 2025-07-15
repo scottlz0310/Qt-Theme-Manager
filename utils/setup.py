@@ -6,7 +6,7 @@ from pathlib import Path
 def setup_theme_manager_project(project_name="theme_manager_project"):
     # Define paths
     base_dir = Path.cwd() / project_name
-    venv_dir = base_dir / ".venv"
+    venv_dir = base_dir / "venv"
     config_dir = base_dir / "theme_manager" / "config"
     template_path = Path.cwd() / "config_template" / "theme_settings.json"
     destination_path = config_dir / "theme_settings.json"

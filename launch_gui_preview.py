@@ -14,12 +14,12 @@ def main():
     print("=" * 40)
     
     # 仮想環境の確認
-    venv_path = Path(".venv")
+    venv_path = Path("venv")
     if not venv_path.exists():
         print("❌ 仮想環境が見つかりません")
         print("まず仮想環境をセットアップしてください:")
-        print("  python -m venv .venv")
-        print("  source .venv/bin/activate  # Linux/Mac")
+        print("  python -m venv venv")
+        print("  source venv/bin/activate  # Linux/Mac")
         print("  pip install -r requirements.txt")
         return 1
     

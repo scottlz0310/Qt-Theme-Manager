@@ -19,14 +19,14 @@ cd Theme-Manager
 
 #### Windows
 ```bash
-python -m venv theme_manager_env
-theme_manager_env\Scripts\activate
+python -m venv venv
+venv\Scripts\activate
 ```
 
 #### macOS/Linux
 ```bash
-python3 -m venv theme_manager_env
-source theme_manager_env/bin/activate
+python3 -m venv venv
+source venv/bin/activate
 ```
 
 ### 3. 依存関係のインストール

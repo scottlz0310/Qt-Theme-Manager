@@ -19,6 +19,14 @@ Currently, install from source:
 ```bash
 git clone <repository-url>
 cd Theme-Manager
+
+# Create virtual environment (recommended)
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# or: venv\Scripts\activate  # Windows
+
+# Install dependencies
+pip install -r requirements.txt
 ```
 
 ### Requirements

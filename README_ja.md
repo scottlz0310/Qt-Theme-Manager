@@ -19,6 +19,14 @@ PyQt5/PySide6アプリケーション向けの包括的なテーマ管理ライ�
 ```bash
 git clone https://github.com/scottlz0310/Theme-Manager.git
 cd Theme-Manager
+
+# 仮想環境の作成（推奨）
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# または: venv\Scripts\activate  # Windows
+
+# 依存関係のインストール
+pip install -r requirements.txt
 ```
 
 ### 必要条件
