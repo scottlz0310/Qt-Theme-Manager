@@ -65,6 +65,19 @@ controller.apply_theme_to_application()
 
 ## Command Line Interface
 
+### Visual Theme Preview
+
+Launch a GUI preview window to see all themes in action:
+
+```bash
+python launch_gui_preview.py
+```
+
+This preview window allows you to:
+- Switch between all 16 themes in real-time
+- See how buttons, inputs, sliders, and other widgets look in each theme
+- Intuitively compare colors and contrast across different themes
+
 ### List Available Themes
 
 ```bash
