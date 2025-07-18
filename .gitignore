@@ -162,9 +162,9 @@ cython_debug/
 .vscode/
 *.code-workspace
 
-# Local test files
-test_*.py
-*_test.py
+# Local test files (removed to include project test files)
+# test_*.py
+# *_test.py
 
 # OS generated files
 .DS_Store

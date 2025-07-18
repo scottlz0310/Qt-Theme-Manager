@@ -12,6 +12,7 @@ recursive-include theme_manager *.py
 recursive-include theme_manager *.json
 recursive-include docs *.md
 prune .venv
+prune venv
 prune __pycache__
 prune *.pyc
 prune .git
