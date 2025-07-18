@@ -14,7 +14,7 @@ authors = [
 maintainers = [
     {name = "scottlz0310", email = "scott.lz0310@gmail.com"}
 ]
-keywords = ["qt", "theme", "pyqt", "pyside", "gui", "styling"]
+keywords = ["theme", "gui", "qt", "styling", "pyside", "pyqt"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
