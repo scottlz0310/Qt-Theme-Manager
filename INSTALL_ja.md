@@ -4,18 +4,39 @@
 
 - **Python**: 3.7 以上
 - **オペレーティングシステム**: Windows, macOS, Linux
-- **Qtフレームワーク**: PyQt5 または PySide6（いずれか一つ）
+- **Qtフレームワーク**: PyQt5、PyQt6、または PySide6
 
-## インストール手順
+## インストール方法
 
-### 1. リポジトリのクローン
+### オプション1: PyPIからのインストール（推奨）
 
+#### 簡単インストール
 ```bash
-git clone https://github.com/scottlz0310/Theme-Manager.git
-cd Theme-Manager
+# 基本インストール（自動的にQtフレームワークを検出）
+pip install qt-theme-manager
 ```
 
-### 2. 仮想環境の作成（推奨）
+#### フレームワーク指定インストール
+```bash
+# お好みのQtフレームワークでインストール
+pip install qt-theme-manager[pyqt6]    # PyQt6を使用
+pip install qt-theme-manager[pyqt5]    # PyQt5を使用
+pip install qt-theme-manager[pyside6]  # PySide6を使用
+
+# すべてのQtフレームワークでインストール
+pip install qt-theme-manager[all]
+```
+
+### オプション2: ソースからのインストール（開発者向け）
+
+#### 1. リポジトリのクローン
+
+```bash
+git clone https://github.com/scottlz0310/Qt-Theme-Manager.git
+cd Qt-Theme-Manager
+```
+
+#### 2. 仮想環境の作成（推奨）
 
 #### Windows
 ```bash
@@ -29,21 +50,16 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-### 3. 依存関係のインストール
+#### 3. 開発モードでのインストール
 
-#### PyQt5を使用する場合
 ```bash
-pip install PyQt5>=5.12.0
-```
+# お好みのQtフレームワークでインストール
+pip install -e .[pyqt6]    # PyQt6を使用
+pip install -e .[pyqt5]    # PyQt5を使用
+pip install -e .[pyside6]  # PySide6を使用
 
-#### PyQt6を使用する場合
-```bash
-pip install PyQt6>=6.2.0
-```
-
-#### PySide6を使用する場合
-```bash
-pip install PySide6>=6.0.0
+# またはすべてのフレームワークでインストール
+pip install -e .[all]
 ```
 
 ### 4. インストールの確認

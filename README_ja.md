@@ -39,11 +39,26 @@ controller.apply_theme_to_application()
 
 ## インストール
 
-### 方法1: ソースからインストール（現在の方法）
+### 方法1: PyPIからインストール（推奨）
+
+```bash
+# 基本インストール
+pip install qt-theme-manager
+
+# お好みのQtフレームワークと一緒にインストール
+pip install qt-theme-manager[pyqt6]    # PyQt6の場合
+pip install qt-theme-manager[pyqt5]    # PyQt5の場合  
+pip install qt-theme-manager[pyside6]  # PySide6の場合
+
+# 全てのQtフレームワーク対応
+pip install qt-theme-manager[all]
+```
+
+### 方法2: ソースからインストール（開発者向け）
 
 ```bash
 git clone https://github.com/scottlz0310/Qt-Theme-Manager.git
-cd Theme-Manager
+cd Qt-Theme-Manager
 
 # 仮想環境の作成（推奨）
 python -m venv venv
@@ -54,12 +69,6 @@ source venv/bin/activate  # Linux/Mac
 pip install -e .[pyqt6]    # PyQt6の場合
 # pip install -e .[pyqt5]  # PyQt5の場合
 # pip install -e .[pyside6] # PySide6の場合
-```
-
-### 方法2: 将来のpipインストール（近日公開）
-
-```bash
-pip install qt-theme-manager[pyqt6]  # または [pyqt5] や [pyside6]
 ```
 
 ### 必要条件

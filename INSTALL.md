@@ -4,18 +4,39 @@
 
 - **Python**: 3.7 or higher
 - **Operating System**: Windows, macOS, Linux
-- **Qt Framework**: PyQt5 or PySide6 (either one)
+- **Qt Framework**: PyQt5, PyQt6, or PySide6
 
-## Installation Steps
+## Installation Options
 
-### 1. Clone the Repository
+### Option 1: Install from PyPI (Recommended)
 
+#### Quick Installation
 ```bash
-git clone https://github.com/scottlz0310/Theme-Manager.git
-cd Theme-Manager
+# Basic installation with automatic Qt framework detection
+pip install qt-theme-manager
 ```
 
-### 2. Create Virtual Environment (Recommended)
+#### Framework-Specific Installation
+```bash
+# Install with your preferred Qt framework
+pip install qt-theme-manager[pyqt6]    # For PyQt6
+pip install qt-theme-manager[pyqt5]    # For PyQt5
+pip install qt-theme-manager[pyside6]  # For PySide6
+
+# Install with all Qt frameworks
+pip install qt-theme-manager[all]
+```
+
+### Option 2: Install from Source (For Developers)
+
+#### 1. Clone the Repository
+
+```bash
+git clone https://github.com/scottlz0310/Qt-Theme-Manager.git
+cd Qt-Theme-Manager
+```
+
+#### 2. Create Virtual Environment (Recommended)
 
 #### Windows
 ```bash
@@ -29,21 +50,16 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-### 3. Install Dependencies
+#### 3. Install in Development Mode
 
-#### For PyQt5
 ```bash
-pip install PyQt5>=5.12.0
-```
+# Install with your preferred Qt framework
+pip install -e .[pyqt6]    # For PyQt6
+pip install -e .[pyqt5]    # For PyQt5
+pip install -e .[pyside6]  # For PySide6
 
-#### For PyQt6
-```bash
-pip install PyQt6>=6.2.0
-```
-
-#### For PySide6
-```bash
-pip install PySide6>=6.0.0
+# Or install with all frameworks
+pip install -e .[all]
 ```
 
 ### 4. Verify Installation

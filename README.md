@@ -39,11 +39,26 @@ controller.apply_theme_to_application()
 
 ## Installation
 
-### Option 1: Install from source (current method)
+### Option 1: Install from PyPI (recommended)
+
+```bash
+# Basic installation
+pip install qt-theme-manager
+
+# Install with your preferred Qt framework
+pip install qt-theme-manager[pyqt6]    # For PyQt6
+pip install qt-theme-manager[pyqt5]    # For PyQt5  
+pip install qt-theme-manager[pyside6]  # For PySide6
+
+# Install with all Qt frameworks
+pip install qt-theme-manager[all]
+```
+
+### Option 2: Install from source (for developers)
 
 ```bash
 git clone https://github.com/scottlz0310/Qt-Theme-Manager.git
-cd Theme-Manager
+cd Qt-Theme-Manager
 
 # Create virtual environment (recommended)
 python -m venv venv
@@ -54,12 +69,6 @@ source venv/bin/activate  # Linux/Mac
 pip install -e .[pyqt6]    # For PyQt6
 # pip install -e .[pyqt5]  # For PyQt5
 # pip install -e .[pyside6] # For PySide6
-```
-
-### Option 2: Future pip install (coming soon)
-
-```bash
-pip install qt-theme-manager[pyqt6]  # or [pyqt5] or [pyside6]
 ```
 
 ### Requirements
