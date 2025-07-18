@@ -36,6 +36,11 @@ source venv/bin/activate
 pip install PyQt5>=5.12.0
 ```
 
+#### PyQt6を使用する場合
+```bash
+pip install PyQt6>=6.2.0
+```
+
 #### PySide6を使用する場合
 ```bash
 pip install PySide6>=6.0.0

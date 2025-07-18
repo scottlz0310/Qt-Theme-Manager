@@ -30,8 +30,10 @@ def main():
         
         if not qt_available:
             print("❌ Qt framework が利用できません")
-            print("PyQt5 または PySide6 をインストールしてください:")
-            print("  pip install PyQt5")
+            print("PyQt5、PyQt6、または PySide6 をインストールしてください:")
+            print("  pip install PyQt5      # PyQt5を使用")
+            print("  pip install PyQt6      # PyQt6を使用")
+            print("  pip install PySide6    # PySide6を使用")
             return 1
             
         print("✅ ThemeManager GUI components ready")
@@ -56,7 +58,17 @@ def main():
     # 実際のGUIプレビューを起動
     print("🚀 GUIプレビューを起動しています...")
     try:
-        from PyQt5.QtWidgets import QApplication
+        # 利用可能なQtフレームワークを動的にインポート
+        from theme_manager.qt.controller import qt_framework
+        
+        if qt_framework == "PyQt5":
+            from PyQt5.QtWidgets import QApplication
+        elif qt_framework == "PyQt6":
+            from PyQt6.QtWidgets import QApplication
+        elif qt_framework == "PySide6":
+            from PySide6.QtWidgets import QApplication
+        else:
+            raise ImportError("No Qt framework available")
         
         app = QApplication.instance() or QApplication(sys.argv)
         preview_window = show_preview()
@@ -67,7 +79,10 @@ def main():
             print("ウィンドウを閉じるか、Ctrl+C で終了してください")
             
             # イベントループを開始
-            return app.exec_()
+            if hasattr(app, 'exec'):
+                return app.exec()  # PyQt6/PySide6
+            else:
+                return app.exec_()  # PyQt5
         else:
             print("❌ プレビューウィンドウの作成に失敗しました")
             return 1
@@ -79,9 +94,18 @@ def main():
 def test_mode():
     """テストモードでの動作確認"""
     try:
-        from theme_manager.qt.controller import ThemeController
+        from theme_manager.qt.controller import ThemeController, qt_framework
         from theme_manager.qt.preview import show_preview
-        from PyQt5.QtWidgets import QApplication
+        
+        # 動的にQApplicationをインポート
+        if qt_framework == "PyQt5":
+            from PyQt5.QtWidgets import QApplication
+        elif qt_framework == "PyQt6":
+            from PyQt6.QtWidgets import QApplication
+        elif qt_framework == "PySide6":
+            from PySide6.QtWidgets import QApplication
+        else:
+            raise ImportError("No Qt framework available")
         
         # コントローラーのテスト
         controller = ThemeController()

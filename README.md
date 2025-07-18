@@ -1,6 +1,6 @@
-# ThemeManager for PyQt5/PySide6
+# ThemeManager for PyQt5/PyQt6/PySide6
 
-A comprehensive theme management library for PyQt5/PySide6 applications, providing dynamic theme switching with support for dark, light, and high contrast themes.
+A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications, providing dynamic theme switching with support for dark, light, and high contrast themes.
 
 ## Features
 
@@ -32,7 +32,7 @@ pip install -r requirements.txt
 ### Requirements
 
 - Python 3.7+
-- PyQt5 or PySide6 (for GUI functionality)
+- PyQt5, PyQt6, or PySide6 (for GUI functionality)
 
 ## Quick Start
 

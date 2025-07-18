@@ -8,36 +8,44 @@ from pathlib import Path
 
 # Import handling for Qt libraries
 qt_available = False
-PYQT_AVAILABLE = False
+PYQT5_AVAILABLE = False
+PYQT6_AVAILABLE = False
 PYSIDE_AVAILABLE = False
 
 try:
     from PyQt5.QtWidgets import QWidget, QApplication
     from PyQt5.QtCore import QObject, pyqtSignal
     qt_available = True
-    PYQT_AVAILABLE = True
+    PYQT5_AVAILABLE = True
     qt_framework = "PyQt5"
 except ImportError:
     try:
-        from PySide6.QtWidgets import QWidget, QApplication  
-        from PySide6.QtCore import QObject, Signal as pyqtSignal
+        from PyQt6.QtWidgets import QWidget, QApplication
+        from PyQt6.QtCore import QObject, pyqtSignal
         qt_available = True
-        PYSIDE_AVAILABLE = True
-        qt_framework = "PySide6"
+        PYQT6_AVAILABLE = True
+        qt_framework = "PyQt6"
     except ImportError:
-        # Create stub classes for when Qt is not available
-        class QObject:
-            def __init__(self): pass
-        
-        class QWidget:
-            def setStyleSheet(self, stylesheet: str) -> None: pass
-        
-        class QApplication:
-            @staticmethod
-            def instance(): return None
-            def setStyleSheet(self, stylesheet: str) -> None: pass
-        
-        qt_framework = "None"
+        try:
+            from PySide6.QtWidgets import QWidget, QApplication  
+            from PySide6.QtCore import QObject, Signal as pyqtSignal
+            qt_available = True
+            PYSIDE_AVAILABLE = True
+            qt_framework = "PySide6"
+        except ImportError:
+            # Create stub classes for when Qt is not available
+            class QObject:
+                def __init__(self): pass
+            
+            class QWidget:
+                def setStyleSheet(self, stylesheet: str) -> None: pass
+            
+            class QApplication:
+                @staticmethod
+                def instance(): return None
+                def setStyleSheet(self, stylesheet: str) -> None: pass
+            
+            qt_framework = "None"
 
 from .loader import ThemeLoader
 from .stylesheet import StylesheetGenerator
@@ -179,8 +187,8 @@ class ThemeController(QObject):
         Returns:
             True if theme was successfully applied, False otherwise
         """
-        if not PYQT_AVAILABLE and not PYSIDE_AVAILABLE:
-            print("Warning: PyQt5/PySide6 not available, cannot apply theme to widget")
+        if not (PYQT5_AVAILABLE or PYQT6_AVAILABLE or PYSIDE_AVAILABLE):
+            print("Warning: PyQt5/PyQt6/PySide6 not available, cannot apply theme to widget")
             return False
         
         if widget is None:
@@ -204,8 +212,8 @@ class ThemeController(QObject):
         Returns:
             True if theme was successfully applied, False otherwise
         """
-        if not PYQT_AVAILABLE and not PYSIDE_AVAILABLE:
-            print("Warning: PyQt5/PySide6 not available, cannot apply theme to application")
+        if not (PYQT5_AVAILABLE or PYQT6_AVAILABLE or PYSIDE_AVAILABLE):
+            print("Warning: PyQt5/PyQt6/PySide6 not available, cannot apply theme to application")
             return False
         
         if app is None:

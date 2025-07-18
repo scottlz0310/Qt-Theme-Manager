@@ -20,14 +20,24 @@ if qt_available:
         )
         from PyQt5.QtCore import Qt
     except ImportError:
-        from PySide6.QtWidgets import (
-            QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-            QPushButton, QLabel, QLineEdit, QTextEdit, QComboBox, QListWidget,
-            QGroupBox, QFrame, QToolBar, QStatusBar, QListWidgetItem, QScrollArea,
-            QGridLayout
-        )
-        from PySide6.QtCore import Qt
-        from PySide6.QtGui import QAction
+        try:
+            from PyQt6.QtWidgets import (
+                QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
+                QPushButton, QLabel, QLineEdit, QTextEdit, QComboBox, QListWidget,
+                QGroupBox, QFrame, QToolBar, QStatusBar, QListWidgetItem, QScrollArea,
+                QGridLayout
+            )
+            from PyQt6.QtCore import Qt
+            from PyQt6.QtGui import QAction
+        except ImportError:
+            from PySide6.QtWidgets import (
+                QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
+                QPushButton, QLabel, QLineEdit, QTextEdit, QComboBox, QListWidget,
+                QGroupBox, QFrame, QToolBar, QStatusBar, QListWidgetItem, QScrollArea,
+                QGridLayout
+            )
+            from PySide6.QtCore import Qt
+            from PySide6.QtGui import QAction
 
 from .controller import ThemeController
 
