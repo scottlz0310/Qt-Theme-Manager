@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qt-theme-manager"
+version = "0.1.0"
+description = "A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "scottlz0310", email = "scott.lz0310@gmail.com"}
+]
+maintainers = [
+    {name = "scottlz0310", email = "scott.lz0310@gmail.com"}
+]
+keywords = ["qt", "theme", "pyqt", "pyside", "gui", "styling"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: User Interfaces",
+    "Topic :: Desktop Environment",
+]
+requires-python = ">=3.7"
+dependencies = []
+
+[project.optional-dependencies]
+pyqt5 = ["PyQt5>=5.15.0"]
+pyqt6 = ["PyQt6>=6.2.0"]
+pyside6 = ["PySide6>=6.0.0"]
+dev = [
+    "pytest>=6.0",
+    "pytest-qt>=4.0",
+    "black",
+    "isort",
+    "flake8",
+]
+all = [
+    "PyQt5>=5.15.0",
+    "PyQt6>=6.2.0", 
+    "PySide6>=6.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/scottlz0310/Qt-Theme-Manager"
+Documentation = "https://github.com/scottlz0310/Qt-Theme-Manager/blob/main/README.md"
+Repository = "https://github.com/scottlz0310/Qt-Theme-Manager"
+"Bug Tracker" = "https://github.com/scottlz0310/Qt-Theme-Manager/issues"
+
+[project.scripts]
+theme-manager = "theme_manager.cli.main:main"
+
+[tool.setuptools]
+packages = ["theme_manager", "theme_manager.qt", "theme_manager.cli", "theme_manager.config"]
+
+[tool.setuptools.package-data]
+theme_manager = ["config/*.json"]
+
+[tool.black]
+line-length = 88
+target-version = ['py37']
+
+[tool.isort]
+profile = "black"
+line_length = 88

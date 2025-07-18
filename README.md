@@ -42,7 +42,7 @@ controller.apply_theme_to_application()
 ### Option 1: Install from source (current method)
 
 ```bash
-git clone https://github.com/scottlz0310/Theme-Manager.git
+git clone https://github.com/scottlz0310/Qt-Theme-Manager.git
 cd Theme-Manager
 
 # Create virtual environment (recommended)

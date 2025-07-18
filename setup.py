@@ -7,11 +7,11 @@ setup(
     name="qt-theme-manager",
     version="0.1.0",
     author="scottlz0310",
-    author_email="scottlz0310@example.com",
+    author_email="scott.lz0310@gmail.com",
     description="A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/scottlz0310/Theme-Manager",
+    url="https://github.com/scottlz0310/Qt-Theme-Manager",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 3 - Alpha",
@@ -24,8 +24,10 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Software Development :: User Interfaces",
+        "Topic :: Desktop Environment",
     ],
     python_requires=">=3.7",
     install_requires=[
@@ -38,6 +40,9 @@ setup(
         "dev": [
             "pytest>=6.0",
             "pytest-qt>=4.0",
+            "black",
+            "isort", 
+            "flake8",
         ],
         "all": [
             "PyQt5>=5.15.0",

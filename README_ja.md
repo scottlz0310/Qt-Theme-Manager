@@ -42,7 +42,7 @@ controller.apply_theme_to_application()
 ### 方法1: ソースからインストール（現在の方法）
 
 ```bash
-git clone https://github.com/scottlz0310/Theme-Manager.git
+git clone https://github.com/scottlz0310/Qt-Theme-Manager.git
 cd Theme-Manager
 
 # 仮想環境の作成（推奨）

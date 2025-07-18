@@ -1,0 +1,19 @@
+include README.md
+include README_ja.md
+include LICENSE
+include requirements.txt
+include INSTALL.md
+include INSTALL_ja.md
+include API_REFERENCE.md
+include API_REFERENCE_ja.md
+include EXAMPLES.md
+include EXAMPLES_ja.md
+recursive-include theme_manager *.py
+recursive-include theme_manager *.json
+recursive-include docs *.md
+prune .venv
+prune __pycache__
+prune *.pyc
+prune .git
+global-exclude *test*.py
+global-exclude *_test.py
