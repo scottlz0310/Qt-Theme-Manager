@@ -12,12 +12,37 @@ A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications, p
 - 🎯 **Easy Integration**: Simple API for applying themes to widgets/applications
 - ⚡ **QSS Generation**: Automatic stylesheet generation from theme configurations
 
+## 🚀 30-Second Quick Start
+
+**Want to add beautiful themes to your Qt app in just 3 lines of code?**
+
+```python
+from theme_manager.qt.controller import apply_theme_to_widget
+
+# That's it! Apply current theme to any widget:
+apply_theme_to_widget(your_widget)
+```
+
+**Want to switch themes dynamically?**
+
+```python
+from theme_manager.qt.controller import ThemeController
+
+controller = ThemeController()
+controller.set_theme("dark")  # or "light", "blue", "cyberpunk", etc.
+controller.apply_theme_to_application()
+```
+
+**16 beautiful themes ready to use:** `dark`, `light`, `blue`, `green`, `cyberpunk`, `ocean`, and more!
+
+---
+
 ## Installation
 
-Currently, install from source:
+### Option 1: Install from source (current method)
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/scottlz0310/Theme-Manager.git
 cd Theme-Manager
 
 # Create virtual environment (recommended)
@@ -25,8 +50,16 @@ python -m venv venv
 source venv/bin/activate  # Linux/Mac
 # or: venv\Scripts\activate  # Windows
 
-# Install dependencies
-pip install -r requirements.txt
+# Install with your preferred Qt framework
+pip install -e .[pyqt6]    # For PyQt6
+# pip install -e .[pyqt5]  # For PyQt5
+# pip install -e .[pyside6] # For PySide6
+```
+
+### Option 2: Future pip install (coming soon)
+
+```bash
+pip install qt-theme-manager[pyqt6]  # or [pyqt5] or [pyside6]
 ```
 
 ### Requirements

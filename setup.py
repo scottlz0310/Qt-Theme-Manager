@@ -5,13 +5,13 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="qt-theme-manager",
-    version="0.0.1",
-    author="Your Name",
-    author_email="your.email@example.com",
-    description="A comprehensive theme management library for PyQt5/PySide6 applications",
+    version="0.1.0",
+    author="scottlz0310",
+    author_email="scottlz0310@example.com",
+    description="A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/YOUR_USERNAME/Theme-Manager",
+    url="https://github.com/scottlz0310/Theme-Manager",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 3 - Alpha",
@@ -29,16 +29,20 @@ setup(
     ],
     python_requires=">=3.7",
     install_requires=[
-        # Qt framework (user choice)
-        # "PyQt5>=5.12.0",  # or
-        # "PySide6>=6.0.0",
+        # Base requirements (no Qt framework by default)
     ],
     extras_require={
-        "pyqt5": ["PyQt5>=5.12.0"],
+        "pyqt5": ["PyQt5>=5.15.0"],
+        "pyqt6": ["PyQt6>=6.2.0"],
         "pyside6": ["PySide6>=6.0.0"],
         "dev": [
             "pytest>=6.0",
             "pytest-qt>=4.0",
+        ],
+        "all": [
+            "PyQt5>=5.15.0",
+            "PyQt6>=6.2.0", 
+            "PySide6>=6.0.0",
         ],
     },
     include_package_data=True,
