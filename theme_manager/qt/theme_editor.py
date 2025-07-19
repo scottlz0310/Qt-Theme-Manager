@@ -171,6 +171,68 @@ class ColorUtils:
         return "#000000" if luminance > 0.5 else "#ffffff"
     
     @staticmethod
+    def get_heading_text_color(bg_color: str, theme_primary: str = "#2196F3") -> str:
+        """Get optimal heading text color with better contrast and visual hierarchy."""
+        bg_luminance = ColorUtils.get_luminance(bg_color)
+        
+        # Try using the theme's primary color first
+        primary_contrast = ColorUtils.get_contrast_ratio(bg_color, theme_primary)
+        
+        if primary_contrast >= 4.5:  # WCAG AA compliance
+            return theme_primary
+        
+        # If primary doesn't work, try a darker/lighter variant
+        if bg_luminance > 0.5:  # Light background
+            # Try darker variants of primary
+            darker_primary = ColorUtils.adjust_brightness(theme_primary, -0.4)
+            if ColorUtils.get_contrast_ratio(bg_color, darker_primary) >= 4.5:
+                return darker_primary
+            
+            # Fallback to very dark color
+            return "#1565C0"  # Dark blue
+        else:  # Dark background
+            # Try lighter variants of primary
+            lighter_primary = ColorUtils.adjust_brightness(theme_primary, 0.4)
+            if ColorUtils.get_contrast_ratio(bg_color, lighter_primary) >= 4.5:
+                return lighter_primary
+            
+            # Fallback to bright accent color
+            return "#64B5F6"  # Light blue
+    
+    @staticmethod
+    def get_accent_text_color(bg_color: str, primary_color: str = "#2196F3") -> str:
+        """Get a colorful accent text color for highlights and special elements."""
+        bg_luminance = ColorUtils.get_luminance(bg_color)
+        
+        # Generate complementary color
+        r, g, b = ColorUtils.hex_to_rgb(primary_color)
+        h, s, v = colorsys.rgb_to_hsv(r/255.0, g/255.0, b/255.0)
+        
+        # Create complement by shifting hue by 180 degrees
+        complement_h = (h + 0.5) % 1.0
+        
+        if bg_luminance > 0.5:  # Light background
+            # Use darker, saturated complement
+            accent_r, accent_g, accent_b = colorsys.hsv_to_rgb(complement_h, min(0.8, s + 0.2), max(0.4, v - 0.3))
+        else:  # Dark background  
+            # Use lighter, vibrant complement
+            accent_r, accent_g, accent_b = colorsys.hsv_to_rgb(complement_h, min(0.9, s + 0.1), min(0.9, v + 0.4))
+        
+        accent_color = ColorUtils.rgb_to_hex(int(accent_r*255), int(accent_g*255), int(accent_b*255))
+        
+        # Verify contrast and adjust if needed
+        contrast = ColorUtils.get_contrast_ratio(bg_color, accent_color)
+        if contrast < 4.5:
+            # Adjust brightness until we get good contrast
+            adjustment = 0.1 if bg_luminance > 0.5 else -0.1
+            while contrast < 4.5 and abs(adjustment) < 0.8:
+                accent_color = ColorUtils.adjust_brightness(accent_color, adjustment)
+                contrast = ColorUtils.get_contrast_ratio(bg_color, accent_color)
+                adjustment += 0.1 if bg_luminance > 0.5 else -0.1
+        
+        return accent_color
+    
+    @staticmethod
     def adjust_brightness(hex_color: str, factor: float) -> str:
         """Adjust color brightness by factor (-1.0 to 1.0)."""
         r, g, b = ColorUtils.hex_to_rgb(hex_color)
@@ -502,8 +564,10 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
             "radio": 1,         # Components tab
             "background": 0,    # Basic colors tab
             "text": 0,          # Basic colors tab
+            "heading": 0,       # Basic colors tab
             "primary": 0,       # Basic colors tab
             "secondary": 0,     # Basic colors tab
+            "accent": 0,        # Basic colors tab
         }
         
         tab_index = component_to_tab.get(component_type, 1)  # Default to components tab
@@ -641,8 +705,9 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
         basic_colors = [
             ("background", "背景色", "#ffffff"),
             ("text", "テキスト色", "#000000"),
-            ("primary", "プライマリ色", "#007acc"),
+            ("heading", "見出し色", "#1565C0"),
             ("accent", "アクセント色", "#ff6b35"),
+            ("primary", "プライマリ色", "#007acc"),
         ]
         
         for key, label, default_color in basic_colors:
@@ -907,6 +972,9 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
         
         heading_label = QLabel("見出しテキスト")
         heading_label.setStyleSheet("font-size: 16px; font-weight: bold;")
+        heading_label.setProperty("component_type", "heading")  # Mark for styling
+        heading_label.mousePressEvent = lambda event: self.jump_to_component_settings("heading")
+        heading_label.setCursor(Qt.PointingHandCursor)
         basic_layout.addWidget(heading_label)
         
         # Buttons (make clickable for navigation)
@@ -1280,15 +1348,24 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
     def auto_adjust_text_colors(self):
         """Automatically adjust text colors for optimal contrast."""
         bg_color = self.current_theme_config.get("backgroundColor", "#ffffff")
+        primary_color = self.current_theme_config.get("primaryColor", "#007acc")
         
         # Calculate optimal text color
         optimal_text = ColorUtils.get_optimal_text_color(bg_color)
         
+        # Calculate optimal heading color
+        optimal_heading = ColorUtils.get_heading_text_color(bg_color, primary_color)
+        
+        # Update colors
         self.current_theme_config["textColor"] = optimal_text
+        self.current_theme_config["headingColor"] = optimal_heading
+        
+        # Update sliders
         self.color_sliders["text"].update_from_hex(optimal_text)
+        self.color_sliders["heading"].update_from_hex(optimal_heading)
         
         QMessageBox.information(self, "自動調整完了", 
-                              f"背景色に対して最適なテキスト色 ({optimal_text}) を設定しました。")
+                              f"最適化完了:\n• テキスト色: {optimal_text}\n• 見出し色: {optimal_heading}")
     
     def generate_color_palette(self):
         """Generate harmonious color palette based on primary color."""
@@ -1313,13 +1390,29 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
         """Update preview with current theme configuration using advanced styling."""
         if not self.current_theme_config:
             return
-        
+
         # Generate advanced stylesheet
         generator = AdvancedStylesheetGenerator(self.current_theme_config)
         stylesheet = generator.generate_qss()
         
+        # Add heading-specific styles
+        heading_color = self.current_theme_config.get("headingColor", "#1565C0")
+        heading_styles = f"""
+/* Heading Text Styles */
+QLabel[component_type="heading"] {{
+    color: {heading_color};
+    font-size: 16px;
+    font-weight: bold;
+}}
+
+/* Enhanced text hierarchy */
+QLabel[component_type="heading"]:hover {{
+    color: {ColorUtils.adjust_brightness(heading_color, 0.1)};
+}}
+"""
+        
         # Apply to preview area
-        self.preview_area.setStyleSheet(stylesheet)
+        self.preview_area.setStyleSheet(stylesheet + heading_styles)
     
     def load_default_theme(self):
         """Load default theme configuration."""
