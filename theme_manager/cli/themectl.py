@@ -152,6 +152,9 @@ def main():
     # Current command
     subparsers.add_parser("current", help="Show current theme information")
     
+    # Editor command
+    subparsers.add_parser("editor", help="Launch advanced theme editor (GUI)")
+    
     # Version command
     subparsers.add_parser("version", help="Show version information")
     
@@ -164,6 +167,35 @@ def main():
     if args.command == "version":
         print("ThemeManager CLI v0.0.1")
         print("PyQt5/PySide6 Theme Management Library")
+        return
+    
+    if args.command == "editor":
+        print("🎨 高度なテーマエディターを起動しています...")
+        print("注意: この機能にはPyQt5/PyQt6/PySide6が必要です。")
+        try:
+            from ..qt.theme_editor import launch_theme_editor
+            editor = launch_theme_editor(args.config)
+            
+            if editor is not None:
+                from ..qt.theme_editor import qt_available
+                if qt_available:
+                    try:
+                        from PyQt5.QtWidgets import QApplication
+                    except ImportError:
+                        try:
+                            from PyQt6.QtWidgets import QApplication  
+                        except ImportError:
+                            from PySide6.QtWidgets import QApplication
+                    
+                    app = QApplication.instance()
+                    if app is not None:
+                        print("🚀 テーマエディターが起動しました！")
+                        sys.exit(app.exec_() if hasattr(app, 'exec_') else app.exec())
+        except ImportError as e:
+            print(f"❌ テーマエディターの起動に失敗: {e}")
+            print("必要な依存関係をインストールしてください:")
+            print("  pip install PyQt6  # または PyQt5, PySide6")
+            sys.exit(1)
         return
     
     # Initialize CLI with config path
