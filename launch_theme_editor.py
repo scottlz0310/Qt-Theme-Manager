@@ -31,7 +31,6 @@ def main():
         editor = launch_theme_editor()
         
         if editor is not None:
-            import sys
             from theme_manager.qt.theme_editor import qt_available
             
             if qt_available:
@@ -56,6 +55,7 @@ def main():
                 print("  pip install PyQt5")
                 print("  または") 
                 print("  pip install PySide6")
+                sys.exit(1)
                 
     except ImportError as e:
         print(f"❌ インポートエラー: {e}")

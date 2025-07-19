@@ -20,7 +20,7 @@ if qt_available:
             QPushButton, QLabel, QLineEdit, QSlider, QSpinBox, QGroupBox,
             QGridLayout, QFrame, QColorDialog, QTabWidget, QScrollArea,
             QTextEdit, QComboBox, QCheckBox, QProgressBar, QListWidget,
-            QSplitter, QFileDialog, QMessageBox, QDoubleSpinBox
+            QSplitter, QFileDialog, QMessageBox, QDoubleSpinBox, QRadioButton
         )
         from PyQt5.QtCore import Qt, pyqtSignal, QTimer
         from PyQt5.QtGui import QColor, QPalette, QFont
@@ -31,7 +31,7 @@ if qt_available:
                 QPushButton, QLabel, QLineEdit, QSlider, QSpinBox, QGroupBox,
                 QGridLayout, QFrame, QColorDialog, QTabWidget, QScrollArea,
                 QTextEdit, QComboBox, QCheckBox, QProgressBar, QListWidget,
-                QSplitter, QFileDialog, QMessageBox, QDoubleSpinBox
+                QSplitter, QFileDialog, QMessageBox, QDoubleSpinBox, QRadioButton
             )
             from PyQt6.QtCore import Qt, pyqtSignal, QTimer
             from PyQt6.QtGui import QColor, QPalette, QFont
@@ -41,13 +41,74 @@ if qt_available:
                 QPushButton, QLabel, QLineEdit, QSlider, QSpinBox, QGroupBox,
                 QGridLayout, QFrame, QColorDialog, QTabWidget, QScrollArea,
                 QTextEdit, QComboBox, QCheckBox, QProgressBar, QListWidget,
-                QSplitter, QFileDialog, QMessageBox, QDoubleSpinBox
+                QSplitter, QFileDialog, QMessageBox, QDoubleSpinBox, QRadioButton
             )
             from PySide6.QtCore import Qt, Signal as pyqtSignal, QTimer
             from PySide6.QtGui import QColor, QPalette, QFont
 
 from .controller import ThemeController
 from .stylesheet import StylesheetGenerator
+
+
+class ClickableWidget(QWidget):
+    """Widget that emits signals when clicked."""
+    clicked = pyqtSignal(str)  # Signal with component type
+    
+    def __init__(self, component_type: str, parent=None):
+        super().__init__(parent)
+        self.component_type = component_type
+        self.setCursor(Qt.PointingHandCursor)
+    
+    def mousePressEvent(self, event):
+        """Handle mouse press events."""
+        if event.button() == Qt.LeftButton:
+            self.clicked.emit(self.component_type)
+        super().mousePressEvent(event)
+
+
+class ClickableButton(QPushButton):
+    """Button that emits component-specific signals when clicked."""
+    componentClicked = pyqtSignal(str)
+    
+    def __init__(self, text: str, component_type: str, parent=None):
+        super().__init__(text, parent)
+        self.component_type = component_type
+        
+    def mousePressEvent(self, event):
+        """Handle mouse press events."""
+        if event.button() == Qt.LeftButton:
+            self.componentClicked.emit(self.component_type)
+        super().mousePressEvent(event)
+
+
+class ClickableLineEdit(QLineEdit):
+    """LineEdit that emits component-specific signals when clicked."""
+    componentClicked = pyqtSignal(str)
+    
+    def __init__(self, text: str, component_type: str, parent=None):
+        super().__init__(text, parent)
+        self.component_type = component_type
+        
+    def mousePressEvent(self, event):
+        """Handle mouse press events."""
+        if event.button() == Qt.LeftButton:
+            self.componentClicked.emit(self.component_type)
+        super().mousePressEvent(event)
+
+
+class ClickableComboBox(QComboBox):
+    """ComboBox that emits component-specific signals when clicked."""
+    componentClicked = pyqtSignal(str)
+    
+    def __init__(self, component_type: str, parent=None):
+        super().__init__(parent)
+        self.component_type = component_type
+        
+    def mousePressEvent(self, event):
+        """Handle mouse press events."""
+        if event.button() == Qt.LeftButton:
+            self.componentClicked.emit(self.component_type)
+        super().mousePressEvent(event)
 from .advanced_stylesheet import AdvancedStylesheetGenerator
 
 
@@ -417,13 +478,70 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
         self.setWindowTitle("ThemeManager - 高度なテーマエディター")
         self.setGeometry(100, 100, 1200, 800)
         
-        self.setup_ui()
-        self.load_default_theme()
-        
-        # Auto-update timer
+        # Auto-update timer (initialize before setup_ui)
         self.update_timer = QTimer()
         self.update_timer.timeout.connect(self.auto_update_preview)
         self.update_timer.setSingleShot(True)
+        
+        self.setup_ui()
+        self.load_default_theme()
+    
+    def jump_to_component_settings(self, component_type: str):
+        """Jump to the appropriate settings tab and section for a component."""
+        print(f"🎯 コンポーネント '{component_type}' の設定にジャンプします...")
+        
+        # Component type to tab index mapping
+        component_to_tab = {
+            "button": 1,        # Components tab
+            "input": 1,         # Components tab  
+            "panel": 1,         # Components tab
+            "menu": 1,          # Components tab
+            "progress": 1,      # Components tab
+            "scroll": 1,        # Components tab
+            "checkbox": 1,      # Components tab
+            "radio": 1,         # Components tab
+            "background": 0,    # Basic colors tab
+            "text": 0,          # Basic colors tab
+            "primary": 0,       # Basic colors tab
+            "secondary": 0,     # Basic colors tab
+        }
+        
+        tab_index = component_to_tab.get(component_type, 1)  # Default to components tab
+        
+        # Jump to appropriate tab
+        self.tabs.setCurrentIndex(tab_index)
+        
+        # Show visual feedback
+        self.show_component_highlight(component_type)
+        
+        print(f"✅ '{component_type}' 設定タブに移動しました")
+    
+    def show_component_highlight(self, component_type: str):
+        """Show visual feedback for clicked component."""
+        # Get current tab index and temporarily highlight the tab
+        current_index = self.tabs.currentIndex()
+        
+        # Store original tab text
+        if not hasattr(self, '_original_tab_texts'):
+            self._original_tab_texts = {}
+            for i in range(self.tabs.count()):
+                self._original_tab_texts[i] = self.tabs.tabText(i)
+        
+        # Highlight the current tab with emoji
+        original_text = self._original_tab_texts[current_index]
+        highlighted_text = f"🎯 {original_text}"
+        self.tabs.setTabText(current_index, highlighted_text)
+        
+        # Reset tab text after 2 seconds
+        timer = QTimer()
+        timer.timeout.connect(lambda: self.tabs.setTabText(current_index, original_text))
+        timer.setSingleShot(True)
+        timer.start(2000)  # Reset after 2 seconds
+        
+        # Store timer to prevent garbage collection
+        if not hasattr(self, '_highlight_timers'):
+            self._highlight_timers = []
+        self._highlight_timers.append(timer)
     
     def setup_ui(self):
         """Setup the user interface."""
@@ -470,22 +588,22 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
         layout.addWidget(info_group)
         
         # Color controls in tabs
-        tabs = QTabWidget()
-        layout.addWidget(tabs)
+        self.tabs = QTabWidget()  # Store reference to tabs for jumping
+        layout.addWidget(self.tabs)
         
         # Basic colors tab
         basic_tab = QWidget()
-        tabs.addTab(basic_tab, "基本色")
+        self.tabs.addTab(basic_tab, "基本色")
         self.setup_basic_colors_tab(basic_tab)
         
         # Component colors tab
         components_tab = QWidget()
-        tabs.addTab(components_tab, "コンポーネント")
+        self.tabs.addTab(components_tab, "コンポーネント")
         self.setup_components_tab(components_tab)
         
         # Contrast checker tab
         contrast_tab = QWidget()
-        tabs.addTab(contrast_tab, "コントラスト")
+        self.tabs.addTab(contrast_tab, "コントラスト")
         self.setup_contrast_tab(contrast_tab)
         
         # Action buttons
@@ -791,30 +909,35 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
         heading_label.setStyleSheet("font-size: 16px; font-weight: bold;")
         basic_layout.addWidget(heading_label)
         
-        # Buttons
+        # Buttons (make clickable for navigation)
         button_layout = QHBoxLayout()
         
-        normal_btn = QPushButton("通常ボタン")
+        normal_btn = ClickableButton("通常ボタン", "button")
+        normal_btn.componentClicked.connect(self.jump_to_component_settings)
         button_layout.addWidget(normal_btn)
         
-        primary_btn = QPushButton("プライマリボタン")
+        primary_btn = ClickableButton("プライマリボタン", "button")
         primary_btn.setProperty("class", "primary")
+        primary_btn.componentClicked.connect(self.jump_to_component_settings)
         button_layout.addWidget(primary_btn)
         
-        disabled_btn = QPushButton("無効ボタン")
+        disabled_btn = ClickableButton("無効ボタン", "button")
         disabled_btn.setEnabled(False)
+        disabled_btn.componentClicked.connect(self.jump_to_component_settings)
         button_layout.addWidget(disabled_btn)
         
         basic_layout.addLayout(button_layout)
         
-        # Input widgets
-        line_edit = QLineEdit("入力欄のサンプルテキスト")
+        # Input widgets (make clickable for navigation)
+        line_edit = ClickableLineEdit("入力欄のサンプルテキスト", "input")
         line_edit.setPlaceholderText("プレースホルダーテキスト")
+        line_edit.componentClicked.connect(self.jump_to_component_settings)
         basic_layout.addWidget(line_edit)
         
-        # Combo box
-        combo = QComboBox()
+        # Combo box (make clickable for navigation)
+        combo = ClickableComboBox("menu")
         combo.addItems(["選択肢 1", "選択肢 2", "選択肢 3", "長い選択肢テキストのサンプル"])
+        combo.componentClicked.connect(self.jump_to_component_settings)
         basic_layout.addWidget(combo)
         
         layout.addWidget(basic_group)
@@ -853,10 +976,12 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
         progress_group = QGroupBox("プログレス・スライダー")
         progress_layout = QVBoxLayout(progress_group)
         
-        # Progress bar
+        # Progress bar (make clickable for navigation)  
         progress = QProgressBar()
         progress.setValue(65)
         progress.setFormat("進捗: %p%")
+        progress.mousePressEvent = lambda event: self.jump_to_component_settings("progress")
+        progress.setCursor(Qt.PointingHandCursor)
         progress_layout.addWidget(progress)
         
         # Horizontal slider
@@ -886,24 +1011,32 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
         check_group = QGroupBox("チェック・ラジオボタン")
         check_layout = QVBoxLayout(check_group)
         
-        # Checkboxes
+        # Checkboxes (make clickable for navigation)
         check1 = QCheckBox("チェックボックス 1 (チェック済み)")
         check1.setChecked(True)
+        check1.mousePressEvent = lambda event: self.jump_to_component_settings("checkbox")
+        check1.setCursor(Qt.PointingHandCursor)
         check_layout.addWidget(check1)
         
         check2 = QCheckBox("チェックボックス 2")
+        check2.mousePressEvent = lambda event: self.jump_to_component_settings("checkbox")
+        check2.setCursor(Qt.PointingHandCursor)
         check_layout.addWidget(check2)
         
         check3 = QCheckBox("無効なチェックボックス")
         check3.setEnabled(False)
         check_layout.addWidget(check3)
         
-        # Radio buttons
+        # Radio buttons (make clickable for navigation)
         radio1 = QRadioButton("ラジオボタン 1 (選択済み)")
         radio1.setChecked(True)
+        radio1.mousePressEvent = lambda event: self.jump_to_component_settings("radio")
+        radio1.setCursor(Qt.PointingHandCursor)
         check_layout.addWidget(radio1)
         
         radio2 = QRadioButton("ラジオボタン 2")
+        radio2.mousePressEvent = lambda event: self.jump_to_component_settings("radio")
+        radio2.setCursor(Qt.PointingHandCursor)
         check_layout.addWidget(radio2)
         
         layout.addWidget(check_group)
