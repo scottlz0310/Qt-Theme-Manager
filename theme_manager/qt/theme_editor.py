@@ -48,6 +48,7 @@ if qt_available:
 
 from .controller import ThemeController
 from .stylesheet import StylesheetGenerator
+from .advanced_stylesheet import AdvancedStylesheetGenerator
 
 
 class ColorUtils:
@@ -554,12 +555,197 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
         """Setup component colors tab."""
         layout = QVBoxLayout(tab_widget)
         
-        # This would contain button, panel, input field color settings
-        info_label = QLabel("コンポーネント色設定\n（実装予定）")
-        info_label.setAlignment(Qt.AlignCenter)
-        layout.addWidget(info_label)
+        # Scroll area for component controls
+        scroll_area = QScrollArea()
+        scroll_widget = QWidget()
+        scroll_layout = QVBoxLayout(scroll_widget)
         
-        layout.addStretch()
+        # Button components
+        button_group = QGroupBox("ボタンコンポーネント")
+        button_layout = QGridLayout(button_group)
+        
+        self.button_sliders = {}
+        button_states = [
+            ("normal", "通常", "#4a90e2"),
+            ("hover", "ホバー", "#5ba0f2"),
+            ("pressed", "押下", "#357abd"),
+            ("disabled", "無効", "#a0a0a0"),
+            ("border", "境界線", "#2c5aa0")
+        ]
+        
+        for i, (key, label, default_color) in enumerate(button_states):
+            row = i // 2
+            col = (i % 2) * 3
+            
+            button_layout.addWidget(QLabel(f"{label}:"), row, col)
+            
+            slider_group = ColorSliderGroup(f"ボタン{label}", default_color)
+            slider_group.colorChanged.connect(
+                lambda color, k=key: self.update_component_color("button", k, color)
+            )
+            button_layout.addWidget(slider_group, row, col + 1)
+            self.button_sliders[key] = slider_group
+        
+        scroll_layout.addWidget(button_group)
+        
+        # Input components
+        input_group = QGroupBox("入力コンポーネント")
+        input_layout = QGridLayout(input_group)
+        
+        self.input_sliders = {}
+        input_states = [
+            ("background", "背景", "#ffffff"),
+            ("text", "テキスト", "#000000"),
+            ("border", "境界線", "#cccccc"),
+            ("focus", "フォーカス", "#4a90e2"),
+            ("placeholder", "プレースホルダー", "#999999"),
+            ("selection", "選択範囲", "#4a90e2")
+        ]
+        
+        for i, (key, label, default_color) in enumerate(input_states):
+            row = i // 2
+            col = (i % 2) * 3
+            
+            input_layout.addWidget(QLabel(f"{label}:"), row, col)
+            
+            slider_group = ColorSliderGroup(f"入力{label}", default_color)
+            slider_group.colorChanged.connect(
+                lambda color, k=key: self.update_component_color("input", k, color)
+            )
+            input_layout.addWidget(slider_group, row, col + 1)
+            self.input_sliders[key] = slider_group
+        
+        scroll_layout.addWidget(input_group)
+        
+        # Panel components
+        panel_group = QGroupBox("パネル・グループボックス")
+        panel_layout = QGridLayout(panel_group)
+        
+        self.panel_sliders = {}
+        panel_states = [
+            ("background", "背景", "#f5f5f5"),
+            ("border", "境界線", "#cccccc"),
+            ("title_background", "タイトル背景", "#e0e0e0"),
+            ("title_text", "タイトルテキスト", "#333333")
+        ]
+        
+        for i, (key, label, default_color) in enumerate(panel_states):
+            row = i // 2
+            col = (i % 2) * 3
+            
+            panel_layout.addWidget(QLabel(f"{label}:"), row, col)
+            
+            slider_group = ColorSliderGroup(f"パネル{label}", default_color)
+            slider_group.colorChanged.connect(
+                lambda color, k=key: self.update_component_color("panel", k, color)
+            )
+            panel_layout.addWidget(slider_group, row, col + 1)
+            self.panel_sliders[key] = slider_group
+        
+        scroll_layout.addWidget(panel_group)
+        
+        # Menu components
+        menu_group = QGroupBox("メニュー・コンボボックス")
+        menu_layout = QGridLayout(menu_group)
+        
+        self.menu_sliders = {}
+        menu_states = [
+            ("background", "背景", "#ffffff"),
+            ("text", "テキスト", "#000000"),
+            ("hover", "ホバー背景", "#e0e0e0"),
+            ("selected", "選択背景", "#4a90e2"),
+            ("selected_text", "選択テキスト", "#ffffff"),
+            ("separator", "区切り線", "#cccccc")
+        ]
+        
+        for i, (key, label, default_color) in enumerate(menu_states):
+            row = i // 2
+            col = (i % 2) * 3
+            
+            menu_layout.addWidget(QLabel(f"{label}:"), row, col)
+            
+            slider_group = ColorSliderGroup(f"メニュー{label}", default_color)
+            slider_group.colorChanged.connect(
+                lambda color, k=key: self.update_component_color("menu", k, color)
+            )
+            menu_layout.addWidget(slider_group, row, col + 1)
+            self.menu_sliders[key] = slider_group
+        
+        scroll_layout.addWidget(menu_group)
+        
+        # Progress bar components
+        progress_group = QGroupBox("プログレスバー・スライダー")
+        progress_layout = QGridLayout(progress_group)
+        
+        self.progress_sliders = {}
+        progress_states = [
+            ("background", "背景", "#f0f0f0"),
+            ("chunk", "進捗部分", "#4a90e2"),
+            ("groove", "溝", "#e0e0e0"),
+            ("handle", "ハンドル", "#4a90e2")
+        ]
+        
+        for i, (key, label, default_color) in enumerate(progress_states):
+            row = i // 2
+            col = (i % 2) * 3
+            
+            progress_layout.addWidget(QLabel(f"{label}:"), row, col)
+            
+            slider_group = ColorSliderGroup(f"プログレス{label}", default_color)
+            slider_group.colorChanged.connect(
+                lambda color, k=key: self.update_component_color("progress", k, color)
+            )
+            progress_layout.addWidget(slider_group, row, col + 1)
+            self.progress_sliders[key] = slider_group
+        
+        scroll_layout.addWidget(progress_group)
+        
+        # Scrollbar components
+        scrollbar_group = QGroupBox("スクロールバー")
+        scrollbar_layout = QGridLayout(scrollbar_group)
+        
+        self.scrollbar_sliders = {}
+        scrollbar_states = [
+            ("background", "背景", "#f8f8f8"),
+            ("handle", "ハンドル", "#c0c0c0"),
+            ("handle_hover", "ハンドルホバー", "#a0a0a0"),
+            ("handle_pressed", "ハンドル押下", "#808080")
+        ]
+        
+        for i, (key, label, default_color) in enumerate(scrollbar_states):
+            row = i // 2
+            col = (i % 2) * 3
+            
+            scrollbar_layout.addWidget(QLabel(f"{label}:"), row, col)
+            
+            slider_group = ColorSliderGroup(f"スクロール{label}", default_color)
+            slider_group.colorChanged.connect(
+                lambda color, k=key: self.update_component_color("scrollbar", k, color)
+            )
+            scrollbar_layout.addWidget(slider_group, row, col + 1)
+            self.scrollbar_sliders[key] = slider_group
+        
+        scroll_layout.addWidget(scrollbar_group)
+        
+        # Add stretch and setup scroll area
+        scroll_layout.addStretch()
+        scroll_area.setWidget(scroll_widget)
+        scroll_area.setWidgetResizable(True)
+        layout.addWidget(scroll_area)
+        
+        # Smart component adjustment buttons
+        smart_group = QGroupBox("スマート調整")
+        smart_layout = QVBoxLayout(smart_group)
+        
+        auto_component_btn = QPushButton("コンポーネント色を自動調整")
+        auto_component_btn.clicked.connect(self.auto_adjust_component_colors)
+        smart_layout.addWidget(auto_component_btn)
+        
+        harmonize_btn = QPushButton("色の調和を最適化")
+        harmonize_btn.clicked.connect(self.harmonize_component_colors)
+        smart_layout.addWidget(harmonize_btn)
+        
+        layout.addWidget(smart_group)
     
     def setup_contrast_tab(self, tab_widget):
         """Setup contrast checker tab."""
@@ -590,31 +776,198 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
         layout.addWidget(scroll_area)
     
     def create_preview_widgets(self) -> QWidget:
-        """Create preview widget collection."""
+        """Create comprehensive preview widget collection."""
         widget = QWidget()
         layout = QVBoxLayout(widget)
         
-        # Sample widgets
-        layout.addWidget(QLabel("サンプルテキスト"))
+        # Basic widgets group
+        basic_group = QGroupBox("基本ウィジェット")
+        basic_layout = QVBoxLayout(basic_group)
         
-        btn = QPushButton("サンプルボタン")
-        layout.addWidget(btn)
+        # Labels and text
+        basic_layout.addWidget(QLabel("通常のラベル"))
         
-        line_edit = QLineEdit("入力欄のサンプル")
-        layout.addWidget(line_edit)
+        heading_label = QLabel("見出しテキスト")
+        heading_label.setStyleSheet("font-size: 16px; font-weight: bold;")
+        basic_layout.addWidget(heading_label)
         
-        text_edit = QTextEdit()
-        text_edit.setPlainText("複数行テキストエリア\nの表示サンプルです。")
-        text_edit.setMaximumHeight(100)
-        layout.addWidget(text_edit)
+        # Buttons
+        button_layout = QHBoxLayout()
         
+        normal_btn = QPushButton("通常ボタン")
+        button_layout.addWidget(normal_btn)
+        
+        primary_btn = QPushButton("プライマリボタン")
+        primary_btn.setProperty("class", "primary")
+        button_layout.addWidget(primary_btn)
+        
+        disabled_btn = QPushButton("無効ボタン")
+        disabled_btn.setEnabled(False)
+        button_layout.addWidget(disabled_btn)
+        
+        basic_layout.addLayout(button_layout)
+        
+        # Input widgets
+        line_edit = QLineEdit("入力欄のサンプルテキスト")
+        line_edit.setPlaceholderText("プレースホルダーテキスト")
+        basic_layout.addWidget(line_edit)
+        
+        # Combo box
         combo = QComboBox()
-        combo.addItems(["選択肢1", "選択肢2", "選択肢3"])
-        layout.addWidget(combo)
+        combo.addItems(["選択肢 1", "選択肢 2", "選択肢 3", "長い選択肢テキストのサンプル"])
+        basic_layout.addWidget(combo)
         
+        layout.addWidget(basic_group)
+        
+        # Text and lists group
+        text_group = QGroupBox("テキスト・リスト")
+        text_layout = QVBoxLayout(text_group)
+        
+        # Text edit
+        text_edit = QTextEdit()
+        text_edit.setPlainText("""複数行テキストエリアのサンプル表示です。
+長いテキストの表示確認用として使用します。
+日本語と English の混在テストも含まれています。
+背景色とテキスト色のコントラストを確認できます。""")
+        text_edit.setMaximumHeight(100)
+        text_layout.addWidget(text_edit)
+        
+        # List widget
+        list_widget = QListWidget()
+        list_items = [
+            "リストアイテム 1",
+            "リストアイテム 2 (選択状態)",
+            "リストアイテム 3",
+            "長いリストアイテムのサンプルテキスト",
+            "リストアイテム 5"
+        ]
+        for item in list_items:
+            list_widget.addItem(item)
+        list_widget.setCurrentRow(1)  # Select second item
+        list_widget.setMaximumHeight(120)
+        text_layout.addWidget(list_widget)
+        
+        layout.addWidget(text_group)
+        
+        # Progress and sliders group
+        progress_group = QGroupBox("プログレス・スライダー")
+        progress_layout = QVBoxLayout(progress_group)
+        
+        # Progress bar
         progress = QProgressBar()
-        progress.setValue(60)
-        layout.addWidget(progress)
+        progress.setValue(65)
+        progress.setFormat("進捗: %p%")
+        progress_layout.addWidget(progress)
+        
+        # Horizontal slider
+        h_slider = QSlider(Qt.Horizontal)
+        h_slider.setValue(40)
+        h_slider.setMinimum(0)
+        h_slider.setMaximum(100)
+        progress_layout.addWidget(QLabel("水平スライダー:"))
+        progress_layout.addWidget(h_slider)
+        
+        # Vertical slider
+        slider_container = QWidget()
+        slider_layout = QHBoxLayout(slider_container)
+        slider_layout.addWidget(QLabel("垂直:"))
+        v_slider = QSlider(Qt.Vertical)
+        v_slider.setValue(30)
+        v_slider.setMinimum(0)
+        v_slider.setMaximum(100)
+        v_slider.setMaximumHeight(80)
+        slider_layout.addWidget(v_slider)
+        slider_layout.addStretch()
+        progress_layout.addWidget(slider_container)
+        
+        layout.addWidget(progress_group)
+        
+        # Check and radio group
+        check_group = QGroupBox("チェック・ラジオボタン")
+        check_layout = QVBoxLayout(check_group)
+        
+        # Checkboxes
+        check1 = QCheckBox("チェックボックス 1 (チェック済み)")
+        check1.setChecked(True)
+        check_layout.addWidget(check1)
+        
+        check2 = QCheckBox("チェックボックス 2")
+        check_layout.addWidget(check2)
+        
+        check3 = QCheckBox("無効なチェックボックス")
+        check3.setEnabled(False)
+        check_layout.addWidget(check3)
+        
+        # Radio buttons
+        radio1 = QRadioButton("ラジオボタン 1 (選択済み)")
+        radio1.setChecked(True)
+        check_layout.addWidget(radio1)
+        
+        radio2 = QRadioButton("ラジオボタン 2")
+        check_layout.addWidget(radio2)
+        
+        layout.addWidget(check_group)
+        
+        # Nested group box
+        nested_group = QGroupBox("ネストされたグループボックス")
+        nested_layout = QVBoxLayout(nested_group)
+        
+        inner_group = QGroupBox("内部グループ")
+        inner_layout = QGridLayout(inner_group)
+        
+        inner_layout.addWidget(QLabel("ラベル A:"), 0, 0)
+        inner_layout.addWidget(QLineEdit("値 A"), 0, 1)
+        inner_layout.addWidget(QLabel("ラベル B:"), 1, 0)
+        inner_layout.addWidget(QLineEdit("値 B"), 1, 1)
+        
+        nested_layout.addWidget(inner_group)
+        layout.addWidget(nested_group)
+        
+        # Scrollable area demonstration
+        scroll_demo = QGroupBox("スクロール表示デモ")
+        scroll_demo_layout = QVBoxLayout(scroll_demo)
+        
+        scroll_area = QScrollArea()
+        scroll_content = QWidget()
+        scroll_content_layout = QVBoxLayout(scroll_content)
+        
+        for i in range(10):
+            scroll_content_layout.addWidget(QLabel(f"スクロールアイテム {i + 1}"))
+        
+        scroll_area.setWidget(scroll_content)
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setMaximumHeight(100)
+        scroll_demo_layout.addWidget(scroll_area)
+        
+        layout.addWidget(scroll_demo)
+        
+        # Color preview indicators
+        color_group = QGroupBox("カラーインジケーター")
+        color_layout = QHBoxLayout(color_group)
+        
+        colors = [
+            ("背景", self.current_theme_config.get("backgroundColor", "#ffffff")),
+            ("テキスト", self.current_theme_config.get("textColor", "#000000")),
+            ("プライマリ", self.current_theme_config.get("primaryColor", "#007acc")),
+            ("アクセント", self.current_theme_config.get("accentColor", "#ff6b35"))
+        ]
+        
+        for name, color in colors:
+            color_preview = QLabel(name)
+            color_preview.setStyleSheet(f"""
+                QLabel {{
+                    background-color: {color};
+                    color: {ColorUtils.get_optimal_text_color(color)};
+                    border: 1px solid #ccc;
+                    padding: 5px;
+                    border-radius: 3px;
+                }}
+            """)
+            color_preview.setAlignment(Qt.AlignCenter)
+            color_preview.setMinimumHeight(30)
+            color_layout.addWidget(color_preview)
+        
+        layout.addWidget(color_group)
         
         layout.addStretch()
         
@@ -630,6 +983,160 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
         
         # Schedule preview update
         self.update_timer.start(100)  # 100ms delay for smooth sliding
+    
+    def update_component_color(self, component: str, property_key: str, hex_color: str):
+        """Update component-specific color in theme configuration."""
+        if component not in self.current_theme_config:
+            self.current_theme_config[component] = {}
+        
+        self.current_theme_config[component][property_key] = hex_color
+        
+        # Schedule preview update
+        self.update_timer.start(100)
+    
+    def auto_adjust_component_colors(self):
+        """Automatically adjust component colors based on base colors."""
+        bg_color = self.current_theme_config.get("backgroundColor", "#ffffff")
+        primary_color = self.current_theme_config.get("primaryColor", "#007acc")
+        text_color = self.current_theme_config.get("textColor", "#000000")
+        
+        # Button colors
+        button_config = {
+            "normal": primary_color,
+            "hover": ColorUtils.adjust_brightness(primary_color, 0.1),
+            "pressed": ColorUtils.adjust_brightness(primary_color, -0.2),
+            "disabled": ColorUtils.adjust_saturation(primary_color, -0.5),
+            "border": ColorUtils.adjust_brightness(primary_color, -0.3)
+        }
+        
+        self.current_theme_config["button"] = button_config
+        
+        # Update button sliders
+        for key, color in button_config.items():
+            if key in self.button_sliders:
+                self.button_sliders[key].update_from_hex(color)
+        
+        # Input colors
+        is_dark_theme = ColorUtils.get_luminance(bg_color) < 0.5
+        
+        input_config = {
+            "background": ColorUtils.adjust_brightness(bg_color, 0.05 if not is_dark_theme else -0.05),
+            "text": text_color,
+            "border": ColorUtils.adjust_brightness(primary_color, 0.3),
+            "focus": primary_color,
+            "placeholder": ColorUtils.adjust_brightness(text_color, 0.4 if not is_dark_theme else -0.3),
+            "selection": ColorUtils.adjust_brightness(primary_color, 0.2)
+        }
+        
+        self.current_theme_config["input"] = input_config
+        
+        # Update input sliders
+        for key, color in input_config.items():
+            if key in self.input_sliders:
+                self.input_sliders[key].update_from_hex(color)
+        
+        # Panel colors
+        panel_config = {
+            "background": ColorUtils.adjust_brightness(bg_color, -0.02 if not is_dark_theme else 0.05),
+            "border": ColorUtils.adjust_brightness(bg_color, -0.1 if not is_dark_theme else 0.1),
+            "title_background": ColorUtils.adjust_brightness(bg_color, -0.05 if not is_dark_theme else 0.08),
+            "title_text": text_color
+        }
+        
+        self.current_theme_config["panel"] = panel_config
+        
+        # Update panel sliders
+        for key, color in panel_config.items():
+            if key in self.panel_sliders:
+                self.panel_sliders[key].update_from_hex(color)
+        
+        # Menu colors
+        menu_config = {
+            "background": bg_color,
+            "text": text_color,
+            "hover": ColorUtils.adjust_brightness(bg_color, -0.05 if not is_dark_theme else 0.1),
+            "selected": primary_color,
+            "selected_text": ColorUtils.get_optimal_text_color(primary_color),
+            "separator": ColorUtils.adjust_brightness(bg_color, -0.1 if not is_dark_theme else 0.2)
+        }
+        
+        self.current_theme_config["menu"] = menu_config
+        
+        # Update menu sliders
+        for key, color in menu_config.items():
+            if key in self.menu_sliders:
+                self.menu_sliders[key].update_from_hex(color)
+        
+        # Progress colors
+        progress_config = {
+            "background": ColorUtils.adjust_brightness(bg_color, -0.05 if not is_dark_theme else 0.1),
+            "chunk": primary_color,
+            "groove": ColorUtils.adjust_brightness(bg_color, -0.08 if not is_dark_theme else 0.15),
+            "handle": primary_color
+        }
+        
+        self.current_theme_config["progress"] = progress_config
+        
+        # Update progress sliders
+        for key, color in progress_config.items():
+            if key in self.progress_sliders:
+                self.progress_sliders[key].update_from_hex(color)
+        
+        # Scrollbar colors
+        scrollbar_config = {
+            "background": ColorUtils.adjust_brightness(bg_color, -0.02 if not is_dark_theme else 0.05),
+            "handle": ColorUtils.adjust_brightness(bg_color, -0.2 if not is_dark_theme else 0.3),
+            "handle_hover": ColorUtils.adjust_brightness(bg_color, -0.3 if not is_dark_theme else 0.4),
+            "handle_pressed": ColorUtils.adjust_brightness(bg_color, -0.4 if not is_dark_theme else 0.5)
+        }
+        
+        self.current_theme_config["scrollbar"] = scrollbar_config
+        
+        # Update scrollbar sliders
+        for key, color in scrollbar_config.items():
+            if key in self.scrollbar_sliders:
+                self.scrollbar_sliders[key].update_from_hex(color)
+        
+        QMessageBox.information(self, "自動調整完了", 
+                              "基本色に基づいてすべてのコンポーネント色を自動調整しました。")
+    
+    def harmonize_component_colors(self):
+        """Harmonize component colors for better visual consistency."""
+        primary_color = self.current_theme_config.get("primaryColor", "#007acc")
+        
+        # Generate analogous colors (colors adjacent on the color wheel)
+        import colorsys
+        r, g, b = ColorUtils.hex_to_rgb(primary_color)
+        h, s, v = colorsys.rgb_to_hsv(r/255.0, g/255.0, b/255.0)
+        
+        # Generate analogous colors (±30 degrees)
+        analogous1_h = (h + 0.083) % 1.0  # +30 degrees
+        analogous2_h = (h - 0.083) % 1.0  # -30 degrees
+        
+        analogous1_r, analogous1_g, analogous1_b = colorsys.hsv_to_rgb(analogous1_h, s * 0.8, v * 0.9)
+        analogous2_r, analogous2_g, analogous2_b = colorsys.hsv_to_rgb(analogous2_h, s * 0.8, v * 0.9)
+        
+        analogous1_color = ColorUtils.rgb_to_hex(int(analogous1_r*255), int(analogous1_g*255), int(analogous1_b*255))
+        analogous2_color = ColorUtils.rgb_to_hex(int(analogous2_r*255), int(analogous2_g*255), int(analogous2_b*255))
+        
+        # Apply harmonious colors to different components
+        if "button" in self.current_theme_config:
+            self.current_theme_config["button"]["hover"] = analogous1_color
+            if "hover" in self.button_sliders:
+                self.button_sliders["hover"].update_from_hex(analogous1_color)
+        
+        if "input" in self.current_theme_config:
+            self.current_theme_config["input"]["focus"] = analogous2_color
+            if "focus" in self.input_sliders:
+                self.input_sliders["focus"].update_from_hex(analogous2_color)
+        
+        if "menu" in self.current_theme_config:
+            self.current_theme_config["menu"]["selected"] = analogous1_color
+            if "selected" in self.menu_sliders:
+                self.menu_sliders["selected"].update_from_hex(analogous1_color)
+        
+        QMessageBox.information(self, "色の調和完了", 
+                              f"類似色 ({analogous1_color}, {analogous2_color}) を使用して色の調和を最適化しました。")
     
     def update_contrast_checker(self):
         """Update contrast checker with current colors."""
@@ -670,12 +1177,12 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
                               f"プライマリ色に基づいてアクセント色 ({accent_color}) を生成しました。")
     
     def auto_update_preview(self):
-        """Update preview with current theme configuration."""
+        """Update preview with current theme configuration using advanced styling."""
         if not self.current_theme_config:
             return
         
-        # Generate stylesheet
-        generator = StylesheetGenerator(self.current_theme_config)
+        # Generate advanced stylesheet
+        generator = AdvancedStylesheetGenerator(self.current_theme_config)
         stylesheet = generator.generate_qss()
         
         # Apply to preview area
