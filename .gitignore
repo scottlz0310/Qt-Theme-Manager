@@ -48,6 +48,37 @@ coverage.xml
 *.cover
 *.py,cover
 .hypothesis/
+
+# Development and temporary files
+sandbox/
+temp/
+tmp/
+*.tmp
+*.temp
+*_temp.py
+*_test.py
+*_example.py
+*_sample.py
+*_backup.*
+*_old.*
+
+# Local development files
+.vscode/settings.json
+.idea/
+*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 .pytest_cache/
 cover/
 
