@@ -2,14 +2,72 @@
 
 This document provides detailed information about all APIs available in the ThemeManager library.
 
+## 🆕 New in v0.2.0
+
+### GUI Tools Entry Points
+
+```python
+# Theme Editor (also available as `theme-editor` command)
+from theme_manager.qt.theme_editor import launch_theme_editor
+launch_theme_editor()
+
+# Theme Preview (also available as `theme-preview` command)  
+from theme_manager.qt.preview import launch_preview
+launch_preview()
+```
+
+### Advanced Features
+
+- Enhanced `ThemeController` with improved error handling
+- New accessibility features in theme editor
+- Expanded theme configuration options
+
 ## Table of Contents
 
-1. [ThemeController](#themecontroller)
-2. [ThemeLoader](#themeloader) 
-3. [StylesheetGenerator](#stylesheetgenerator)
-4. [Utility Functions](#utility-functions)
-5. [Configuration File Specification](#configuration-file-specification)
-6. [Error Handling](#error-handling)
+1. [GUI Tools](#gui-tools)
+2. [ThemeController](#themecontroller)
+3. [ThemeLoader](#themeloader) 
+4. [StylesheetGenerator](#stylesheetgenerator)
+5. [Utility Functions](#utility-functions)
+6. [Configuration File Specification](#configuration-file-specification)
+7. [Error Handling](#error-handling)
+
+## GUI Tools
+
+### launch_theme_editor()
+
+Launch the advanced theme editor application.
+
+```python
+from theme_manager.qt.theme_editor import launch_theme_editor
+
+launch_theme_editor(config_path=None)
+```
+
+**Parameters:**
+- `config_path` (Optional): Path to theme configuration file
+
+**Features:**
+- Color theory-based design tools
+- Real-time preview
+- Component-specific customization
+- Accessibility features
+- Import/Export functionality
+
+### launch_preview()
+
+Launch the theme preview application.
+
+```python
+from theme_manager.qt.preview import launch_preview
+
+launch_preview()
+```
+
+**Features:**
+- 16+ built-in themes
+- Live theme switching
+- Comprehensive widget showcase
 
 ## ThemeController
 

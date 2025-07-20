@@ -1,6 +1,7 @@
 include README.md
 include README_ja.md
 include LICENSE
+include CHANGELOG.md
 include requirements.txt
 include INSTALL.md
 include INSTALL_ja.md
@@ -8,6 +9,8 @@ include API_REFERENCE.md
 include API_REFERENCE_ja.md
 include EXAMPLES.md
 include EXAMPLES_ja.md
+include DEVELOPMENT.md
+include THEME_EDITOR_GUIDE.md
 recursive-include theme_manager *.py
 recursive-include theme_manager *.json
 recursive-include docs *.md

@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="qt-theme-manager",
-    version="0.1.0",
+    version="0.2.0",
     author="scottlz0310",
     author_email="scott.lz0310@gmail.com",
     description="A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications",
@@ -57,6 +57,8 @@ setup(
     entry_points={
         "console_scripts": [
             "theme-manager=theme_manager.cli.main:main",
+            "theme-editor=theme_manager.qt.theme_editor:launch_theme_editor",
+            "theme-preview=theme_manager.qt.preview:launch_preview",
         ],
     },
 )

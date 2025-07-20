@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qt-theme-manager"
-version = "0.1.0"
+version = "0.2.0"
 description = "A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications"
 readme = "README.md"
 license = "MIT"
@@ -58,6 +58,8 @@ Repository = "https://github.com/scottlz0310/Qt-Theme-Manager"
 
 [project.scripts]
 theme-manager = "theme_manager.cli.main:main"
+theme-editor = "theme_manager.qt.theme_editor:launch_theme_editor"
+theme-preview = "theme_manager.qt.preview:launch_preview"
 
 [tool.setuptools]
 packages = ["theme_manager", "theme_manager.qt", "theme_manager.cli", "theme_manager.config"]

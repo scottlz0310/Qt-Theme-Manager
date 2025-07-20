@@ -1,19 +1,33 @@
 # ThemeManager インストールガイド
 
+## v0.2.0の新機能
+
+インストール後、以下のGUIツールが直接使用できます：
+
+```bash
+theme-editor    # 高度なテーマエディターを起動
+theme-preview   # テーマプレビューウィンドウを起動
+theme-manager   # CLIテーマ管理ツール
+```
+
 ## システム要件
 
 - **Python**: 3.7 以上
 - **オペレーティングシステム**: Windows, macOS, Linux
-- **Qtフレームワーク**: PyQt5、PyQt6、または PySide6
+- **Qtフレームワーク**: PyQt5、PyQt6、または PySide6（GUIツールに必要）
 
 ## インストール方法
 
 ### オプション1: PyPIからのインストール（推奨）
 
-#### 簡単インストール
+#### GUIツール付きクイックインストール
 ```bash
-# 基本インストール（自動的にQtフレームワークを検出）
-pip install qt-theme-manager
+# PyQt6と一緒にインストール（新プロジェクト推奨）
+pip install qt-theme-manager[pyqt6]
+
+# その後GUIツールを使用:
+theme-editor    # 高度なテーマエディター
+theme-preview   # テーマプレビューウィンドウ
 ```
 
 #### フレームワーク指定インストール
@@ -25,6 +39,13 @@ pip install qt-theme-manager[pyside6]  # PySide6を使用
 
 # すべてのQtフレームワークでインストール
 pip install qt-theme-manager[all]
+```
+
+#### 基本インストール（GUIツールなし）
+```bash
+# 基本インストール（自動的にQtフレームワークを検出）
+pip install qt-theme-manager
+# 注意: GUIツールにはQtフレームワークを別途インストールする必要があります
 ```
 
 ### オプション2: ソースからのインストール（開発者向け）

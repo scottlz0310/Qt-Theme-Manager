@@ -1,15 +1,15 @@
 """
-ThemeManager for PyQt5/PySide6
-================================
+ThemeManager for PyQt5/PyQt6/PySide6
+====================================
 
-A theme management library for PyQt5/PySide6 applications.
-Supports dynamic theme switching with dark, light, and high contrast themes.
+A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications.
+Supports dynamic theme switching with advanced theme editor and 16+ built-in themes.
 
 Author: ThemeManager Team
-Version: 0.0.1
+Version: 0.2.0
 """
 
-__version__ = "0.0.1"
+__version__ = "0.2.0"
 __author__ = "ThemeManager Team"
 
 from .qt.controller import ThemeController, apply_theme_to_widget

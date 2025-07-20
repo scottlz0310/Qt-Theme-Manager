@@ -1,18 +1,34 @@
 # ThemeManager for PyQt5/PyQt6/PySide6
 
-A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications, providing dynamic theme switching with support for dark, light, and high contrast themes.
+A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications, providing dynamic theme switching with an advanced theme editor and 16+ built-in themes.
+
+## ✨ What's New in v0.2.0
+
+- 🎨 **Advanced Theme Editor**: Color theory-based design tools with real-time preview
+- 🖥️ **GUI Tools via pip**: `theme-editor` and `theme-preview` commands
+- 🎯 **Enhanced Customization**: Component-specific settings and accessibility features
+- 📱 **Better Integration**: Improved API and documentation
 
 ## Features
 
-- 🎨 **16 Built-in Themes**: Light, Dark, High Contrast, and 13 additional color themes
+- 🎨 **16+ Built-in Themes**: Light, Dark, High Contrast, and colorful themes
+- ✨ **Advanced Theme Editor**: Professional-grade theme creation tools
 - 🔄 **Dynamic Theme Switching**: Change themes at runtime without restarting
 - 💾 **Persistent Settings**: Theme preferences are automatically saved
-- 🖥️ **CLI Support**: Command-line interface for theme management
-- 📱 **GUI Preview**: Interactive preview window to test themes
+- 🖥️ **GUI Tools**: Interactive editor and preview applications
+- 📟 **CLI Support**: Command-line interface for theme management
 - 🎯 **Easy Integration**: Simple API for applying themes to widgets/applications
 - ⚡ **QSS Generation**: Automatic stylesheet generation from theme configurations
 
 ## 🚀 30-Second Quick Start
+
+**Want to try the new theme editor?**
+
+```bash
+# Install and launch theme editor (New in v0.2.0!)
+pip install qt-theme-manager[pyqt6]
+theme-editor
+```
 
 **Want to add beautiful themes to your Qt app in just 3 lines of code?**
 
@@ -115,38 +131,48 @@ controller.apply_theme_to_application()
 
 ## Command Line Interface
 
-### Visual Theme Preview
+### 🎨 GUI Tools (New in v0.2.0!)
 
-Launch a GUI preview window to see all themes in action:
-
-```bash
-python launch_gui_preview.py
-```
-
-This preview window allows you to:
-- Switch between all 16 themes in real-time
-- See how buttons, inputs, sliders, and other widgets look in each theme
-- Intuitively compare colors and contrast across different themes
-
-### List Available Themes
+After installing via pip, you can use these convenient GUI tools:
 
 ```bash
-python -m theme_manager.main list
+# Launch the advanced theme editor
+theme-editor
+
+# Launch theme preview window  
+theme-preview
+
+# Use CLI tools
+theme-manager --help
 ```
 
-### Set Theme
+#### Theme Editor Features
+- **Color theory-based color selection** (complementary, triadic, analogous)
+- **Real-time preview** of all changes
+- **Component-specific settings** for detailed customization
+- **Accessibility features** with contrast ratio checking
+- **Import/Export** custom themes
+
+#### Theme Preview Features
+- **16 built-in themes** to test instantly
+- **Live switching** between themes
+- **All Qt widgets** displayed for comprehensive testing
+
+### Legacy CLI Methods
+
+For advanced users or scripting:
 
 ```bash
-python -m theme_manager.main set dark
-```
+# List available themes
+python -m theme_manager.cli.main list
 
-### Export QSS Stylesheet
+# Set theme
+python -m theme_manager.cli.main set dark
 
-```bash
-python -m theme_manager.main export dark dark_theme.qss
-```
+# Export QSS stylesheet
+python -m theme_manager.cli.main export dark dark_theme.qss
 
-### Show Current Theme
+# Show current theme
 
 ```bash
 python -m theme_manager.main current

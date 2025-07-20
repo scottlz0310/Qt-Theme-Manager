@@ -2,13 +2,49 @@
 
 This document provides various usage examples and practical implementations of the ThemeManager library.
 
+## 🆕 New in v0.2.0: GUI Tools
+
+### Quick Start with GUI Tools
+
+```bash
+# Try the new theme editor (after pip install qt-theme-manager[pyqt6])
+theme-editor
+
+# Preview all themes instantly
+theme-preview
+
+# CLI management
+theme-manager list
+```
+
 ## Table of Contents
 
-1. [Basic Usage](#basic-usage)
-2. [Application Examples](#application-examples)
-3. [Custom Theme Creation](#custom-theme-creation)
-4. [CLI Usage Examples](#cli-usage-examples)
-5. [Advanced Usage](#advanced-usage)
+1. [GUI Tools Usage](#gui-tools-usage)
+2. [Basic Usage](#basic-usage)
+3. [Application Examples](#application-examples)
+4. [Custom Theme Creation](#custom-theme-creation)
+5. [CLI Usage Examples](#cli-usage-examples)
+6. [Advanced Usage](#advanced-usage)
+
+## GUI Tools Usage
+
+### Theme Editor Features
+
+The new `theme-editor` command provides:
+
+- **Color Theory Tools**: Choose colors using complementary, triadic, or analogous schemes
+- **Real-time Preview**: See changes instantly as you edit
+- **Component Settings**: Customize buttons, inputs, panels separately
+- **Accessibility**: Built-in contrast ratio checking
+- **Import/Export**: Save and share custom themes
+
+### Theme Preview Features
+
+The `theme-preview` command offers:
+
+- **16+ Built-in Themes**: Test all available themes instantly
+- **Live Switching**: Change themes with one click
+- **Widget Showcase**: See how all Qt widgets look in each theme
 
 ## Basic Usage
 

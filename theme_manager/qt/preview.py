@@ -337,6 +337,31 @@ def show_preview(config_path: Optional[Union[str, Path]] = None) -> Optional['Th
     return preview_window
 
 
+def launch_preview():
+    """Launch theme preview as standalone application (for pip entry point)."""
+    if not qt_available:
+        print("❌ Qt framework not available.")
+        print("📦 Please install a Qt framework:")
+        print("   pip install qt-theme-manager[pyqt6]    # for PyQt6")
+        print("   pip install qt-theme-manager[pyqt5]    # for PyQt5")
+        print("   pip install qt-theme-manager[pyside6]  # for PySide6")
+        return 1
+    
+    import sys
+    app = QApplication(sys.argv)
+    
+    print("🎨 ThemeManager - プレビューを起動しています...")
+    
+    window = ThemePreviewWindow()
+    window.show()
+    
+    try:
+        sys.exit(app.exec_())
+    except KeyboardInterrupt:
+        print("\n👋 プレビューを終了します")
+        return 0
+
+
 if __name__ == "__main__":
     # Run preview if executed directly
     if not qt_available:
