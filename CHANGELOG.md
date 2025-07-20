@@ -5,7 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.2.0] - 2025-07-20
+## [0.2.0] - 2025-07-20 ✅ **Released to PyPI**
+
+🎉 **Successfully published to PyPI: https://pypi.org/project/qt-theme-manager/0.2.0/**
 
 ### Added
 - 🎨 **高度なテーマエディタ機能**
@@ -79,12 +81,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 今後の予定
 
-### [0.3.0] - 予定
-- GitHub Actions自動化
+### [0.3.0] - 2025年8月予定
+- GitHub Actions自動化（タグプッシュ→自動PyPI公開）
 - テストスイート強化
 - パフォーマンス監視機能
+- ユーザーフィードバック対応
 
-### [1.0.0] - 予定
+### [1.0.0] - 2025年秋予定
 - 安定版リリース
 - 完全なAPI安定性保証
 - 企業利用向け機能追加
+- プラグインシステム検討
