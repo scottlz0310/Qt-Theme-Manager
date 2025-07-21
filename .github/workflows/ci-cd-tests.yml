@@ -16,7 +16,7 @@ jobs:
         include:
           # Ubuntu - 最も一般的な環境でのフルテスト
           - os: ubuntu-latest
-            python-version: '3.8'
+            python-version: '3.9'
             qt-framework: pyqt5
           - os: ubuntu-latest
             python-version: '3.9' 
