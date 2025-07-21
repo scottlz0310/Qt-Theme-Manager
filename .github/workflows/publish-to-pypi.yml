@@ -45,7 +45,7 @@ jobs:
             
             # PyQt5のインストール検証
             echo "Verifying PyQt5 installation..."
-            python -c "
+            python -c """
 import sys
 print(f'Python version: {sys.version}')
 print(f'Python executable: {sys.executable}')
@@ -64,7 +64,7 @@ try:
 except Exception as e:
     print(f'PyQt5.QtWidgets import error: {e}')
     sys.exit(1)
-"
+"""
             
         elif [ "${{ matrix.qt-framework }}" = "pyqt6" ]; then
           echo "Installing PyQt6..."
@@ -102,7 +102,7 @@ except Exception as e:
         echo "PYTHONIOENCODING: $PYTHONIOENCODING"
         
         echo "=== STEP: Testing Qt framework import ==="
-        python -c "
+        python -c """
 import sys
 print(f'Python version: {sys.version}')
 
@@ -137,7 +137,7 @@ except Exception as e:
     import traceback
     traceback.print_exc()
     sys.exit(1)
-"
+"""
         
         echo "=== STEP: Running main test suite ==="
         python test_theme_manager.py
