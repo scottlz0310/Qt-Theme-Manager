@@ -38,28 +38,13 @@ jobs:
           echo "=== STEP: Installing Qt framework: ${{ matrix.qt-framework }} ==="
           if [ "${{ matrix.qt-framework }}" = "pyqt5" ]; then
             python -m pip install pyqt5==5.15.* pyqt5-tools
-            python -c "
-import sys
-try:
-    import PyQt5.QtCore
-    print(f'PyQt5.QtCore version: {PyQt5.QtCore.PYQT_VERSION_STR}')
-    print(f'Qt version: {PyQt5.QtCore.QT_VERSION_STR}')
-except Exception as e:
-    print(f'PyQt5.QtCore import error: {e}')
-    sys.exit(1)
-try:
-    import PyQt5.QtWidgets
-    print('PyQt5.QtWidgets imported successfully')
-except Exception as e:
-    print(f'PyQt5.QtWidgets import error: {e}')
-    sys.exit(1)
-"
           elif [ "${{ matrix.qt-framework }}" = "pyqt6" ]; then
             python -m pip install pyqt6
           elif [ "${{ matrix.qt-framework }}" = "pyside6" ]; then
             python -m pip install pyside6
           fi
 
+          echo "=== STEP: Installing package in development mode ==="
           pip install -e .
 
       - name: Run tests
@@ -73,31 +58,10 @@ except Exception as e:
           mkdir -p /tmp/runtime-runner
           chmod 700 /tmp/runtime-runner
 
-          python -c "
-import sys, os
-qt_framework = '${{ matrix.qt-framework }}'
-print(f'Testing framework: {qt_framework}')
-try:
-    if qt_framework == 'pyqt5':
-        from PyQt5.QtCore import qVersion
-        from PyQt5.QtWidgets import QApplication
-    elif qt_framework == 'pyqt6':
-        from PyQt6.QtCore import qVersion
-        from PyQt6.QtWidgets import QApplication
-    elif qt_framework == 'pyside6':
-        from PySide6.QtCore import qVersion
-        from PySide6.QtWidgets import QApplication
-    print(f'{qt_framework} version: {qVersion()}')
-    app = QApplication([])
-    print('QApplication creation: SUCCESS')
-    app.quit()
-    print('QApplication cleanup: SUCCESS')
-except Exception as e:
-    print(f'Qt framework error: {e}')
-    import traceback
-    traceback.print_exc()
-    sys.exit(1)
-"
+          echo "=== STEP: Testing Qt framework ==="
+          python scripts/test_qt_framework.py ${{ matrix.qt-framework }} --verbose
+          
+          echo "=== STEP: Running main test suite ==="
           python test_theme_manager.py
 
   build:
