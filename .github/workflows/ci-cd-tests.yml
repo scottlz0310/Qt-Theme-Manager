@@ -1,0 +1,116 @@
+name: CI/CD Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: [3.8, 3.9, '3.10', '3.11', '3.12']
+        qt-framework: [pyqt5, pyqt6, pyside6]
+        exclude:
+          # PyQt5 doesn't support Python 3.12 well
+          - python-version: '3.12'
+            qt-framework: pyqt5
+          # Skip some combinations to reduce CI time
+          - os: windows-latest
+            python-version: 3.8
+          - os: macos-latest
+            python-version: 3.8
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Set up display (Linux)
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb
+        export DISPLAY=:99
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest
+        
+        # Install Qt framework
+        if [ "${{ matrix.qt-framework }}" == "pyqt5" ]; then
+          pip install PyQt5>=5.15.0
+        elif [ "${{ matrix.qt-framework }}" == "pyqt6" ]; then
+          pip install PyQt6>=6.2.0
+        elif [ "${{ matrix.qt-framework }}" == "pyside6" ]; then
+          pip install PySide6>=6.0.0
+        fi
+        
+        # Install package
+        pip install -e .
+      shell: bash
+    
+    - name: Run comprehensive tests
+      env:
+        DISPLAY: :99
+      run: |
+        python test_theme_manager.py
+      shell: bash
+    
+    - name: Test theme editor startup
+      env:
+        DISPLAY: :99
+      run: |
+        # Test module execution
+        timeout 10s python -m theme_manager.qt.theme_editor || true
+        
+        # Test script execution (if available)
+        if [ -f launch_theme_editor.py ]; then
+          timeout 10s python launch_theme_editor.py || true
+        fi
+      shell: bash
+      continue-on-error: true  # GUI tests may timeout, but that's OK
+    
+    - name: Test CLI commands
+      run: |
+        python -m theme_manager.main list
+        python -m theme_manager.main current
+        python -m theme_manager.main set dark
+        python -m theme_manager.main export dark test_dark.qss
+      shell: bash
+
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+    
+    - name: Build package
+      run: |
+        python -m build
+    
+    - name: Check build
+      run: |
+        twine check dist/*
+    
+    - name: Test installation from built package
+      run: |
+        pip install dist/*.whl
+        python -c "import theme_manager; print(f'Version: {theme_manager.__version__}')"

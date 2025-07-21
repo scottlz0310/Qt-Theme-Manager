@@ -1,5 +1,10 @@
 # ThemeManager for PyQt5/PyQt6/PySide6
 
+[![CI/CD Tests](https://github.com/scottlz0310/Qt-Theme-Manager/actions/workflows/ci-cd-tests.yml/badge.svg)](https://github.com/scottlz0310/Qt-Theme-Manager/actions/workflows/ci-cd-tests.yml)
+[![PyPI version](https://badge.fury.io/py/qt-theme-manager.svg)](https://badge.fury.io/py/qt-theme-manager)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/qt-theme-manager)](https://pypi.org/project/qt-theme-manager/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 PyQt5/PyQt6/PySide6アプリケーション向けの包括的なテーマ管理ライブラリです。高度なテーマエディターと16種類以上の内蔵テーマで動的なテーマ切り替えを提供します。
 
 ## ✨ v0.2.1の新機能

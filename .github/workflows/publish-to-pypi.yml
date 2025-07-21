@@ -1,0 +1,105 @@
+name: Publish to PyPI
+
+on:
+  push:
+    tags:
+      - 'v*'  # v0.2.1, v1.0.0などのタグにマッチ
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, '3.10', '3.11', '3.12']
+        qt-framework: [pyqt5, pyqt6, pyside6]
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Set up display (for GUI tests)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb
+        export DISPLAY=:99
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build pytest
+        
+        # Install Qt framework
+        if [ "${{ matrix.qt-framework }}" == "pyqt5" ]; then
+          pip install PyQt5>=5.15.0
+        elif [ "${{ matrix.qt-framework }}" == "pyqt6" ]; then
+          pip install PyQt6>=6.2.0
+        elif [ "${{ matrix.qt-framework }}" == "pyside6" ]; then
+          pip install PySide6>=6.0.0
+        fi
+        
+        # Install package with current Qt framework
+        pip install -e .
+    
+    - name: Run tests
+      env:
+        DISPLAY: :99
+      run: |
+        python test_theme_manager.py
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+    
+    - name: Build package
+      run: |
+        python -m build
+    
+    - name: Check build
+      run: |
+        twine check dist/*
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist
+        path: dist/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      id-token: write  # OIDC for PyPI trusted publishing
+
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: dist
+        path: dist/
+    
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        # PyPI trusted publishingを使用（APIキー不要）
+        password: ${{ secrets.PYPI_API_TOKEN }}
+        # もしくはtrusted publishingを設定している場合：
+        # trusted publishing設定後は上記のpasswordは不要

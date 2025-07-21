@@ -1,5 +1,39 @@
 # Development Guidelines
 
+## 🚀 自動リリースワークフロー
+
+v0.2.1から、PyPIへの自動リリースが可能になりました！
+
+### 簡単リリース方法
+
+1. **自動リリーススクリプト使用（推奨）**
+   ```bash
+   # バージョン番号と説明を指定
+   ./release.sh 0.2.2 "Fix critical GUI bugs and enhance performance"
+   ```
+
+2. **手動リリース**
+   ```bash
+   # バージョンを更新（pyproject.toml, setup.py, __init__.py）
+   # コミットしてタグを作成
+   git add -A
+   git commit -m "Release v0.2.2"
+   git tag v0.2.2
+   git push origin main --tags
+   ```
+
+どちらの方法でも、GitHub Actionsが自動的に：
+- ✅ テスト実行（Python 3.8-3.12 × PyQt5/PyQt6/PySide6）
+- 📦 パッケージビルド
+- 🚀 PyPIリリース
+
+を実行します。
+
+### CI/CDバッジ
+
+READMEにCI/CDステータスバッジを追加済み：
+[![CI/CD Tests](https://github.com/scottlz0310/Qt-Theme-Manager/actions/workflows/ci-cd-tests.yml/badge.svg)](https://github.com/scottlz0310/Qt-Theme-Manager/actions/workflows/ci-cd-tests.yml)
+
 ## ディレクトリ構成
 
 ### `examples/` - 公式サンプル（Gitに含まれる）
