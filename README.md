@@ -1,4 +1,10 @@
-# ThemeManager for PyQt5/PyQt6/PySide6
+# ThemeMa## ✨ What's New in v0.2.1
+
+- 🔧 **Fixed GUI Startup Issues**: Theme editor now launches reliably across all Qt frameworks
+- ⚙️ **Enhanced Qt Compatibility**: Full support for PyQt5, PyQt6, and PySide6
+- 🚀 **Improved Startup Methods**: Both module and script execution work perfectly
+- 📦 **Better Error Handling**: Cleaner error messages and interruption support
+- 🤖 **Automated Releases**: PyPI auto-publishing via GitHub Actionsfor PyQt5/PyQt6/PySide6
 
 [![CI/CD Tests](https://github.com/scottlz0310/Qt-Theme-Manager/actions/workflows/ci-cd-tests.yml/badge.svg)](https://github.com/scottlz0310/Qt-Theme-Manager/actions/workflows/ci-cd-tests.yml)
 [![PyPI version](https://badge.fury.io/py/qt-theme-manager.svg)](https://badge.fury.io/py/qt-theme-manager)

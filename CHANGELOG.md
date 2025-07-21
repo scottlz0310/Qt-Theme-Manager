@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.2] - 2025-07-21
+
+### 🤖 Added
+- **自動リリースシステム**
+  - GitHub Actions によるPyPI自動公開
+  - マルチプラットフォーム（Ubuntu/Windows/macOS）CI/CDテスト
+  - Python 3.8-3.12 × PyQt5/PyQt6/PySide6 の組み合わせテスト
+  - `release.sh` ワンコマンドリリーススクリプト
+  - CI/CDステータスバッジをREADMEに追加
+
+### 📚 Improved
+- ドキュメントに自動リリース機能の説明を追加
+- 開発ワークフローの改善と文書化
+- PyPI公開プロセスの自動化
+
 ## [0.2.1] - 2025-07-21
 
 ### 🔧 Fixed
