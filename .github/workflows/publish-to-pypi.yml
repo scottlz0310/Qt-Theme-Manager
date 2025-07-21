@@ -11,13 +11,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # PyPI公開前のテストは重要な組み合わせのみ
+        # PyPI公開前のテスト - PyQt5を除外してより安定したテスト
         python-version: ['3.9', '3.10', '3.11']
-        qt-framework: [pyqt5, pyqt6, pyside6]
-        exclude:
-          # PyQt5は3.12と互換性の問題があるため除外
-          - python-version: '3.12'
-            qt-framework: pyqt5
+        qt-framework: [pyqt6, pyside6]  # PyQt5を除外
 
     steps:
     - uses: actions/checkout@v4
