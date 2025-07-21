@@ -6,7 +6,7 @@ A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications.
 Supports dynamic theme switching with advanced theme editor and 16+ built-in themes.
 
 Author: ThemeManager Team
-Version: 0.2.3
+Version: 0.2.0
 """
 
 __version__ = "0.2.3"
