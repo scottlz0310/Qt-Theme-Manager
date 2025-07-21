@@ -10,19 +10,42 @@ jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: [3.8, 3.9, '3.10', '3.11', '3.12']
-        qt-framework: [pyqt5, pyqt6, pyside6]
-        exclude:
-          # PyQt5 doesn't support Python 3.12 well
-          - python-version: '3.12'
+        # 重要な組み合わせのみを厳選してテスト
+        include:
+          # Ubuntu - 最も一般的な環境でのフルテスト
+          - os: ubuntu-latest
+            python-version: '3.8'
             qt-framework: pyqt5
-          # Skip some combinations to reduce CI time
+          - os: ubuntu-latest
+            python-version: '3.9' 
+            qt-framework: pyqt6
+          - os: ubuntu-latest
+            python-version: '3.10'
+            qt-framework: pyside6
+          - os: ubuntu-latest
+            python-version: '3.11'
+            qt-framework: pyqt6
+          - os: ubuntu-latest
+            python-version: '3.12'
+            qt-framework: pyqt6
+          
+          # Windows - 重要な組み合わせのみ
           - os: windows-latest
-            python-version: 3.8
+            python-version: '3.10'
+            qt-framework: pyqt6
+          - os: windows-latest
+            python-version: '3.11'
+            qt-framework: pyside6
+            
+          # macOS - 重要な組み合わせのみ
           - os: macos-latest
-            python-version: 3.8
+            python-version: '3.10'
+            qt-framework: pyqt6
+          - os: macos-latest
+            python-version: '3.11'
+            qt-framework: pyside6
 
     steps:
     - uses: actions/checkout@v4

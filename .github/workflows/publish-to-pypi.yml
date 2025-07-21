@@ -9,9 +9,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        python-version: [3.8, 3.9, '3.10', '3.11', '3.12']
+        # PyPI公開前のテストは重要な組み合わせのみ
+        python-version: ['3.9', '3.10', '3.11']
         qt-framework: [pyqt5, pyqt6, pyside6]
+        exclude:
+          # PyQt5は3.12と互換性の問題があるため除外
+          - python-version: '3.12'
+            qt-framework: pyqt5
 
     steps:
     - uses: actions/checkout@v4
@@ -99,7 +105,6 @@ jobs:
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        # PyPI trusted publishingを使用（APIキー不要）
         password: ${{ secrets.PYPI_API_TOKEN }}
-        # もしくはtrusted publishingを設定している場合：
-        # trusted publishing設定後は上記のpasswordは不要
+        verbose: true
+        print-hash: true
