@@ -85,9 +85,10 @@ jobs:
     - name: Run comprehensive tests
       env:
         DISPLAY: :99
-        QT_QPA_PLATFORM: xcb
+        QT_QPA_PLATFORM: ${{ runner.os == 'macOS' && 'offscreen' || runner.os == 'Windows' && 'offscreen' || 'xcb' }}
         QT_DEBUG_PLUGINS: 0
         XDG_RUNTIME_DIR: /tmp/runtime-runner
+        PYTHONIOENCODING: utf-8
       run: |
         mkdir -p /tmp/runtime-runner
         python test_theme_manager.py
@@ -96,9 +97,10 @@ jobs:
     - name: Test theme editor startup
       env:
         DISPLAY: :99
-        QT_QPA_PLATFORM: xcb
+        QT_QPA_PLATFORM: ${{ runner.os == 'macOS' && 'offscreen' || runner.os == 'Windows' && 'offscreen' || 'xcb' }}
         QT_DEBUG_PLUGINS: 0
         XDG_RUNTIME_DIR: /tmp/runtime-runner
+        PYTHONIOENCODING: utf-8
       run: |
         # Test module execution
         timeout 10s python -m theme_manager.qt.theme_editor || true

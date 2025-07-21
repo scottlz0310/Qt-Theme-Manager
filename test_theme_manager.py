@@ -179,33 +179,33 @@ class QtFrameworkTester:
                 available_frameworks.append(framework)
         
         if not available_frameworks:
-            print("❌ No Qt frameworks available for testing")
+            print("X No Qt frameworks available for testing")
             return
         
-        print(f"📋 Available frameworks: {', '.join(available_frameworks)}")
+        print(f"Available frameworks: {', '.join(available_frameworks)}")
         print()
         
         # Test each available framework
         for framework in available_frameworks:
-            print(f"🧪 Testing {framework}")
+            print(f"Testing {framework}")
             print("-" * 30)
             
             # Test 1: Basic integration
             integration_result = self.test_theme_manager_integration(framework)
             
             if integration_result['import_success']:
-                print("✓ ThemeController import successful")
+                print("[OK] ThemeController import successful")
             else:
-                print("✗ ThemeController import failed")
+                print("[FAIL] ThemeController import failed")
             
             if integration_result['controller_creation']:
-                print("✓ Controller creation successful")
+                print("[OK] Controller creation successful")
             else:
-                print("✗ Controller creation failed")
+                print("[FAIL] Controller creation failed")
             
-            print(f"✓ Qt available: {integration_result['qt_available']}")
-            print(f"✓ Qt framework: {integration_result['qt_framework']}")
-            print(f"✓ Loaded {integration_result['themes_loaded']} themes")
+            print(f"[OK] Qt available: {integration_result['qt_available']}")
+            print(f"[OK] Qt framework: {integration_result['qt_framework']}")
+            print(f"[OK] Loaded {integration_result['themes_loaded']} themes")
             
             if integration_result['themes_loaded'] > 0:
                 print(f"  Available themes: {', '.join(integration_result['theme_list'][:5])}{'...' if len(integration_result['theme_list']) > 5 else ''}")
@@ -214,43 +214,43 @@ class QtFrameworkTester:
             ops_result = self.test_theme_operations(framework)
             
             if ops_result['get_current_theme']:
-                print(f"✓ Current theme: {ops_result['current_theme']}")
+                print(f"[OK] Current theme: {ops_result['current_theme']}")
             
             if ops_result['theme_application']:
-                print("✓ Theme application methods available")
+                print("[OK] Theme application methods available")
             
             # Test 3: GUI creation and theme application
             gui_result = self.test_gui_creation(framework)
             
             if gui_result['gui_creation']:
-                print("✓ GUI creation successful")
+                print("[OK] GUI creation successful")
             
             if gui_result['theme_application']:
-                print(f"✓ Theme applied to widget: {gui_result['applied_theme']}")
+                print(f"[OK] Theme applied to widget: {gui_result['applied_theme']}")
             elif gui_result['error']:
-                print(f"✗ GUI test error: {gui_result['error']}")
+                print(f"[FAIL] GUI test error: {gui_result['error']}")
             
             # Test 4: Preview window
             preview_result = self.test_preview_window(framework)
             
             if preview_result['preview_creation']:
-                print(f"✓ Preview window created: {preview_result['preview_type']}")
+                print(f"[OK] Preview window created: {preview_result['preview_type']}")
             elif preview_result['error']:
-                print(f"✗ Preview test error: {preview_result['error']}")
+                print(f"[FAIL] Preview test error: {preview_result['error']}")
             
             # Overall result
             if (integration_result['error'] or ops_result['error'] or 
                 gui_result['error'] or preview_result['error']):
                 errors = [r['error'] for r in [integration_result, ops_result, gui_result, preview_result] if r['error']]
-                print(f"✗ Errors occurred: {'; '.join(errors)}")
-                print("❌ Framework Test: FAILED")
+                print(f"[FAIL] Errors occurred: {'; '.join(errors)}")
+                print("[FAILED] Framework Test: FAILED")
             else:
-                print("✅ Framework Test: PASSED")
+                print("[PASSED] Framework Test: PASSED")
             
             print()
         
         print("=" * 50)
-        print(f"📊 Summary: Tested {len(available_frameworks)} framework(s)")
+        print(f"Summary: Summary: Tested {len(available_frameworks)} framework(s)")
 
 
 def main():
