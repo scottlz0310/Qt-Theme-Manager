@@ -32,8 +32,11 @@ jobs:
     
     - name: Install dependencies
       run: |
+        echo "=== STEP: Installing dependencies ==="
         python -m pip install --upgrade pip
         pip install build pytest
+        
+        echo "=== STEP: Installing Qt framework: ${{ matrix.qt-framework }} ==="
         
         # 各Qtフレームワークをインストール（PyQt5の詳細デバッグを含む）
         if [ "${{ matrix.qt-framework }}" = "pyqt5" ]; then
@@ -42,42 +45,51 @@ jobs:
             
             # PyQt5のインストール検証
             echo "Verifying PyQt5 installation..."
-            python -c '
-            import sys
-            print(f"Python version: {sys.version}")
-            print(f"Python executable: {sys.executable}")
-            
-            try:
-                import PyQt5.QtCore
-                print(f"PyQt5.QtCore version: {PyQt5.QtCore.PYQT_VERSION_STR}")
-                print(f"Qt version: {PyQt5.QtCore.QT_VERSION_STR}")
-            except Exception as e:
-                print(f"PyQt5.QtCore import error: {e}")
-                sys.exit(1)
-                
-            try:
-                import PyQt5.QtWidgets
-                print("PyQt5.QtWidgets imported successfully")
-            except Exception as e:
-                print(f"PyQt5.QtWidgets import error: {e}")
-                sys.exit(1)
-            '
+            python -c "
+import sys
+print(f'Python version: {sys.version}')
+print(f'Python executable: {sys.executable}')
+
+try:
+    import PyQt5.QtCore
+    print(f'PyQt5.QtCore version: {PyQt5.QtCore.PYQT_VERSION_STR}')
+    print(f'Qt version: {PyQt5.QtCore.QT_VERSION_STR}')
+except Exception as e:
+    print(f'PyQt5.QtCore import error: {e}')
+    sys.exit(1)
+    
+try:
+    import PyQt5.QtWidgets
+    print('PyQt5.QtWidgets imported successfully')
+except Exception as e:
+    print(f'PyQt5.QtWidgets import error: {e}')
+    sys.exit(1)
+"
             
         elif [ "${{ matrix.qt-framework }}" = "pyqt6" ]; then
+          echo "Installing PyQt6..."
           python -m pip install pyqt6
+          echo "PyQt6 installation completed"
         elif [ "${{ matrix.qt-framework }}" = "pyside6" ]; then
+          echo "Installing PySide6..."
           python -m pip install pyside6
+          echo "PySide6 installation completed"
         fi
         
+        echo "=== STEP: Installing package in development mode ==="
         # Install package with current Qt framework
         pip install -e .
+        echo "Package installation completed"
     
     - name: Run tests
       env:
         DISPLAY: :99
-        QT_DEBUG_PLUGINS: 1
+        QT_QPA_PLATFORM: xcb
+        QT_DEBUG_PLUGINS: 0
         XDG_RUNTIME_DIR: /tmp/runtime-runner
+        PYTHONIOENCODING: utf-8
       run: |
+        echo "=== STEP: Setting up test environment ==="
         # Create runtime directory for Qt
         mkdir -p /tmp/runtime-runner
         chmod 700 /tmp/runtime-runner
@@ -85,45 +97,51 @@ jobs:
         # Debug information
         echo "=== Environment Debug ==="
         echo "DISPLAY: $DISPLAY"
+        echo "QT_QPA_PLATFORM: $QT_QPA_PLATFORM"
         echo "XDG_RUNTIME_DIR: $XDG_RUNTIME_DIR"
-        python -c '
+        echo "PYTHONIOENCODING: $PYTHONIOENCODING"
+        
+        echo "=== STEP: Testing Qt framework import ==="
+        python -c "
 import sys
-print(f"Python version: {sys.version}")
+print(f'Python version: {sys.version}')
 
 # Test Qt framework import
 import os
-qt_framework = "${{ matrix.qt-framework }}"
-print(f"Testing framework: {qt_framework}")
+qt_framework = '${{ matrix.qt-framework }}'
+print(f'Testing framework: {qt_framework}')
 
 try:
-    if qt_framework == "pyqt5":
+    if qt_framework == 'pyqt5':
         from PyQt5.QtCore import qVersion
         from PyQt5.QtWidgets import QApplication
-        print(f"PyQt5 version: {qVersion()}")
-    elif qt_framework == "pyqt6":
+        print(f'PyQt5 version: {qVersion()}')
+    elif qt_framework == 'pyqt6':
         from PyQt6.QtCore import qVersion  
         from PyQt6.QtWidgets import QApplication
-        print(f"PyQt6 version: {qVersion()}")
-    elif qt_framework == "pyside6":
+        print(f'PyQt6 version: {qVersion()}')
+    elif qt_framework == 'pyside6':
         from PySide6.QtCore import qVersion
         from PySide6.QtWidgets import QApplication  
-        print(f"PySide6 version: {qVersion()}")
+        print(f'PySide6 version: {qVersion()}')
         
     # Test QApplication creation
+    print('Creating QApplication...')
     app = QApplication([])
-    print("QApplication creation: SUCCESS")
+    print('QApplication creation: SUCCESS')
     app.quit()
-    print("QApplication cleanup: SUCCESS")
+    print('QApplication cleanup: SUCCESS')
     
 except Exception as e:
-    print(f"Qt framework error: {e}")
+    print(f'Qt framework error: {e}')
     import traceback
     traceback.print_exc()
     sys.exit(1)
-'
+"
         
-        echo "=== Running main test suite ==="
+        echo "=== STEP: Running main test suite ==="
         python test_theme_manager.py
+        echo "=== STEP: Test suite completed ==="
 
   build:
     needs: test
@@ -139,16 +157,28 @@ except Exception as e:
     
     - name: Install build dependencies
       run: |
+        echo "=== STEP: Installing build dependencies ==="
         python -m pip install --upgrade pip
         pip install build twine
+        echo "Build dependencies installed successfully"
     
     - name: Build package
       run: |
+        echo "=== STEP: Building package ==="
+        echo "Current working directory: $(pwd)"
+        echo "Contents of current directory:"
+        ls -la
+        echo "Building package..."
         python -m build
+        echo "Package build completed"
+        echo "Contents of dist directory:"
+        ls -la dist/
     
     - name: Check build
       run: |
+        echo "=== STEP: Checking build integrity ==="
         twine check dist/*
+        echo "Build check completed successfully"
     
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
@@ -170,6 +200,20 @@ except Exception as e:
         name: dist
         path: dist/
     
+    - name: List artifacts
+      run: |
+        echo "=== STEP: Checking downloaded artifacts ==="
+        echo "Contents of dist directory:"
+        ls -la dist/
+        echo "File sizes:"
+        du -h dist/*
+    
+    - name: Publish to PyPI
+      run: |
+        echo "=== STEP: Publishing to PyPI ==="
+        echo "About to publish the following files:"
+        ls -la dist/
+      
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
