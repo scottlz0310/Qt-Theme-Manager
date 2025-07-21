@@ -36,8 +36,7 @@ jobs:
         pip install build pytest
         
         # 各Qtフレームワークをインストール（PyQt5の詳細デバッグを含む）
-        run: |
-          if [ "${{ matrix.qt-framework }}" = "pyqt5" ]; then
+        if [ "${{ matrix.qt-framework }}" = "pyqt5" ]; then
             echo "Installing PyQt5 with detailed debugging..."
             python -m pip install pyqt5==5.15.* pyqt5-tools
             
