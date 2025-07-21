@@ -63,11 +63,11 @@ jobs:
                 sys.exit(1)
             "
             
-          elif [ "${{ matrix.qt-framework }}" = "pyqt6" ]; then
-            python -m pip install pyqt6
-          elif [ "${{ matrix.qt-framework }}" = "pyside6" ]; then
-            python -m pip install pyside6
-          fi
+        elif [ "${{ matrix.qt-framework }}" = "pyqt6" ]; then
+          python -m pip install pyqt6
+        elif [ "${{ matrix.qt-framework }}" = "pyside6" ]; then
+          python -m pip install pyside6
+        fi
         
         # Install package with current Qt framework
         pip install -e .
