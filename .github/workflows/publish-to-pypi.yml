@@ -42,26 +42,26 @@ jobs:
             
             # PyQt5のインストール検証
             echo "Verifying PyQt5 installation..."
-            python -c "
+            python -c '
             import sys
-            print(f'Python version: {sys.version}')
-            print(f'Python executable: {sys.executable}')
+            print(f"Python version: {sys.version}")
+            print(f"Python executable: {sys.executable}")
             
             try:
                 import PyQt5.QtCore
-                print(f'PyQt5.QtCore version: {PyQt5.QtCore.PYQT_VERSION_STR}')
-                print(f'Qt version: {PyQt5.QtCore.QT_VERSION_STR}')
+                print(f"PyQt5.QtCore version: {PyQt5.QtCore.PYQT_VERSION_STR}")
+                print(f"Qt version: {PyQt5.QtCore.QT_VERSION_STR}")
             except Exception as e:
-                print(f'PyQt5.QtCore import error: {e}')
+                print(f"PyQt5.QtCore import error: {e}")
                 sys.exit(1)
                 
             try:
                 import PyQt5.QtWidgets
-                print('PyQt5.QtWidgets imported successfully')
+                print("PyQt5.QtWidgets imported successfully")
             except Exception as e:
-                print(f'PyQt5.QtWidgets import error: {e}')
+                print(f"PyQt5.QtWidgets import error: {e}")
                 sys.exit(1)
-            "
+            '
             
         elif [ "${{ matrix.qt-framework }}" = "pyqt6" ]; then
           python -m pip install pyqt6
@@ -86,41 +86,41 @@ jobs:
         echo "=== Environment Debug ==="
         echo "DISPLAY: $DISPLAY"
         echo "XDG_RUNTIME_DIR: $XDG_RUNTIME_DIR"
-        python -c "
+        python -c '
 import sys
-print(f'Python version: {sys.version}')
+print(f"Python version: {sys.version}")
 
 # Test Qt framework import
 import os
-qt_framework = '${{ matrix.qt-framework }}'
-print(f'Testing framework: {qt_framework}')
+qt_framework = "${{ matrix.qt-framework }}"
+print(f"Testing framework: {qt_framework}")
 
 try:
-    if qt_framework == 'pyqt5':
+    if qt_framework == "pyqt5":
         from PyQt5.QtCore import qVersion
         from PyQt5.QtWidgets import QApplication
-        print(f'PyQt5 version: {qVersion()}')
-    elif qt_framework == 'pyqt6':
+        print(f"PyQt5 version: {qVersion()}")
+    elif qt_framework == "pyqt6":
         from PyQt6.QtCore import qVersion  
         from PyQt6.QtWidgets import QApplication
-        print(f'PyQt6 version: {qVersion()}')
-    elif qt_framework == 'pyside6':
+        print(f"PyQt6 version: {qVersion()}")
+    elif qt_framework == "pyside6":
         from PySide6.QtCore import qVersion
         from PySide6.QtWidgets import QApplication  
-        print(f'PySide6 version: {qVersion()}')
+        print(f"PySide6 version: {qVersion()}")
         
     # Test QApplication creation
     app = QApplication([])
-    print('QApplication creation: SUCCESS')
+    print("QApplication creation: SUCCESS")
     app.quit()
-    print('QApplication cleanup: SUCCESS')
+    print("QApplication cleanup: SUCCESS")
     
 except Exception as e:
-    print(f'Qt framework error: {e}')
+    print(f"Qt framework error: {e}")
     import traceback
     traceback.print_exc()
     sys.exit(1)
-"
+'
         
         echo "=== Running main test suite ==="
         python test_theme_manager.py
