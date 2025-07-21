@@ -24,6 +24,7 @@ jobs:
 
       - name: Set up display (for GUI tests)
         run: |
+          set -e
           sudo apt-get update
           sudo apt-get install -y xvfb x11-utils libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 libegl1-mesa-dev
           export DISPLAY=:99
@@ -32,21 +33,28 @@ jobs:
 
       - name: Install dependencies
         run: |
+          set -e
           echo "=== STEP: Installing dependencies ==="
           python -m pip install --upgrade pip
+          pip list
           pip install build pytest
+          pip list
 
           echo "=== STEP: Installing Qt framework: ${{ matrix.qt-framework }} ==="
           if [ "${{ matrix.qt-framework }}" = "pyqt5" ]; then
             python -m pip install pyqt5==5.15.* pyqt5-tools
+            pip list
           elif [ "${{ matrix.qt-framework }}" = "pyqt6" ]; then
             python -m pip install pyqt6
+            pip list
           elif [ "${{ matrix.qt-framework }}" = "pyside6" ]; then
             python -m pip install pyside6
+            pip list
           fi
 
           echo "=== STEP: Installing package in development mode ==="
           pip install -e .
+          pip list
 
       - name: Run tests
         env:
@@ -56,6 +64,7 @@ jobs:
           XDG_RUNTIME_DIR: /tmp/runtime-runner
           PYTHONIOENCODING: utf-8
         run: |
+          set -e
           mkdir -p /tmp/runtime-runner
           chmod 700 /tmp/runtime-runner
 
@@ -78,16 +87,21 @@ jobs:
 
       - name: Install build dependencies
         run: |
+          set -e
           python -m pip install --upgrade pip
+          pip list
           pip install build twine
+          pip list
 
       - name: Build package
         run: |
+          set -e
           python -m build
           ls -la dist/
 
       - name: Check build
         run: |
+          set -e
           twine check dist/*
 
       - name: Upload build artifacts
