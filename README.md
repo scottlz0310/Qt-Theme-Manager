@@ -2,12 +2,12 @@
 
 A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications, providing dynamic theme switching with an advanced theme editor and 16+ built-in themes.
 
-## ✨ What's New in v0.2.0
+## ✨ What's New in v0.2.1
 
-- 🎨 **Advanced Theme Editor**: Color theory-based design tools with real-time preview
-- 🖥️ **GUI Tools via pip**: `theme-editor` and `theme-preview` commands
-- 🎯 **Enhanced Customization**: Component-specific settings and accessibility features
-- 📱 **Better Integration**: Improved API and documentation
+- 🔧 **Fixed GUI Startup Issues**: Theme editor now launches reliably across all Qt frameworks
+- ⚙️ **Enhanced Qt Compatibility**: Full support for PyQt5, PyQt6, and PySide6
+- 🚀 **Improved Startup Methods**: Both module and script execution work perfectly
+- � **Better Error Handling**: Cleaner error messages and interruption support
 
 ## Features
 
@@ -25,9 +25,13 @@ A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications, p
 **Want to try the new theme editor?**
 
 ```bash
-# Install and launch theme editor (New in v0.2.0!)
+# Install and launch theme editor (Now with enhanced startup reliability!)
 pip install qt-theme-manager[pyqt6]
 theme-editor
+
+# Alternative launch methods (both work reliably):
+python -m theme_manager.qt.theme_editor
+python launch_theme_editor.py  # If you cloned the repo
 ```
 
 **Want to add beautiful themes to your Qt app in just 3 lines of code?**
@@ -61,14 +65,16 @@ controller.apply_theme_to_application()
 # Basic installation
 pip install qt-theme-manager
 
-# Install with your preferred Qt framework
-pip install qt-theme-manager[pyqt6]    # For PyQt6
+# Install with your preferred Qt framework (Enhanced compatibility in v0.2.1!)
+pip install qt-theme-manager[pyqt6]    # For PyQt6 (recommended)
 pip install qt-theme-manager[pyqt5]    # For PyQt5  
 pip install qt-theme-manager[pyside6]  # For PySide6
 
 # Install with all Qt frameworks
 pip install qt-theme-manager[all]
 ```
+
+> **✨ New in v0.2.1**: Enhanced Qt framework compatibility ensures reliable operation across PyQt5, PyQt6, and PySide6.
 
 ### Option 2: Install from source (for developers)
 

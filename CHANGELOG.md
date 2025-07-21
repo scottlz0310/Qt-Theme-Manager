@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2025-07-21
+
+### 🔧 Fixed
+- **GUI起動問題の完全解決**
+  - テーマエディターのGUI起動失敗問題を修正
+  - `launch_theme_editor.py`でのイベントループ管理を適正化
+  - PyQt5での循環参照エラー（`QtAlignCenter`）を修正
+
+- **Qt互換性の向上**
+  - PyQt5/PyQt6/PySide6の互換性定数を統一
+  - QSSスタイルシートからサポートされていないCSS機能を削除
+  - すべてのQtフレームワークでの動作を確認
+
+- **起動方法の統一**
+  - `python -m theme_manager.qt.theme_editor` 
+  - `python launch_theme_editor.py`
+  - 両方の方法で確実にGUIが起動するように修正
+
+### 📦 Changed  
+- デフォルトのQtフレームワークをPyQt6に変更
+- エラーハンドリングとログの改善
+- KeyboardInterrupt（Ctrl+C）サポートを追加
+
 ## [0.2.0] - 2025-07-20 ✅ **Released to PyPI**
 
 🎉 **Successfully published to PyPI: https://pypi.org/project/qt-theme-manager/0.2.0/**

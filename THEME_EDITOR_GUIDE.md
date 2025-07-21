@@ -8,9 +8,11 @@
 
 ## 🚀 起動方法
 
-### 方法1: CLIから起動
+テーマエディターはv0.2.1で起動の信頼性が大幅に向上しました。すべてのQtフレームワーク（PyQt5/PyQt6/PySide6）で確実に動作します。
+
+### 方法1: モジュール実行（推奨）
 ```bash
-python -m theme_manager.main editor
+python -m theme_manager.qt.theme_editor
 ```
 
 ### 方法2: 専用ランチャー
@@ -18,10 +20,12 @@ python -m theme_manager.main editor
 python launch_theme_editor.py
 ```
 
-### 方法3: デモ実行（コンソールベース）
+### 方法3: pipエントリーポイント
 ```bash
-python demo_theme_editor.py
+theme-editor  # pip install qt-theme-manager後
 ```
+
+> **✨ v0.2.1の改善**: すべての起動方法でイベントループが適切に管理され、GUI起動が確実に行われます。
 
 ## 🎯 主要機能
 
