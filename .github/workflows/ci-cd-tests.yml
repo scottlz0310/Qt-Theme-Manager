@@ -59,9 +59,10 @@ jobs:
       if: runner.os == 'Linux'
       run: |
         sudo apt-get update
-        sudo apt-get install -y xvfb
+        sudo apt-get install -y xvfb x11-utils libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0
         export DISPLAY=:99
         Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+        sleep 3  # Wait for Xvfb to start
     
     - name: Install dependencies
       run: |
@@ -84,13 +85,20 @@ jobs:
     - name: Run comprehensive tests
       env:
         DISPLAY: :99
+        QT_QPA_PLATFORM: xcb
+        QT_DEBUG_PLUGINS: 0
+        XDG_RUNTIME_DIR: /tmp/runtime-runner
       run: |
+        mkdir -p /tmp/runtime-runner
         python test_theme_manager.py
       shell: bash
     
     - name: Test theme editor startup
       env:
         DISPLAY: :99
+        QT_QPA_PLATFORM: xcb
+        QT_DEBUG_PLUGINS: 0
+        XDG_RUNTIME_DIR: /tmp/runtime-runner
       run: |
         # Test module execution
         timeout 10s python -m theme_manager.qt.theme_editor || true
