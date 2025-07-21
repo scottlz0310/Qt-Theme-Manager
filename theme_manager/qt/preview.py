@@ -92,7 +92,7 @@ class ThemePreviewWindow(QMainWindow if qt_available else object):
         theme_layout = QVBoxLayout(theme_container)
         
         # Title
-        theme_title = QLabel("テーマ選択")
+        theme_title = QLabel("Theme Selection")
         theme_title.setProperty("class", "heading")
         theme_layout.addWidget(theme_title)
         
@@ -147,7 +147,7 @@ class ThemePreviewWindow(QMainWindow if qt_available else object):
         preview_layout = QVBoxLayout(preview_container)
         
         # Preview title
-        preview_title = QLabel("プレビュー")
+        preview_title = QLabel("Preview")
         preview_title.setProperty("class", "heading")
         preview_layout.addWidget(preview_title)
         
@@ -157,9 +157,9 @@ class ThemePreviewWindow(QMainWindow if qt_available else object):
         if current_theme in themes:
             theme_config = themes[current_theme]
             display_name = theme_config.get("display_name", current_theme)
-            self.current_theme_label = QLabel(f"現在のテーマ: {display_name}")
+            self.current_theme_label = QLabel(f"Current Theme: {display_name}")
         else:
-            self.current_theme_label = QLabel(f"現在のテーマ: {current_theme}")
+            self.current_theme_label = QLabel(f"Current Theme: {current_theme}")
         
         self.current_theme_label.setProperty("class", "secondary")
         preview_layout.addWidget(self.current_theme_label)
@@ -167,12 +167,12 @@ class ThemePreviewWindow(QMainWindow if qt_available else object):
         # Sample widgets
         
         # Basic widgets group
-        basic_group = QGroupBox("基本ウィジェット")
+        basic_group = QGroupBox("Basic Widgets")
         basic_layout = QVBoxLayout(basic_group)
         
-        basic_layout.addWidget(QLabel("ラベルの表示"))
+        basic_layout.addWidget(QLabel("Label Text"))
         
-        line_edit = QLineEdit("入力フィールド")
+        line_edit = QLineEdit("Input Field")
         line_edit.setPlaceholderText("プレースホルダーテキスト")
         basic_layout.addWidget(line_edit)
         

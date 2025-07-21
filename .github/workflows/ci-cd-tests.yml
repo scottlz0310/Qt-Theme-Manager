@@ -113,6 +113,8 @@ jobs:
       continue-on-error: true  # GUI tests may timeout, but that's OK
     
     - name: Test CLI commands
+      env:
+        PYTHONIOENCODING: utf-8
       run: |
         python -m theme_manager.main list
         python -m theme_manager.main current

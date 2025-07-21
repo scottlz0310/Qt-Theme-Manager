@@ -170,7 +170,7 @@ def main():
         return
     
     if args.command == "editor":
-        print("🎨 高度なテーマエディターを起動しています...")
+        print("Starting advanced theme editor...")
         print("注意: この機能にはPyQt5/PyQt6/PySide6が必要です。")
         try:
             from ..qt.theme_editor import launch_theme_editor

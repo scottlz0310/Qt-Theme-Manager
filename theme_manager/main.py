@@ -13,7 +13,7 @@ def main():
         # Launch theme editor
         try:
             from .qt.theme_editor import launch_theme_editor
-            print("🎨 高度なテーマエディターを起動しています...")
+            print("Starting advanced theme editor...")
             editor = launch_theme_editor()
             
             if editor is not None:
@@ -29,17 +29,17 @@ def main():
                     
                     app = QApplication.instance()
                     if app is not None:
-                        print("🚀 テーマエディターが起動しました！")
+                        print("Theme editor launched successfully!")
                         sys.exit(app.exec_() if hasattr(app, 'exec_') else app.exec())
                 else:
-                    print("❌ Qtライブラリが見つかりません。")
-                    print("以下のコマンドでインストールしてください:")
+                    print("ERROR: Qt libraries not found.")
+                    print("Please install with:")
                     print("  pip install PyQt6")
                     sys.exit(1)
         except ImportError as e:
-            print(f"❌ テーマエディターの起動に失敗: {e}")
-            print("必要な依存関係をインストールしてください:")
-            print("  pip install PyQt6  # または PyQt5, PySide6")
+            print(f"ERROR: Failed to launch theme editor: {e}")
+            print("Please install required dependencies:")
+            print("  pip install PyQt6  # or PyQt5, PySide6")
             sys.exit(1)
     else:
         # Use existing CLI
