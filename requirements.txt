@@ -1,6 +1,6 @@
 # GUI Framework dependencies - choose one
-PyQt5>=5.15.0
-# PyQt6>=6.2.0
+#PyQt5>=5.15.0
+PyQt6>=6.2.0
 # PySide6>=6.0.0
 
 # Note: You only need to install one of PyQt5, PyQt6, or PySide6, not multiple

@@ -24,6 +24,13 @@ if qt_available:
         )
         from PyQt5.QtCore import Qt, pyqtSignal, QTimer
         from PyQt5.QtGui import QColor, QPalette, QFont
+        # PyQt5 compatibility constants
+        QtHorizontal = Qt.Horizontal
+        QtVertical = Qt.Vertical
+        QtPointingHandCursor = Qt.PointingHandCursor
+        QtLeftButton = Qt.LeftButton
+        QFontBold = QFont.Bold
+        QtAlignCenter = QtAlignCenter
     except ImportError:
         try:
             from PyQt6.QtWidgets import (
@@ -35,6 +42,13 @@ if qt_available:
             )
             from PyQt6.QtCore import Qt, pyqtSignal, QTimer
             from PyQt6.QtGui import QColor, QPalette, QFont
+            # PyQt6 compatibility constants
+            QtHorizontal = Qt.Orientation.Horizontal
+            QtVertical = Qt.Orientation.Vertical
+            QtPointingHandCursor = Qt.CursorShape.PointingHandCursor
+            QtLeftButton = Qt.MouseButton.LeftButton
+            QFontBold = QFont.Weight.Bold
+            QtAlignCenter = Qt.AlignmentFlag.AlignCenter
         except ImportError:
             from PySide6.QtWidgets import (
                 QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
@@ -45,6 +59,13 @@ if qt_available:
             )
             from PySide6.QtCore import Qt, Signal as pyqtSignal, QTimer
             from PySide6.QtGui import QColor, QPalette, QFont
+            # PySide6 compatibility constants
+            QtHorizontal = Qt.Orientation.Horizontal
+            QtVertical = Qt.Orientation.Vertical
+            QtPointingHandCursor = Qt.CursorShape.PointingHandCursor
+            QtLeftButton = Qt.MouseButton.LeftButton
+            QFontBold = QFont.Weight.Bold
+            QtAlignCenter = Qt.AlignmentFlag.AlignCenter
 
 from .controller import ThemeController
 from .stylesheet import StylesheetGenerator
@@ -57,11 +78,11 @@ class ClickableWidget(QWidget):
     def __init__(self, component_type: str, parent=None):
         super().__init__(parent)
         self.component_type = component_type
-        self.setCursor(Qt.PointingHandCursor)
+        self.setCursor(QtPointingHandCursor)
     
     def mousePressEvent(self, event):
         """Handle mouse press events."""
-        if event.button() == Qt.LeftButton:
+        if event.button() == QtLeftButton:
             self.clicked.emit(self.component_type)
         super().mousePressEvent(event)
 
@@ -76,7 +97,7 @@ class ClickableButton(QPushButton):
         
     def mousePressEvent(self, event):
         """Handle mouse press events."""
-        if event.button() == Qt.LeftButton:
+        if event.button() == QtLeftButton:
             self.componentClicked.emit(self.component_type)
         super().mousePressEvent(event)
 
@@ -91,7 +112,7 @@ class ClickableLineEdit(QLineEdit):
         
     def mousePressEvent(self, event):
         """Handle mouse press events."""
-        if event.button() == Qt.LeftButton:
+        if event.button() == QtLeftButton:
             self.componentClicked.emit(self.component_type)
         super().mousePressEvent(event)
 
@@ -106,7 +127,7 @@ class ClickableComboBox(QComboBox):
         
     def mousePressEvent(self, event):
         """Handle mouse press events."""
-        if event.button() == Qt.LeftButton:
+        if event.button() == QtLeftButton:
             self.componentClicked.emit(self.component_type)
         super().mousePressEvent(event)
 from .advanced_stylesheet import AdvancedStylesheetGenerator
@@ -274,11 +295,11 @@ class ColorPreviewWidget(QWidget if qt_available else object):
         
         # Info labels
         self.hex_label = QLabel("#ffffff")
-        self.hex_label.setAlignment(Qt.AlignCenter)
+        self.hex_label.setAlignment(QtAlignCenter)
         layout.addWidget(self.hex_label)
         
         self.luminance_label = QLabel("Luminance: 1.00")
-        self.luminance_label.setAlignment(Qt.AlignCenter)
+        self.luminance_label.setAlignment(QtAlignCenter)
         layout.addWidget(self.luminance_label)
         
         self.setStyleSheet("""
@@ -313,12 +334,12 @@ class ContrastChecker(QWidget if qt_available else object):
         
         # Title
         title = QLabel("コントラストチェッカー")
-        title.setFont(QFont("", 12, QFont.Bold))
+        title.setFont(QFont("", 12, QFontBold))
         layout.addWidget(title)
         
         # Preview area
         self.preview = QLabel("サンプルテキスト")
-        self.preview.setAlignment(Qt.AlignCenter)
+        self.preview.setAlignment(QtAlignCenter)
         self.preview.setFixedHeight(80)
         self.preview.setStyleSheet("""
             QLabel {
@@ -402,7 +423,7 @@ class ColorSliderGroup(QWidget if qt_available else object):
         header_layout = QHBoxLayout()
         
         title_label = QLabel(self.title)
-        title_label.setFont(QFont("", 10, QFont.Bold))
+        title_label.setFont(QFont("", 10, QFontBold))
         header_layout.addWidget(title_label)
         
         header_layout.addStretch()
@@ -423,7 +444,7 @@ class ColorSliderGroup(QWidget if qt_available else object):
         
         for i, (name, color) in enumerate([("R", "red"), ("G", "green"), ("B", "blue")]):
             label = QLabel(name)
-            slider = QSlider(Qt.Horizontal)
+            slider = QSlider(QtHorizontal)
             slider.setRange(0, 255)
             slider.valueChanged.connect(self.update_color)
             
@@ -613,7 +634,7 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
         self.setCentralWidget(central_widget)
         
         # Main splitter
-        main_splitter = QSplitter(Qt.Horizontal)
+        main_splitter = QSplitter(QtHorizontal)
         central_widget_layout = QHBoxLayout(central_widget)
         central_widget_layout.addWidget(main_splitter)
         
@@ -948,7 +969,7 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
         
         # Preview title
         title = QLabel("プレビュー")
-        title.setFont(QFont("", 14, QFont.Bold))
+        title.setFont(QFont("", 14, QFontBold))
         layout.addWidget(title)
         
         # Preview area
@@ -974,7 +995,7 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
         heading_label.setStyleSheet("font-size: 16px; font-weight: bold;")
         heading_label.setProperty("component_type", "heading")  # Mark for styling
         heading_label.mousePressEvent = lambda event: self.jump_to_component_settings("heading")
-        heading_label.setCursor(Qt.PointingHandCursor)
+        heading_label.setCursor(QtPointingHandCursor)
         basic_layout.addWidget(heading_label)
         
         # Buttons (make clickable for navigation)
@@ -1049,11 +1070,11 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
         progress.setValue(65)
         progress.setFormat("進捗: %p%")
         progress.mousePressEvent = lambda event: self.jump_to_component_settings("progress")
-        progress.setCursor(Qt.PointingHandCursor)
+        progress.setCursor(QtPointingHandCursor)
         progress_layout.addWidget(progress)
         
         # Horizontal slider
-        h_slider = QSlider(Qt.Horizontal)
+        h_slider = QSlider(QtHorizontal)
         h_slider.setValue(40)
         h_slider.setMinimum(0)
         h_slider.setMaximum(100)
@@ -1064,7 +1085,7 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
         slider_container = QWidget()
         slider_layout = QHBoxLayout(slider_container)
         slider_layout.addWidget(QLabel("垂直:"))
-        v_slider = QSlider(Qt.Vertical)
+        v_slider = QSlider(QtVertical)
         v_slider.setValue(30)
         v_slider.setMinimum(0)
         v_slider.setMaximum(100)
@@ -1083,12 +1104,12 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
         check1 = QCheckBox("チェックボックス 1 (チェック済み)")
         check1.setChecked(True)
         check1.mousePressEvent = lambda event: self.jump_to_component_settings("checkbox")
-        check1.setCursor(Qt.PointingHandCursor)
+        check1.setCursor(QtPointingHandCursor)
         check_layout.addWidget(check1)
         
         check2 = QCheckBox("チェックボックス 2")
         check2.mousePressEvent = lambda event: self.jump_to_component_settings("checkbox")
-        check2.setCursor(Qt.PointingHandCursor)
+        check2.setCursor(QtPointingHandCursor)
         check_layout.addWidget(check2)
         
         check3 = QCheckBox("無効なチェックボックス")
@@ -1099,12 +1120,12 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
         radio1 = QRadioButton("ラジオボタン 1 (選択済み)")
         radio1.setChecked(True)
         radio1.mousePressEvent = lambda event: self.jump_to_component_settings("radio")
-        radio1.setCursor(Qt.PointingHandCursor)
+        radio1.setCursor(QtPointingHandCursor)
         check_layout.addWidget(radio1)
         
         radio2 = QRadioButton("ラジオボタン 2")
         radio2.mousePressEvent = lambda event: self.jump_to_component_settings("radio")
-        radio2.setCursor(Qt.PointingHandCursor)
+        radio2.setCursor(QtPointingHandCursor)
         check_layout.addWidget(radio2)
         
         layout.addWidget(check_group)
@@ -1164,7 +1185,7 @@ class ThemeEditorWindow(QMainWindow if qt_available else object):
                     border-radius: 3px;
                 }}
             """)
-            color_preview.setAlignment(Qt.AlignCenter)
+            color_preview.setAlignment(QtAlignCenter)
             color_preview.setMinimumHeight(30)
             color_layout.addWidget(color_preview)
         
@@ -1485,19 +1506,55 @@ QLabel[component_type="heading"]:hover {{
 
 def launch_theme_editor(config_path: Optional[Union[str, Path]] = None):
     """Launch the theme editor application."""
+    import sys
+    
     if not qt_available:
         print("Error: Qt framework not available. Please install PyQt5, PyQt6, or PySide6.")
         return None
     
     app = QApplication.instance()
     if app is None:
-        app = QApplication([])
+        app = QApplication(sys.argv)
     
-    editor = ThemeEditorWindow(config_path)
-    editor.show()
-    
-    return editor
+    try:
+        editor = ThemeEditorWindow(config_path)
+        editor.show()
+        print(f"Debug: Editor window shown. Visible: {editor.isVisible()}")
+        
+        # Force the application to process events and show the window
+        app.processEvents()
+        
+        # Return editor for external event loop management
+        return editor
+        
+    except Exception as e:
+        print(f"Error creating theme editor: {e}")
+        import traceback
+        traceback.print_exc()
+        return None
 
 
 if __name__ == "__main__":
-    launch_theme_editor()
+    import sys
+    
+    # Create application
+    if not qt_available:
+        print("Error: Qt framework not available.")
+        sys.exit(1)
+    
+    app = QApplication.instance()
+    if app is None:
+        app = QApplication(sys.argv)
+    
+    # Create and show editor
+    editor = ThemeEditorWindow()
+    editor.show()
+    
+    # Start event loop
+    try:
+        if hasattr(app, 'exec'):
+            sys.exit(app.exec())
+        else:
+            sys.exit(app.exec_())
+    except KeyboardInterrupt:
+        sys.exit(0)

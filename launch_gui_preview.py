@@ -87,7 +87,7 @@ def main():
             print("ウィンドウを閉じるか、Ctrl+C で終了してください")
             
             # イベントループを開始
-            return app.exec_()
+            return app.exec() if hasattr(app, 'exec') else app.exec_()
         else:
             print("❌ プレビューウィンドウの作成に失敗しました")
             return 1

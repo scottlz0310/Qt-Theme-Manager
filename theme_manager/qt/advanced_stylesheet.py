@@ -74,7 +74,7 @@ QPushButton:disabled {{
     background-color: {disabled_color};
     color: {disabled_text};
     border-color: {disabled_color};
-    opacity: 0.7;
+    /* QSS doesn't support opacity, disabled state handled by color */
 }}
 
 QPushButton[class="primary"] {{
@@ -87,8 +87,8 @@ QPushButton[class="primary"] {{
 QPushButton[class="primary"]:hover {{
     background-color: {hover_color};
     color: {hover_text};
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    /* Enhanced visual feedback through color and border */
+    border: 2px solid {hover_color};
 }}
 """
     
@@ -120,7 +120,8 @@ QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus,
 QSpinBox:focus, QDoubleSpinBox:focus {{
     border-color: {focus_color};
     outline: none;
-    box-shadow: 0 0 0 2px {focus_color}33;
+    /* QSS doesn't support box-shadow, using border instead */
+    border: 2px solid {focus_color};
 }}
 
 QLineEdit::placeholder, QTextEdit::placeholder, QPlainTextEdit::placeholder {{
@@ -327,7 +328,8 @@ QSlider::handle:horizontal {{
 QSlider::handle:horizontal:hover {{
     background-color: {handle_color};
     border-color: {handle_color};
-    transform: scale(1.1);
+    /* QSS doesn't support transform:scale, using padding for visual feedback */
+    padding: 1px;
 }}
 
 QSlider::groove:vertical {{
