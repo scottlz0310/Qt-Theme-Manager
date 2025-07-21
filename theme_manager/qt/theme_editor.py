@@ -30,7 +30,7 @@ if qt_available:
         QtPointingHandCursor = Qt.PointingHandCursor
         QtLeftButton = Qt.LeftButton
         QFontBold = QFont.Bold
-        QtAlignCenter = QtAlignCenter
+        QtAlignCenter = Qt.AlignCenter
     except ImportError:
         try:
             from PyQt6.QtWidgets import (
