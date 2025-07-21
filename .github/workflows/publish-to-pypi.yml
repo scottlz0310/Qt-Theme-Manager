@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # PyPI公開前のテスト - 全フレームワークで安定性確認
+        # PyPI公開前のテスト - Python 3.9以降で安定性確認
         python-version: ['3.9', '3.10', '3.11']
         qt-framework: [pyqt5, pyqt6, pyside6]
 

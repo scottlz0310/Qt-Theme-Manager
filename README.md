@@ -106,7 +106,7 @@ pip install -e .[pyqt6]    # For PyQt6
 
 ### Requirements
 
-- Python 3.7+
+- Python 3.9+
 - PyQt5, PyQt6, or PySide6 (for GUI functionality)
 
 ## Quick Start
