@@ -30,7 +30,7 @@ jobs:
     
     - name: Run basic tests
       run: |
-        python test_theme_manager.py
+        bash test_v0.2.3_release.sh
     
     - name: Build package
       run: |

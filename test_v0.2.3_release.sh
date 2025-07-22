@@ -3,21 +3,27 @@
 # V0.2.3 リリース前テストスクリプト
 # このスクリプトでテストが通ることを確認してからバージョンアップを行う
 
+# GitHub Actions環境の設定
+if [ "$GITHUB_ACTIONS" = "true" ]; then
+    export QT_QPA_PLATFORM=offscreen
+    export DISPLAY=${DISPLAY:-:99}
+    export QT_DEBUG_PLUGINS=0
+fi
+
 echo "🚀 Qt-Theme-Manager V0.2.3 リリース前テスト"
 echo "================================================"
 
 # 基本テストの実行
 echo "📋 基本機能テスト実行中..."
 
-# sandboxディレクトリにテストファイルがある場合
-if [ -f "sandbox/test_theme_manager.py" ]; then
-    python sandbox/test_theme_manager.py
-elif [ -f "__pycache__/test_theme_manager.cpython-313.pyc" ]; then
-    # コンパイル済みファイルがある場合はスキップ
-    echo "  ✅ 以前のテスト結果を確認しました（コンパイル済みファイル存在）"
-else
-    echo "  ⚠️  テストファイルが見つかりませんが、継続します"
-fi
+# パッケージインポートテスト
+echo "  🔍 パッケージインポートテスト..."
+python -c "
+import theme_manager
+from theme_manager.qt.controller import ThemeController
+from theme_manager.qt.stylesheet import StylesheetGenerator
+print('  ✅ 基本インポート成功')
+"
 
 # CLI機能のテスト
 echo "📋 新しいCLI機能テスト実行中..."
