@@ -196,9 +196,10 @@ class ThemePreviewWindow(QMainWindow if qt_available else object):
         list_layout.addWidget(combo)
         
         list_widget = QListWidget()
-        for i in range(5):
-            list_widget.addItem(f"リストアイテム {i+1}")
-        list_widget.setMaximumHeight(100)
+        list_widget.setAlternatingRowColors(True)  # ゼブラスタイル有効化
+        for i in range(8):
+            list_widget.addItem(f"リストアイテム {i+1} - ゼブラスタイル表示")
+        list_widget.setMaximumHeight(120)
         list_layout.addWidget(QLabel("リストウィジェット:"))
         list_layout.addWidget(list_widget)
         
@@ -348,15 +349,45 @@ def launch_preview():
         return 1
     
     import sys
+    import argparse
+    
+    # コマンドライン引数の解析
+    parser = argparse.ArgumentParser(description='Qt Theme Manager - プレビューツール')
+    parser.add_argument(
+        '--config', '-c',
+        type=str,
+        help='カスタムテーマ設定ファイル（JSON）のパス'
+    )
+    parser.add_argument(
+        '--theme', '-t',
+        type=str,
+        help='起動時に適用するテーマ名'
+    )
+    
+    args = parser.parse_args()
+    
     app = QApplication(sys.argv)
     
     print("🎨 ThemeManager - プレビューを起動しています...")
+    if args.config:
+        print(f"📄 カスタム設定ファイル: {args.config}")
     
-    window = ThemePreviewWindow()
+    window = ThemePreviewWindow(config_path=args.config)
     window.show()
     
+    # 指定されたテーマを適用
+    if args.theme and hasattr(window, 'theme_controller'):
+        try:
+            window.theme_controller.apply_theme(args.theme)
+            print(f"🎨 テーマ '{args.theme}' を適用しました")
+        except Exception as e:
+            print(f"⚠️  テーマ適用エラー: {e}")
+    
     try:
-        sys.exit(app.exec_())
+        if hasattr(app, 'exec'):
+            sys.exit(app.exec())
+        else:
+            sys.exit(app.exec_())
     except KeyboardInterrupt:
         print("\n👋 プレビューを終了します")
         return 0
@@ -364,12 +395,4 @@ def launch_preview():
 
 if __name__ == "__main__":
     # Run preview if executed directly
-    if not qt_available:
-        print("Qt framework not available. Install PyQt5 or PySide6 to use preview.")
-        exit(1)
-    
-    import sys
-    app = QApplication(sys.argv)
-    window = ThemePreviewWindow()
-    window.show()
-    sys.exit(app.exec_())
+    launch_preview()

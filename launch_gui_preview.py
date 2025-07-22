@@ -6,12 +6,52 @@ ThemeManager GUI Preview Launcher
 
 import sys
 import os
+import argparse
 from pathlib import Path
 
 def main():
     """GUIプレビューを起動"""
+    # コマンドライン引数の解析
+    parser = argparse.ArgumentParser(
+        description="ThemeManager GUI Preview Launcher",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+使用例:
+  %(prog)s                           # デフォルト設定でプレビューを起動
+  %(prog)s --config custom.json      # カスタム設定ファイルを使用
+  %(prog)s --theme dark              # 特定のテーマで起動
+  %(prog)s --config sandbox/theme_styles.json --theme orange
+        """
+    )
+    
+    parser.add_argument(
+        '--config', '-c',
+        type=str,
+        help='カスタム設定ファイルのパス (JSON形式)'
+    )
+    
+    parser.add_argument(
+        '--theme', '-t',
+        type=str,
+        help='起動時に適用するテーマ名'
+    )
+    
+    args = parser.parse_args()
+    
     print("ThemeManager GUI Preview Launcher")
     print("=" * 40)
+    
+    if args.config:
+        config_path = Path(args.config)
+        if not config_path.exists():
+            print(f"❌ 設定ファイルが見つかりません: {args.config}")
+            return 1
+        print(f"📁 カスタム設定ファイル: {args.config}")
+    
+    if args.theme:
+        print(f"🎨 指定テーマ: {args.theme}")
+    
+    print()
     
     # 仮想環境の確認
     venv_path = Path("venv")
@@ -53,7 +93,7 @@ def main():
         
         # テストモードで実行
         print("\n🧪 テストモードでプレビュー機能を確認します...")
-        return test_mode()
+        return test_mode(args)
     
     # 実際のGUIプレビューを起動
     print("🚀 GUIプレビューを起動しています...")
@@ -79,7 +119,16 @@ def main():
             return 1
         
         app = QApplication.instance() or QApplication(sys.argv)
-        preview_window = show_preview()
+        
+        # カスタム設定ファイルを使ってプレビューウィンドウを作成
+        preview_window = show_preview(config_path=args.config)
+        
+        # 指定されたテーマがあれば適用
+        if preview_window and args.theme:
+            if preview_window.controller.set_theme(args.theme):
+                print(f"✅ テーマ '{args.theme}' を適用しました")
+            else:
+                print(f"⚠️  テーマ '{args.theme}' が見つかりません")
         
         if preview_window:
             print("✅ プレビューウィンドウが作成されました")
@@ -96,7 +145,7 @@ def main():
         print(f"❌ エラー: {e}")
         return 1
 
-def test_mode():
+def test_mode(args):
     """テストモードでの動作確認"""
     try:
         from theme_manager.qt.controller import ThemeController, qt_framework, qt_available
@@ -120,7 +169,7 @@ def test_mode():
             return 1
         
         # コントローラーのテスト
-        controller = ThemeController()
+        controller = ThemeController(args.config)
         themes = list(controller.get_available_themes())
         print(f"✅ {len(themes)}個のテーマを読み込みました")
         print(f"   利用可能テーマ: {', '.join(themes[:5])}" + 
@@ -130,9 +179,17 @@ def test_mode():
         app = QApplication.instance() or QApplication([])
         
         # プレビューウィンドウ作成
-        preview_window = show_preview()
+        preview_window = show_preview(config_path=args.config)
         if preview_window:
             print("✅ プレビューウィンドウ作成成功")
+            
+            # 指定されたテーマがあれば適用
+            if args.theme:
+                if preview_window.controller.set_theme(args.theme):
+                    print(f"✅ テーマ '{args.theme}' を適用しました")
+                else:
+                    print(f"⚠️  テーマ '{args.theme}' が見つかりません")
+            
             print("✅ GUI機能は正常に動作しています")
             print("📝 デスクトップ環境で実行すると実際のGUIが表示されます")
         else:

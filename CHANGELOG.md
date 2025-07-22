@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.3] - 2025-07-22
+
+### 🎨 Added
+- **CLI プレビュー機能強化**
+  - `launch_gui_preview.py` にコマンドライン引数対応
+  - `--config` オプション: カスタム設定ファイル指定
+  - `--theme` オプション: 起動時テーマ指定
+  - アクセシビリティ改善テーマのプレビュー対応
+
+### 🔄 Added  
+- **テーマフォーマット変換機能**
+  - カスタムテーマ→Qt-Theme-Manager形式変換ツール
+  - 16テーマの完全変換対応（アクセシビリティ改善版含む）
+  - 変換済みアクセシビリティ強化テーマセット
+
+### ♿ Improved
+- **アクセシビリティ大幅改善**
+  - ゼブラスタイル：6%ライトネス差で目に優しい設計
+  - 全16テーマで統一されたコントラスト比
+  - WCAG基準を考慮した色彩設計
+
+### 📚 Enhanced
+- ヘルプメッセージと使用例の改善
+- エラーハンドリングの強化
+- デバッグ情報の詳細化
+
 ## [0.2.2] - 2025-07-21
 
 ### 🤖 Added

@@ -23,13 +23,15 @@ A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications, p
 ## Features
 
 - 🎨 **16+ Built-in Themes**: Light, Dark, High Contrast, and colorful themes
+- ♿ **Accessibility Enhanced**: 6% lightness contrast for zebra stripes (WCAG-compliant)
 - ✨ **Advanced Theme Editor**: Professional-grade theme creation tools
 - 🔄 **Dynamic Theme Switching**: Change themes at runtime without restarting
 - 💾 **Persistent Settings**: Theme preferences are automatically saved
-- 🖥️ **GUI Tools**: Interactive editor and preview applications
-- 📟 **CLI Support**: Command-line interface for theme management
+- 🖥️ **GUI Tools**: Interactive editor and preview applications with CLI options
+- 📟 **Enhanced CLI Support**: Theme preview with custom configs and themes
 - 🎯 **Easy Integration**: Simple API for applying themes to widgets/applications
 - ⚡ **QSS Generation**: Automatic stylesheet generation from theme configurations
+- 🔄 **Theme Format Conversion**: Convert custom themes to Qt-Theme-Manager format
 
 ## 🚀 30-Second Quick Start
 
@@ -148,7 +150,7 @@ controller.apply_theme_to_application()
 
 ## Command Line Interface
 
-### 🎨 GUI Tools (New in v0.2.0!)
+### 🎨 GUI Tools (Enhanced in v0.2.3!)
 
 After installing via pip, you can use these convenient GUI tools:
 
@@ -159,8 +161,37 @@ theme-editor
 # Launch theme preview window  
 theme-preview
 
+# NEW: Launch with custom configuration and theme (v0.2.3)
+theme-preview --config custom_themes.json --theme ocean
+theme-preview --config accessibility_themes.json --theme orange
+theme-preview -c my_themes.json -t dark
+
 # Use CLI tools
 theme-manager --help
+```
+
+### ⚡ CLI Options (New in v0.2.3!)
+
+The `theme-preview` command now supports flexible options:
+
+- `--config`, `-c`: Specify custom theme configuration file (JSON format)
+- `--theme`, `-t`: Set initial theme to apply on startup
+- `--help`, `-h`: Show help message with usage examples
+
+### 🎯 Usage Examples
+
+```bash
+# Preview with default themes
+theme-preview
+
+# Use custom accessibility-improved themes
+theme-preview --config accessibility_themes.json
+
+# Start with specific theme
+theme-preview --theme amber
+
+# Combine custom config and theme
+theme-preview --config my_improved_themes.json --theme "Orange (Improved)"
 ```
 
 #### Theme Editor Features
@@ -174,6 +205,30 @@ theme-manager --help
 - **16 built-in themes** to test instantly
 - **Live switching** between themes
 - **All Qt widgets** displayed for comprehensive testing
+
+### ♿ Accessibility Enhancements (New in v0.2.3!)
+
+Qt-Theme-Manager now provides enhanced accessibility features:
+
+#### Zebra Stripe Optimization
+- **6% lightness contrast** for alternating row colors
+- **WCAG-compliant design** for better readability
+- **Eye-strain reduction** for long-term usage
+- **Automatic application** to QListWidget, QTreeWidget, QTableWidget
+
+#### Usage Example
+```python
+# Enable zebra stripes with improved accessibility
+list_widget.setAlternatingRowColors(True)
+controller.apply_theme_to_widget(list_widget)
+# Colors are automatically optimized for accessibility
+```
+
+#### Available Accessibility-Enhanced Themes
+- Orange (Improved) - Enhanced contrast for orange theme
+- Yellow (Improved) - Improved readability for yellow theme  
+- Lime (Improved) - Optimized green-yellow theme
+- Amber (Improved) - Enhanced amber theme with better contrast
 
 ### Legacy CLI Methods
 
@@ -297,7 +352,7 @@ theme_manager/
 │   ├── controller.py           # Theme management
 │   └── preview.py              # GUI preview window
 ├── cli/
-│   ├── __init__.py
+やえ│   ├── __init__.py
 │   └── themectl.py             # CLI interface
 └── main.py                     # CLI entry point
 ```

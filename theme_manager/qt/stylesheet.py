@@ -158,6 +158,10 @@ QComboBox::drop-down {{
         header_text = header_config.get("text", "#2d3748")
         header_border = header_config.get("border", "#cbd5e0")
         
+        # ゼブラスタイル用の控えめな交互色
+        zebra_config = panel_config.get("zebra", {})
+        zebra_bg = zebra_config.get("alternate", bg)  # デフォルトは通常背景と同色（差なし）
+        
         return f"""
 /* Panel and GroupBox Styles */
 QGroupBox {{
@@ -188,7 +192,7 @@ QListWidget, QTreeWidget, QTableWidget {{
     background-color: {bg};
     border: 1px solid {border};
     border-radius: 4px;
-    alternate-background-color: {header_bg};
+    alternate-background-color: {zebra_bg};
 }}"""
     
     def _generate_toolbar_styles(self) -> str:

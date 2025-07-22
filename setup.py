@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="qt-theme-manager",
-    version="0.2.2",
+    version="0.2.3",
     author="scottlz0310",
     author_email="scott.lz0310@gmail.com",
     description="A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications",
