@@ -72,15 +72,38 @@ echo "📋 アクセシビリティテーマ検証実行中..."
 
 # 基本テーマ設定ファイルの構文チェック
 if [ -f "theme_manager/config/theme_settings.json" ]; then
-    # JSONの構文チェック
-    python -c "import json; json.load(open('theme_manager/config/theme_settings.json'))" 2>/dev/null
+    # JSONの構文チェック（Windows対応）
+    python -c "
+import json
+import sys
+import os
+try:
+    theme_file = 'theme_manager/config/theme_settings.json'
+    if os.name == 'nt':  # Windows
+        theme_file = theme_file.replace('/', os.sep)
+    with open(theme_file, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    print('JSON syntax OK')
+except Exception as e:
+    print(f'JSON error: {e}')
+    sys.exit(1)
+"
     if [ $? -ne 0 ]; then
         echo "❌ テーマ設定ファイルの構文エラーがあります。"
         exit 1
     fi
     
-    # 16テーマの存在確認
-    theme_count=$(python -c "import json; data=json.load(open('theme_manager/config/theme_settings.json')); print(len(data['available_themes']))")
+    # 16テーマの存在確認（Windows対応）
+    theme_count=$(python -c "
+import json
+import os
+theme_file = 'theme_manager/config/theme_settings.json'
+if os.name == 'nt':
+    theme_file = theme_file.replace('/', os.sep)
+with open(theme_file, 'r', encoding='utf-8') as f:
+    data = json.load(f)
+print(len(data['available_themes']))
+")
     if [ "$theme_count" -eq 16 ]; then
         echo "  ✅ 16テーマが確認されました"
     else

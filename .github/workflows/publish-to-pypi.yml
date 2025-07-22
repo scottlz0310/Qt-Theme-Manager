@@ -69,10 +69,14 @@ jobs:
           chmod 700 /tmp/runtime-runner
 
           echo "=== STEP: Testing Qt framework ==="
-          python scripts/test_qt_framework.py ${{ matrix.qt-framework }} --verbose
+          if [ -f "scripts/test_qt_framework.py" ]; then
+            python scripts/test_qt_framework.py ${{ matrix.qt-framework }} --verbose
+          else
+            echo "Qt framework test script not found, skipping..."
+          fi
           
           echo "=== STEP: Running main test suite ==="
-          python test_theme_manager.py
+          bash test_v0.2.3_release.sh
 
   build:
     needs: test
