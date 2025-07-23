@@ -3,11 +3,7 @@ name: Publish to PyPI
 on:
   push:
     tags:
-      - 'v*'
-      - '!v*-dev*'    # 開発版は除外
-      - '!v*-rc*'     # RC版は除外  
-      - '!v*-beta*'   # ベータ版は除外
-      - '!v*-alpha*'  # アルファ版は除外
+      - 'v[0-9]+\.[0-9]+\.[0-9]+$'     # 正確に v0.2.4 形式のみ
 
 jobs:
   test:
