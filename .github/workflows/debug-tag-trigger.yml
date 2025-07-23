@@ -1,0 +1,100 @@
+name: Debug Tag Trigger
+
+on:
+  push:
+    tags:
+      - '**'  # 全てのタグで実行
+
+jobs:
+  debug-all-tags:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Comprehensive debug information
+        run: |
+          echo "=== COMPREHENSIVE TAG DEBUG INFORMATION ==="
+          echo "Timestamp: $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+          echo ""
+          echo "=== GITHUB CONTEXT ==="
+          echo "Event name: '${{ github.event_name }}'"
+          echo "Ref: '${{ github.ref }}'"
+          echo "Ref name: '${{ github.ref_name }}'"
+          echo "Ref type: '${{ github.ref_type }}'"
+          echo "SHA: '${{ github.sha }}'"
+          echo "Repository: '${{ github.repository }}'"
+          echo "Actor: '${{ github.actor }}'"
+          echo "Workflow: '${{ github.workflow }}'"
+          echo ""
+          echo "=== TAG PATTERN MATCHING TESTS ==="
+          TAG_NAME="${{ github.ref_name }}"
+          echo "Current tag: '$TAG_NAME'"
+          
+          # Test different regex patterns
+          if [[ "$TAG_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "✅ Matches '^v[0-9]+\.[0-9]+\.[0-9]+$' (no anchors)"
+          else
+            echo "❌ Does NOT match '^v[0-9]+\.[0-9]+\.[0-9]+$'"
+          fi
+          
+          if [[ "$TAG_NAME" =~ v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+            echo "✅ Matches 'v[0-9]+\.[0-9]+\.[0-9]+' (basic pattern)"
+          else
+            echo "❌ Does NOT match 'v[0-9]+\.[0-9]+\.[0-9]+'"
+          fi
+          
+          if [[ "$TAG_NAME" == v*.*.* ]]; then
+            echo "✅ Matches 'v*.*.*' (glob pattern)"
+          else
+            echo "❌ Does NOT match 'v*.*.*'"
+          fi
+          
+          echo ""
+          echo "=== GIT INFORMATION ==="
+          git log --oneline -1
+          git tag --list --sort=-version:refname | head -10
+          
+          echo ""
+          echo "=== EVENT PAYLOAD ==="
+          if [ -f "${{ github.event_path }}" ]; then
+            cat "${{ github.event_path }}"
+          else
+            echo "No event payload file found"
+          fi
+          
+          echo ""
+          echo "=== ENVIRONMENT VARIABLES ==="
+          env | grep -E "(GITHUB_|RUNNER_)" | sort
+          
+          echo ""
+          echo "=== END COMPREHENSIVE DEBUG ==="
+
+  test-pypi-pattern:
+    runs-on: ubuntu-latest
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+    steps:
+      - name: Check if should trigger PyPI workflow
+        run: |
+          echo "=== PYPI WORKFLOW TRIGGER TEST ==="
+          TAG_NAME="${{ github.ref_name }}"
+          echo "Tag: $TAG_NAME"
+          
+          # Exact same pattern as PyPI workflow
+          if [[ "$TAG_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "✅ This tag SHOULD trigger the PyPI workflow"
+            echo "Pattern matched: '^v[0-9]+\.[0-9]+\.[0-9]+$'"
+          else
+            echo "❌ This tag should NOT trigger the PyPI workflow"
+            echo "Pattern failed: '^v[0-9]+\.[0-9]+\.[0-9]+$'"
+          fi
+          
+          echo ""
+          echo "=== WORKFLOW FILE CHECK ==="
+          if [ -f ".github/workflows/publish-to-pypi.yml" ]; then
+            echo "✅ PyPI workflow file exists"
+            echo "Workflow tag pattern:"
+            grep -A 5 "tags:" .github/workflows/publish-to-pypi.yml || echo "Could not find tags pattern"
+          else
+            echo "❌ PyPI workflow file NOT found"
+          fi

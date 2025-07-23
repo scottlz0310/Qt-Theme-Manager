@@ -6,6 +6,37 @@ on:
       - 'v[0-9]+\.[0-9]+\.[0-9]+$'     # 正確に v0.2.4 形式のみ
 
 jobs:
+  debug-trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug trigger information
+        run: |
+          echo "=== WORKFLOW TRIGGER DEBUG ==="
+          echo "Event name: ${{ github.event_name }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "Ref name: ${{ github.ref_name }}"
+          echo "Ref type: ${{ github.ref_type }}"
+          echo "Tag: ${{ github.event.ref }}"
+          echo "Repository: ${{ github.repository }}"
+          echo "Actor: ${{ github.actor }}"
+          echo "Run ID: ${{ github.run_id }}"
+          echo "Run number: ${{ github.run_number }}"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Job: ${{ github.job }}"
+          echo "Action: ${{ github.action }}"
+          echo "Event path: ${{ github.event_path }}"
+          echo "Workspace: ${{ github.workspace }}"
+          echo "SHA: ${{ github.sha }}"
+          echo "=== TRIGGER CONDITIONS CHECK ==="
+          if [[ "${{ github.ref }}" =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "✅ Tag format matches regex pattern"
+          else
+            echo "❌ Tag format does NOT match regex pattern"
+          fi
+          echo "Current tag: ${{ github.ref_name }}"
+          echo "=== EVENT PAYLOAD ==="
+          cat "${{ github.event_path }}" || echo "No event payload available"
+          echo "=== END DEBUG ==="
   test:
     runs-on: ubuntu-latest
     strategy:
