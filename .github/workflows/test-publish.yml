@@ -3,8 +3,14 @@ name: Publish to TestPyPI
 on:
   push:
     tags:
-      - 'v[0-9]+\.[0-9]+\.[0-9]+\.(dev|rc|beta|alpha)[0-9]*$'  # v0.2.3.dev1, v0.2.3.rc1等
-      - 'v[0-9]+\.[0-9]+\.[0-9]+-(dev|rc|beta|alpha)[0-9]*$'   # v0.2.3-dev1, v0.2.3-rc1等
+      - 'v*.*.*dev*'   # v0.2.3.dev1, v0.2.3.dev2
+      - 'v*.*.*rc*'    # v0.2.3.rc1, v0.2.3.rc2  
+      - 'v*.*.*beta*'  # v0.2.3.beta1
+      - 'v*.*.*alpha*' # v0.2.3.alpha1
+      - 'v*-*-*dev*'   # v0.2.3-dev1, v0.2.3-dev2
+      - 'v*-*-*rc*'    # v0.2.3-rc1, v0.2.3-rc2  
+      - 'v*-*-*beta*'  # v0.2.3-beta1
+      - 'v*-*-*alpha*' # v0.2.3-alpha1
 
 jobs:
   test-publish:
