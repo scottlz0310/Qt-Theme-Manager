@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### 🦓 Added - Zebra Pattern Auto-Generation
+- **新機能: ゼブラパターン自動生成エンジン** (`zebra_pattern_editor.py`)
+  - HSL/HSV色空間での科学的色調整アルゴリズム
+  - WCAG 2.1準拠のコントラスト比計算（1.15:1～1.80:1）
+  - 3段階アクセシビリティレベル（subtle/moderate/high）
+  - リアルタイムプレビューとコントラスト比表示
+
+- **テーマエディター統合** (`theme_editor_zebra_extension.py`)
+  - 既存テーマエディターへのゼブラタブ追加
+  - 背景色変更時の自動ゼブラ色更新
+  - テーマ設定への自動反映とプレビュー機能
+
+- **マルチモードランチャー** (`launch_zebra_theme_editor.py`)
+  - 統合版テーマエディター（`--mode full`）
+  - スタンドアロンゼブラエディター（`--mode standalone`）
+  - ゼブラ生成デモ（`--mode demo`）
+
+### ✨ Enhanced
+- **リアルタイムコントラスト調整**: スライダーまたは直接入力でのコントラスト比制御
+- **アクセシビリティ準拠**: WCAG 2.1基準に基づいた色彩設計
+- **クロスプラットフォーム対応**: PyQt5/PyQt6/PySide6での完全互換性
+- **科学的色計算**: HSL/HSV色空間での精密な明度調整
+
 ## [0.2.3] - 2025-07-22
 
 ### 🚀 Added

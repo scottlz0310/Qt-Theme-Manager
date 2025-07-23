@@ -7,14 +7,23 @@
 
 A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications, providing dynamic theme switching with an advanced theme editor and 16+ built-in themes.
 
-## ✨ What's New in v0.2.3
+## ✨ What's New in v0.2.3+
 
-- 🎨 **Enhanced CLI Preview Features**: Support for `--config` and `--theme` options
-- ♿ **Major Accessibility Improvements**: 6% lightness contrast for zebra stripes (WCAG-compliant)
-- 🔄 **Theme Format Conversion**: Convert custom themes to Qt-Theme-Manager format
-- 📊 **Unified Theme Improvements**: Accessibility optimization across all 16 themes
-- 🚀 **Entry Points Added**: `theme-editor`, `theme-preview` commands for easy launching
-- 🐍 **Python 3.9+ Support**: Dropped Python 3.8 support, optimized for modern environments
+### 🦓 NEW: Zebra Pattern Auto-Generation
+- **Real-time Contrast Adjustment**: Interactive slider and direct input for contrast ratios (1.15:1 to 1.80:1)
+- **WCAG 2.1 Compliant**: Scientific color calculations with HSL/HSV color space support
+- **3 Accessibility Levels**: Subtle (1.15:1), Moderate (1.30:1), High (1.80:1) contrast options
+- **Multi-platform Support**: PyQt5/PyQt6/PySide6 cross-framework compatibility
+- **Integrated Theme Editor**: New zebra tab in theme editor with live preview
+- **Standalone Mode**: Dedicated zebra pattern editor for focused color work
+
+### 🎨 Enhanced Theme Features
+- **Enhanced CLI Preview Features**: Support for `--config` and `--theme` options
+- **Major Accessibility Improvements**: 6% lightness contrast for zebra stripes (WCAG-compliant)
+- **Theme Format Conversion**: Convert custom themes to Qt-Theme-Manager format
+- **Unified Theme Improvements**: Accessibility optimization across all 16 themes
+- **Entry Points Added**: `theme-editor`, `theme-preview` commands for easy launching
+- **Python 3.9+ Support**: Dropped Python 3.8 support, optimized for modern environments
 
 ## ✨ What's New in v0.2.1
 
@@ -26,11 +35,12 @@ A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications, p
 ## Features
 
 - 🎨 **16+ Built-in Themes**: Light, Dark, High Contrast, and colorful themes
-- ♿ **Accessibility Enhanced**: 6% lightness contrast for zebra stripes (WCAG-compliant)
-- ✨ **Advanced Theme Editor**: Professional-grade theme creation tools
+- 🦓 **NEW: Zebra Pattern Auto-Generation**: WCAG-compliant alternating row colors with real-time contrast adjustment
+- ♿ **Advanced Accessibility**: Scientific color calculations for optimal contrast ratios (1.15:1-1.80:1)
+- ✨ **Enhanced Theme Editor**: Professional-grade theme creation tools with integrated zebra pattern generator
 - 🔄 **Dynamic Theme Switching**: Change themes at runtime without restarting
 - 💾 **Persistent Settings**: Theme preferences are automatically saved
-- 🖥️ **GUI Tools**: Interactive editor and preview applications with CLI options
+- 🖥️ **Multi-mode GUI Tools**: Integrated editor, standalone zebra editor, and preview applications
 - 📟 **Enhanced CLI Support**: Theme preview with custom configs and themes
 - 🎯 **Easy Integration**: Simple API for applying themes to widgets/applications
 - ⚡ **QSS Generation**: Automatic stylesheet generation from theme configurations
@@ -38,11 +48,24 @@ A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications, p
 
 ## 🚀 30-Second Quick Start
 
-**Want to try the new theme editor?**
+**Want to try the NEW zebra pattern auto-generation?**
 
 ```bash
-# Install and launch theme editor (New entry points!)
+# Install and launch integrated theme editor with zebra patterns
 pip install qt-theme-manager[pyqt6]
+python launch_zebra_theme_editor.py --mode full
+
+# Or try the standalone zebra pattern editor
+python launch_zebra_theme_editor.py --mode standalone
+
+# Demo the zebra generation capabilities
+python launch_zebra_theme_editor.py --mode demo
+```
+
+**Want to try the enhanced theme editor?**
+
+```bash
+# Launch theme editor (New entry points!)
 theme-editor
 
 # Alternative launch methods (all work reliably):
@@ -153,7 +176,7 @@ controller.apply_theme_to_application()
 
 ## Command Line Interface
 
-### 🎨 GUI Tools (Enhanced in v0.2.3!)
+### 🎨 GUI Tools (Enhanced in v0.2.3+!)
 
 After installing via pip, you can use these convenient GUI tools:
 
@@ -164,7 +187,16 @@ theme-editor
 # Launch theme preview window  
 theme-preview
 
-# NEW: Launch with custom configuration and theme (v0.2.3)
+# NEW: Launch zebra pattern theme editor (integrated mode)
+python launch_zebra_theme_editor.py --mode full
+
+# NEW: Launch standalone zebra pattern editor
+python launch_zebra_theme_editor.py --mode standalone
+
+# NEW: Demo zebra pattern generation capabilities
+python launch_zebra_theme_editor.py --mode demo
+
+# Enhanced preview with custom configuration and theme (v0.2.3)
 theme-preview --config custom_themes.json --theme ocean
 theme-preview --config accessibility_themes.json --theme orange
 theme-preview -c my_themes.json -t dark

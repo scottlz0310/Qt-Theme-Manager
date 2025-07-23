@@ -2,14 +2,70 @@
 
 このドキュメントでは、ThemeManagerライブラリのすべてのAPIについて詳細に説明します。
 
+## 🆕 v0.2.3+の新機能
+
+### ゼブラパターン自動生成
+
+```python
+# ゼブラパターン生成器（WCAG準拠の色計算）
+from zebra_pattern_editor import ZebraPatternGenerator
+
+# 特定のコントラスト比でゼブラ色を生成
+zebra_color = ZebraPatternGenerator.generate_zebra_color(
+    base_color="#ffffff", 
+    contrast_target=1.2, 
+    method="auto"  # "auto", "hsl", "hsv"
+)
+
+# アクセシビリティ準拠のゼブラパターンを生成
+result = ZebraPatternGenerator.generate_accessibility_compliant_zebra(
+    base_color="#2d3748",
+    accessibility_level="moderate"  # "subtle", "moderate", "high"
+)
+print(f"ゼブラ色: {result['zebra_color']}")
+print(f"コントラスト比: {result['contrast_ratio']:.2f}:1")
+
+# 色間のコントラスト比を計算
+contrast = ZebraPatternGenerator.get_contrast_ratio("#ffffff", "#ebebeb")
+```
+
+### ゼブラパターン付き統合テーマエディター
+
+```python
+# ゼブラパターン機能付き統合テーマエディターを起動
+import subprocess
+subprocess.run(["python", "launch_zebra_theme_editor.py", "--mode", "full"])
+
+# スタンドアロンゼブラパターンエディター
+subprocess.run(["python", "launch_zebra_theme_editor.py", "--mode", "standalone"])
+
+# ゼブラ生成機能のデモ
+subprocess.run(["python", "launch_zebra_theme_editor.py", "--mode", "demo"])
+```
+
+### テーマエディター拡張API
+
+```python
+# 既存のテーマエディターをゼブラ機能で拡張
+from theme_editor_zebra_extension import extend_theme_editor_with_zebra
+
+# ゼブラパターンサポート付き拡張テーマエディタークラスを取得
+ExtendedThemeEditor = extend_theme_editor_with_zebra()
+
+if ExtendedThemeEditor:
+    editor = ExtendedThemeEditor()
+    editor.show()
+```
+
 ## 目次
 
-1. [ThemeController](#themecontroller)
-2. [ThemeLoader](#themeloader) 
-3. [StylesheetGenerator](#stylesheetgenerator)
-4. [ユーティリティ関数](#ユーティリティ関数)
-5. [設定ファイル仕様](#設定ファイル仕様)
-6. [エラーハンドリング](#エラーハンドリング)
+1. [ゼブラパターン生成](#ゼブラパターン生成)
+2. [ThemeController](#themecontroller)
+3. [ThemeLoader](#themeloader) 
+4. [StylesheetGenerator](#stylesheetgenerator)
+5. [ユーティリティ関数](#ユーティリティ関数)
+6. [設定ファイル仕様](#設定ファイル仕様)
+7. [エラーハンドリング](#エラーハンドリング)
 
 ## ThemeController
 

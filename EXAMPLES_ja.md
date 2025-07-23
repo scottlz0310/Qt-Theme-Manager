@@ -2,12 +2,21 @@
 
 このドキュメントでは、Qt-Theme-Managerライブラリの様々な使用方法を具体例とともに説明します。
 
-## 🆕 v0.2.3の新機能: 強化されたGUIツール
+## 🆕 v0.2.3+の新機能: ゼブラパターン自動生成
 
-### GUIツールでのクイックスタート
+### ゼブラパターンツールでのクイックスタート
 
 ```bash
-# 新しいテーマエディターを試す（pip install qt-theme-manager[pyqt6]後）
+# 新しいゼブラパターン付き統合テーマエディターを試す
+python launch_zebra_theme_editor.py --mode full
+
+# スタンドアロンゼブラパターンエディターを使用
+python launch_zebra_theme_editor.py --mode standalone
+
+# ゼブラ生成機能のデモ
+python launch_zebra_theme_editor.py --mode demo
+
+# 従来のテーマエディター（pip install qt-theme-manager[pyqt6]後）
 theme-editor
 
 # すべてのテーマを即座にプレビュー
@@ -18,6 +27,37 @@ theme-preview --config my_themes.json --theme ocean
 
 # CLI管理
 theme-manager list
+```
+
+### ゼブラパターン生成の例
+
+```python
+from zebra_pattern_editor import ZebraPatternGenerator
+
+# 基本的なゼブラ色生成
+base_color = "#ffffff"
+zebra_color = ZebraPatternGenerator.generate_zebra_color(
+    base_color, 
+    contrast_target=1.2, 
+    method="auto"
+)
+print(f"ベース: {base_color} → ゼブラ: {zebra_color}")
+
+# アクセシビリティ準拠のゼブラパターンを生成
+result = ZebraPatternGenerator.generate_accessibility_compliant_zebra(
+    base_color="#2d3748",
+    accessibility_level="moderate"
+)
+
+print(f"🎨 テーマ: ダーク")
+print(f"📋 ベース色: {result['base_color']}")
+print(f"🦓 ゼブラ色: {result['zebra_color']}")
+print(f"📊 コントラスト比: {result['contrast_ratio']:.2f}:1")
+print(f"♿ アクセシビリティレベル: {result['accessibility_level']}")
+
+# コントラスト比の計算
+contrast = ZebraPatternGenerator.get_contrast_ratio("#ffffff", "#ebebeb")
+print(f"白とライトグレーのコントラスト: {contrast:.2f}:1")
 ```
 
 ## 目次

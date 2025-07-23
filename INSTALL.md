@@ -1,14 +1,33 @@
 # Qt-Theme-Manager Installation Guide
 
-## What's New in v0.2.3
+## What's New in v0.2.3+
 
-After installation, you can now use these GUI tools directly:
+### 🦓 NEW: Zebra Pattern Auto-Generation Tools
+
+After installation, you can now use these enhanced GUI tools:
 
 ```bash
+# NEW: Zebra pattern-enabled theme editor
+python launch_zebra_theme_editor.py --mode full
+
+# NEW: Standalone zebra pattern editor  
+python launch_zebra_theme_editor.py --mode standalone
+
+# NEW: Demo zebra generation capabilities
+python launch_zebra_theme_editor.py --mode demo
+
+# Traditional GUI tools:
 theme-editor    # Launch the advanced theme editor
 theme-preview   # Launch theme preview window
 theme-manager   # CLI theme management tools
 ```
+
+### Features Added:
+- **Real-time contrast adjustment** (1.15:1 to 1.80:1)
+- **WCAG 2.1 compliant** scientific color calculations
+- **3 accessibility levels** (subtle/moderate/high)
+- **Cross-platform support** (PyQt5/PyQt6/PySide6)
+- **Integrated theme editor** with zebra pattern tab
 
 ## System Requirements
 

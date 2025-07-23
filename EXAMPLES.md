@@ -2,12 +2,21 @@
 
 This document provides various usage examples and practical implementations of the Qt-Theme-Manager library.
 
-## 🆕 New in v0.2.3: Enhanced GUI Tools
+## 🆕 New in v0.2.3+: Zebra Pattern Auto-Generation
 
-### Quick Start with GUI Tools
+### Quick Start with Zebra Pattern Tools
 
 ```bash
-# Try the new theme editor (after pip install qt-theme-manager[pyqt6])
+# Try the NEW integrated theme editor with zebra patterns
+python launch_zebra_theme_editor.py --mode full
+
+# Use standalone zebra pattern editor
+python launch_zebra_theme_editor.py --mode standalone
+
+# Demo zebra generation capabilities
+python launch_zebra_theme_editor.py --mode demo
+
+# Traditional theme editor (after pip install qt-theme-manager[pyqt6])
 theme-editor
 
 # Preview all themes instantly
@@ -18,6 +27,37 @@ theme-preview --config my_themes.json --theme ocean
 
 # CLI management
 theme-manager list
+```
+
+### Zebra Pattern Generation Examples
+
+```python
+from zebra_pattern_editor import ZebraPatternGenerator
+
+# Basic zebra color generation
+base_color = "#ffffff"
+zebra_color = ZebraPatternGenerator.generate_zebra_color(
+    base_color, 
+    contrast_target=1.2, 
+    method="auto"
+)
+print(f"Base: {base_color} → Zebra: {zebra_color}")
+
+# Generate accessibility-compliant zebra patterns
+result = ZebraPatternGenerator.generate_accessibility_compliant_zebra(
+    base_color="#2d3748",
+    accessibility_level="moderate"
+)
+
+print(f"🎨 Theme: Dark")
+print(f"📋 Base color: {result['base_color']}")
+print(f"🦓 Zebra color: {result['zebra_color']}")
+print(f"📊 Contrast ratio: {result['contrast_ratio']:.2f}:1")
+print(f"♿ Accessibility level: {result['accessibility_level']}")
+
+# Calculate contrast ratios
+contrast = ZebraPatternGenerator.get_contrast_ratio("#ffffff", "#ebebeb")
+print(f"Contrast between white and light gray: {contrast:.2f}:1")
 ```
 
 ## Table of Contents

@@ -1,14 +1,33 @@
 # Qt-Theme-Manager インストールガイド
 
-## v0.2.3の新機能
+## v0.2.3+の新機能
 
-インストール後、以下のGUIツールが直接使用できます：
+### 🦓 新機能: ゼブラパターン自動生成ツール
+
+インストール後、以下の強化されたGUIツールが使用できます：
 
 ```bash
+# 新機能: ゼブラパターン機能付きテーマエディター
+python launch_zebra_theme_editor.py --mode full
+
+# 新機能: スタンドアロンゼブラパターンエディター
+python launch_zebra_theme_editor.py --mode standalone
+
+# 新機能: ゼブラ生成機能のデモ
+python launch_zebra_theme_editor.py --mode demo
+
+# 従来のGUIツール:
 theme-editor    # 高度なテーマエディターを起動
 theme-preview   # テーマプレビューウィンドウを起動
 theme-manager   # CLIテーマ管理ツール
 ```
+
+### 追加された機能:
+- **リアルタイムコントラスト調整** (1.15:1から1.80:1)
+- **WCAG 2.1準拠** の科学的色計算
+- **3段階アクセシビリティレベル** (控えめ/中程度/高)
+- **クロスプラットフォーム対応** (PyQt5/PyQt6/PySide6)
+- **統合テーマエディター** にゼブラパターンタブを追加
 
 ## システム要件
 

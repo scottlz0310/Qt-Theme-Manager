@@ -2,7 +2,60 @@
 
 This document provides detailed information about all APIs available in the ThemeManager library.
 
-## 🆕 New in v0.2.0
+## 🆕 New in v0.2.3+
+
+### Zebra Pattern Auto-Generation
+
+```python
+# Zebra Pattern Generator (WCAG-compliant color calculations)
+from zebra_pattern_editor import ZebraPatternGenerator
+
+# Generate zebra color with specific contrast ratio
+zebra_color = ZebraPatternGenerator.generate_zebra_color(
+    base_color="#ffffff", 
+    contrast_target=1.2, 
+    method="auto"  # "auto", "hsl", "hsv"
+)
+
+# Generate accessibility-compliant zebra patterns
+result = ZebraPatternGenerator.generate_accessibility_compliant_zebra(
+    base_color="#2d3748",
+    accessibility_level="moderate"  # "subtle", "moderate", "high"
+)
+print(f"Zebra color: {result['zebra_color']}")
+print(f"Contrast ratio: {result['contrast_ratio']:.2f}:1")
+
+# Calculate contrast ratio between colors
+contrast = ZebraPatternGenerator.get_contrast_ratio("#ffffff", "#ebebeb")
+```
+
+### Integrated Theme Editor with Zebra Patterns
+
+```python
+# Launch integrated theme editor with zebra pattern functionality
+import subprocess
+subprocess.run(["python", "launch_zebra_theme_editor.py", "--mode", "full"])
+
+# Standalone zebra pattern editor
+subprocess.run(["python", "launch_zebra_theme_editor.py", "--mode", "standalone"])
+
+# Demo zebra generation capabilities
+subprocess.run(["python", "launch_zebra_theme_editor.py", "--mode", "demo"])
+```
+
+### Theme Editor Extension API
+
+```python
+# Extend existing theme editor with zebra functionality
+from theme_editor_zebra_extension import extend_theme_editor_with_zebra
+
+# Get extended theme editor class with zebra pattern support
+ExtendedThemeEditor = extend_theme_editor_with_zebra()
+
+if ExtendedThemeEditor:
+    editor = ExtendedThemeEditor()
+    editor.show()
+```
 
 ### GUI Tools Entry Points
 
