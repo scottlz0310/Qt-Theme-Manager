@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.2.4] - 2025-07-23
 
 ### 🦓 Added - Zebra Pattern Auto-Generation
 - **新機能: ゼブラパターン自動生成エンジン** (`zebra_pattern_editor.py`)
@@ -29,6 +29,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **アクセシビリティ準拠**: WCAG 2.1基準に基づいた色彩設計
 - **クロスプラットフォーム対応**: PyQt5/PyQt6/PySide6での完全互換性
 - **科学的色計算**: HSL/HSV色空間での精密な明度調整
+
+### 📚 Documentation
+- **包括的ドキュメント更新**: 12個の.mdファイル全面更新
+- **多言語対応**: 英語・日本語版で統一されたドキュメント品質
+- **APIリファレンス**: 新機能のAPIとサンプルコード追加
+- **使用ガイド**: 詳細な操作手順とベストプラクティス
 
 ## [0.2.3] - 2025-07-22
 

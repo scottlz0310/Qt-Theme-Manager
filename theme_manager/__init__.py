@@ -12,10 +12,10 @@ NEW in v0.2.4: Zebra Pattern Auto-Generation
 - Cross-platform support (PyQt5/PyQt6/PySide6)
 
 Author: ThemeManager Team
-Version: 0.2.4.dev1
+Version: 0.2.4
 """
 
-__version__ = "0.2.4.dev1"
+__version__ = "0.2.4"
 __author__ = "ThemeManager Team"
 
 from .qt.controller import ThemeController, apply_theme_to_widget
