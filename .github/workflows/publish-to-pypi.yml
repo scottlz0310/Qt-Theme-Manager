@@ -3,7 +3,12 @@ name: Publish to PyPI
 on:
   push:
     tags:
-      - 'v*'  # v0.2.1, v1.0.0などのタグにマッチ
+      - 'v*'  # v0.2.4, v1.0.0などの正式リリースタグのみ
+    paths-ignore:
+      - 'v*-dev*'    # 開発版は除外
+      - 'v*-rc*'     # RC版は除外  
+      - 'v*-beta*'   # ベータ版は除外
+      - 'v*-alpha*'  # アルファ版は除外
 
 jobs:
   test:

@@ -1,0 +1,51 @@
+name: Publish to TestPyPI
+
+on:
+  push:
+    tags:
+      - 'v*-dev*'    # v0.2.4-dev1, v0.2.4-dev2
+      - 'v*-rc*'     # v0.2.4-rc1, v0.2.4-rc2  
+      - 'v*-beta*'   # v0.2.4-beta1
+      - 'v*-alpha*'  # v0.2.4-alpha1
+
+jobs:
+  test-publish:
+    runs-on: ubuntu-latest
+    environment: test-release
+    permissions:
+      id-token: write  # OIDC for trusted publishing (if configured)
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+    
+    - name: Build package
+      run: |
+        python -m build
+        ls -la dist/
+    
+    - name: Check build
+      run: |
+        twine check dist/*
+    
+    - name: Publish to TestPyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: https://test.pypi.org/legacy/
+        password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+        verbose: true
+        print-hash: true
+    
+    - name: Test installation from TestPyPI
+      run: |
+        sleep 30  # Wait for TestPyPI to process
+        pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ qt-theme-manager
+        python -c "import theme_manager; print(f'Installed version: {theme_manager.__version__}')"
