@@ -1,10 +1,4 @@
-# ThemeMa## ✨ What's New in v0.2.1
-
-- 🔧 **Fixed GUI Startup Issues**: Theme editor now launches reliably across all Qt frameworks
-- ⚙️ **Enhanced Qt Compatibility**: Full support for PyQt5, PyQt6, and PySide6
-- 🚀 **Improved Startup Methods**: Both module and script execution work perfectly
-- 📦 **Better Error Handling**: Cleaner error messages and interruption support
-- 🤖 **Automated Releases**: PyPI auto-publishing via GitHub Actionsfor PyQt5/PyQt6/PySide6
+# Qt-Theme-Manager for PyQt5/PyQt6/PySide6
 
 [![CI/CD Tests](https://github.com/scottlz0310/Qt-Theme-Manager/actions/workflows/ci-cd-tests.yml/badge.svg)](https://github.com/scottlz0310/Qt-Theme-Manager/actions/workflows/ci-cd-tests.yml)
 [![PyPI version](https://badge.fury.io/py/qt-theme-manager.svg)](https://badge.fury.io/py/qt-theme-manager)
@@ -13,12 +7,21 @@
 
 A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications, providing dynamic theme switching with an advanced theme editor and 16+ built-in themes.
 
+## ✨ What's New in v0.2.3
+
+- 🎨 **Enhanced CLI Preview Features**: Support for `--config` and `--theme` options
+- ♿ **Major Accessibility Improvements**: 6% lightness contrast for zebra stripes (WCAG-compliant)
+- 🔄 **Theme Format Conversion**: Convert custom themes to Qt-Theme-Manager format
+- 📊 **Unified Theme Improvements**: Accessibility optimization across all 16 themes
+- 🚀 **Entry Points Added**: `theme-editor`, `theme-preview` commands for easy launching
+- 🐍 **Python 3.9+ Support**: Dropped Python 3.8 support, optimized for modern environments
+
 ## ✨ What's New in v0.2.1
 
 - 🔧 **Fixed GUI Startup Issues**: Theme editor now launches reliably across all Qt frameworks
 - ⚙️ **Enhanced Qt Compatibility**: Full support for PyQt5, PyQt6, and PySide6
 - 🚀 **Improved Startup Methods**: Both module and script execution work perfectly
-- � **Better Error Handling**: Cleaner error messages and interruption support
+- 📦 **Better Error Handling**: Cleaner error messages and interruption support
 
 ## Features
 
@@ -38,11 +41,11 @@ A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications, p
 **Want to try the new theme editor?**
 
 ```bash
-# Install and launch theme editor (Now with enhanced startup reliability!)
+# Install and launch theme editor (New entry points!)
 pip install qt-theme-manager[pyqt6]
 theme-editor
 
-# Alternative launch methods (both work reliably):
+# Alternative launch methods (all work reliably):
 python -m theme_manager.qt.theme_editor
 python launch_theme_editor.py  # If you cloned the repo
 ```
@@ -235,16 +238,18 @@ controller.apply_theme_to_widget(list_widget)
 For advanced users or scripting:
 
 ```bash
-# List available themes
+# New entry points (recommended)
+theme-manager list
+theme-manager set dark
+theme-manager export dark dark_theme.qss
+theme-manager current
+
+# Legacy methods  
 python -m theme_manager.cli.main list
-
-# Set theme
 python -m theme_manager.cli.main set dark
-
-# Export QSS stylesheet
 python -m theme_manager.cli.main export dark dark_theme.qss
-
-# Show current theme
+python -m theme_manager.cli.main current
+```
 
 ```bash
 python -m theme_manager.main current

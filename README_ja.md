@@ -1,10 +1,4 @@
-# ThemeMa## ✨ v0.2.1の新機能
-
-- 🔧 **GUI起動問題の完全解決**: すべてのQtフレームワークでテーマエディターが確実に起動
-- ⚙️ **Qt互換性の向上**: PyQt5、PyQt6、PySide6の完全サポート  
-- 🚀 **起動方法の改善**: モジュール実行とスクリプト実行の両方が完璧に動作
-- 📦 **エラーハンドリングの改善**: よりクリアなエラーメッセージと中断サポート
-- 🤖 **自動リリース**: GitHub Actions経由でのPyPI自動公開システムfor PyQt5/PyQt6/PySide6
+# Qt-Theme-Manager for PyQt5/PyQt6/PySide6
 
 [![CI/CD Tests](https://github.com/scottlz0310/Qt-Theme-Manager/actions/workflows/ci-cd-tests.yml/badge.svg)](https://github.com/scottlz0310/Qt-Theme-Manager/actions/workflows/ci-cd-tests.yml)
 [![PyPI version](https://badge.fury.io/py/qt-theme-manager.svg)](https://badge.fury.io/py/qt-theme-manager)
@@ -13,12 +7,14 @@
 
 PyQt5/PyQt6/PySide6アプリケーション向けの包括的なテーマ管理ライブラリです。高度なテーマエディターと16種類以上の内蔵テーマで動的なテーマ切り替えを提供します。
 
-## ✨ v0.2.3の新機能（準備中）
+## ✨ v0.2.3の新機能
 
 - 🎨 **CLIプレビュー機能強化**: `--config`と`--theme`オプション対応
 - ♿ **アクセシビリティ大幅改善**: 6%ライトネス差のゼブラスタイル（WCAG対応）
 - 🔄 **テーマフォーマット変換**: カスタムテーマ→Qt-Theme-Manager形式変換
 - 📊 **16テーマの統一改善**: 全テーマでアクセシビリティ最適化
+- 🚀 **エントリーポイント追加**: `theme-editor`、`theme-preview`コマンドで簡単起動
+- 🐍 **Python 3.9+サポート**: Python 3.8サポート終了、モダンな環境に最適化
 
 ## ✨ v0.2.1の新機能
 
@@ -43,11 +39,11 @@ PyQt5/PyQt6/PySide6アプリケーション向けの包括的なテーマ管理�
 **新しいテーマエディターを試してみたい？**
 
 ```bash
-# インストールしてテーマエディターを起動（起動の信頼性が向上！）
+# インストールしてテーマエディターを起動（新しいエントリーポイント！）
 pip install qt-theme-manager[pyqt6]
 theme-editor
 
-# 代替起動方法（両方とも確実に動作します）：
+# 代替起動方法（すべて確実に動作します）：
 python -m theme_manager.qt.theme_editor
 python launch_theme_editor.py  # リポジトリをクローンした場合
 ```
@@ -111,7 +107,7 @@ pip install -e .[pyqt6]    # PyQt6の場合
 
 ### 必要条件
 
-- Python 3.7+
+- Python 3.9+ (Python 3.8サポートは終了しました)
 - PyQt5、PyQt6、または PySide6（GUI機能用）
 
 ## クイックスタート
@@ -158,7 +154,11 @@ controller.apply_theme_to_application()
 色彩理論とアクセシビリティガイドラインに基づいた高機能なGUIテーマエディターを起動：
 
 ```bash
-python -m theme_manager.main editor
+# 新しいエントリーポイント（推奨）
+theme-editor
+
+# 従来の方法
+python -m theme_manager.qt.theme_editor
 ```
 
 このテーマエディターの特徴：
@@ -174,6 +174,10 @@ python -m theme_manager.main editor
 すべてのテーマの外観を確認できるGUIプレビューウィンドウを起動：
 
 ```bash
+# 新しいエントリーポイント（推奨）
+theme-preview
+
+# 従来の方法
 python launch_gui_preview.py
 ```
 
@@ -185,24 +189,40 @@ python launch_gui_preview.py
 ### 利用可能なテーマを一覧表示
 
 ```bash
+# 新しいCLIコマンド（推奨）
+theme-manager list
+
+# 従来の方法
 python -m theme_manager.main list
 ```
 
 ### テーマを設定
 
 ```bash
+# 新しいCLIコマンド（推奨）
+theme-manager set dark
+
+# 従来の方法
 python -m theme_manager.main set dark
 ```
 
 ### QSSスタイルシートをエクスポート
 
 ```bash
+# 新しいCLIコマンド（推奨）
+theme-manager export dark dark_theme.qss
+
+# 従来の方法
 python -m theme_manager.main export dark dark_theme.qss
 ```
 
 ### 現在のテーマを表示
 
 ```bash
+# 新しいCLIコマンド（推奨）
+theme-manager current
+
+# 従来の方法
 python -m theme_manager.main current
 ```
 

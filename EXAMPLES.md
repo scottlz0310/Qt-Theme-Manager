@@ -1,8 +1,8 @@
-# ThemeManager Examples and Sample Code
+# Qt-Theme-Manager Examples and Sample Code
 
-This document provides various usage examples and practical implementations of the ThemeManager library.
+This document provides various usage examples and practical implementations of the Qt-Theme-Manager library.
 
-## 🆕 New in v0.2.0: GUI Tools
+## 🆕 New in v0.2.3: Enhanced GUI Tools
 
 ### Quick Start with GUI Tools
 
@@ -12,6 +12,9 @@ theme-editor
 
 # Preview all themes instantly
 theme-preview
+
+# Enhanced preview with custom themes (v0.2.3)
+theme-preview --config my_themes.json --theme ocean
 
 # CLI management
 theme-manager list

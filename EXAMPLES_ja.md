@@ -1,6 +1,24 @@
-# ThemeManager 使用例とサンプルコード
+# Qt-Theme-Manager 使用例とサンプルコード
 
-このドキュメントでは、ThemeManagerライブラリの様々な使用方法を具体例とともに説明します。
+このドキュメントでは、Qt-Theme-Managerライブラリの様々な使用方法を具体例とともに説明します。
+
+## 🆕 v0.2.3の新機能: 強化されたGUIツール
+
+### GUIツールでのクイックスタート
+
+```bash
+# 新しいテーマエディターを試す（pip install qt-theme-manager[pyqt6]後）
+theme-editor
+
+# すべてのテーマを即座にプレビュー
+theme-preview
+
+# カスタムテーマでの強化プレビュー（v0.2.3）
+theme-preview --config my_themes.json --theme ocean
+
+# CLI管理
+theme-manager list
+```
 
 ## 目次
 

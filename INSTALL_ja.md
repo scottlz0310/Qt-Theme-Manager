@@ -1,6 +1,6 @@
-# ThemeManager インストールガイド
+# Qt-Theme-Manager インストールガイド
 
-## v0.2.0の新機能
+## v0.2.3の新機能
 
 インストール後、以下のGUIツールが直接使用できます：
 
@@ -12,7 +12,7 @@ theme-manager   # CLIテーマ管理ツール
 
 ## システム要件
 
-- **Python**: 3.7 以上
+- **Python**: 3.9 以上（Python 3.8のサポートは終了）
 - **オペレーティングシステム**: Windows, macOS, Linux
 - **Qtフレームワーク**: PyQt5、PyQt6、または PySide6（GUIツールに必要）
 

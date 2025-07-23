@@ -7,12 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.3] - 2025-07-22
 
+### 🚀 Added
+- **エントリーポイント追加**
+  - `theme-editor` コマンド: GUIテーマエディターの直接起動
+  - `theme-preview` コマンド: テーマプレビューウィンドウの直接起動  
+  - `theme-manager` コマンド: CLIツールの統一インターフェース
+
 ### 🎨 Added
 - **CLI プレビュー機能強化**
   - `launch_gui_preview.py` にコマンドライン引数対応
   - `--config` オプション: カスタム設定ファイル指定
   - `--theme` オプション: 起動時テーマ指定
   - アクセシビリティ改善テーマのプレビュー対応
+
+### 🐍 Changed
+- **Python サポート更新**
+  - Python 3.9+ のみサポート（Python 3.8 サポート終了）
+  - モダンなPython環境に最適化
+  - CI/CDテストマトリックスから Python 3.8 削除
 
 ### 🔄 Added  
 - **テーマフォーマット変換機能**
