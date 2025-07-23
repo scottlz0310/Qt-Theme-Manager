@@ -3,10 +3,8 @@ name: Publish to TestPyPI
 on:
   push:
     tags:
-      - 'v*-dev*'    # v0.2.4-dev1, v0.2.4-dev2
-      - 'v*-rc*'     # v0.2.4-rc1, v0.2.4-rc2  
-      - 'v*-beta*'   # v0.2.4-beta1
-      - 'v*-alpha*'  # v0.2.4-alpha1
+      - 'v[0-9]+\.[0-9]+\.[0-9]+\.(dev|rc|beta|alpha)[0-9]*$'  # v0.2.3.dev1, v0.2.3.rc1等
+      - 'v[0-9]+\.[0-9]+\.[0-9]+-(dev|rc|beta|alpha)[0-9]*$'   # v0.2.3-dev1, v0.2.3-rc1等
 
 jobs:
   test-publish:
