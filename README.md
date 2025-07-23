@@ -7,7 +7,7 @@
 
 A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications, providing dynamic theme switching with an advanced theme editor and 16+ built-in themes.
 
-## ✨ What's New in v0.2.3+
+## ✨ What's New in v0.2.4
 
 ### 🦓 NEW: Zebra Pattern Auto-Generation
 - **Real-time Contrast Adjustment**: Interactive slider and direct input for contrast ratios (1.15:1 to 1.80:1)
@@ -176,7 +176,7 @@ controller.apply_theme_to_application()
 
 ## Command Line Interface
 
-### 🎨 GUI Tools (Enhanced in v0.2.3+!)
+### 🎨 GUI Tools (Enhanced in v0.2.4!)
 
 After installing via pip, you can use these convenient GUI tools:
 

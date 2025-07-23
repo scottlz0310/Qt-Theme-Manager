@@ -2,7 +2,7 @@
 
 This document provides various usage examples and practical implementations of the Qt-Theme-Manager library.
 
-## 🆕 New in v0.2.3+: Zebra Pattern Auto-Generation
+## 🆕 New in v0.2.4: Zebra Pattern Auto-Generation
 
 ### Quick Start with Zebra Pattern Tools
 

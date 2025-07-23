@@ -2,7 +2,7 @@
 
 This document provides detailed information about all APIs available in the ThemeManager library.
 
-## 🆕 New in v0.2.3+
+## 🆕 New in v0.2.4
 
 ### Zebra Pattern Auto-Generation
 

@@ -1,6 +1,6 @@
 # Qt-Theme-Manager Installation Guide
 
-## What's New in v0.2.3+
+## What's New in v0.2.4
 
 ### 🦓 NEW: Zebra Pattern Auto-Generation Tools
 
