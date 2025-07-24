@@ -389,7 +389,7 @@ theme_manager/
 │   ├── controller.py           # Theme management
 │   └── preview.py              # GUI preview window
 ├── cli/
-やえ│   ├── __init__.py
+│   ├── __init__.py
 │   └── themectl.py             # CLI interface
 └── main.py                     # CLI entry point
 ```
