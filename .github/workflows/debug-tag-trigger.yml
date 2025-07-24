@@ -3,7 +3,9 @@ name: Debug Tag Trigger
 on:
   push:
     tags:
-      - '**'  # 全てのタグで実行
+      - '*-debug'    # -debugで終わるタグのみ実行
+      - '*-test'     # -testで終わるタグのみ実行
+  workflow_dispatch:  # 手動実行も可能にする
 
 jobs:
   debug-all-tags:
