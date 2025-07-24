@@ -1048,4 +1048,4 @@ git checkout -b integration
 
 **連絡先**: 質問や明確化についてはGitHub Copilotまで。
 
-**バージョン**: 1.1.0 - AI実装戦略追加版
+**バージョン**: 1.0.0 - AI実装戦略追加版
