@@ -107,7 +107,7 @@ jobs:
           fi
           
           echo "=== STEP: Running main test suite ==="
-          bash test_v0.2.3_release.sh
+          bash test_release.sh
 
   build:
     needs: test

@@ -48,7 +48,7 @@ fi
 
 # テストの実行
 echo_info "🧪 テストを実行中..."
-if bash test_v0.2.3_release.sh; then
+if bash test_release.sh; then
     echo_success "テストが成功しました"
 else
     echo_error "テストが失敗しました。修正してから再実行してください。"

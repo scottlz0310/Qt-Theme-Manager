@@ -91,7 +91,7 @@ jobs:
         PYTHONIOENCODING: utf-8
       run: |
         mkdir -p /tmp/runtime-runner
-        bash test_v0.2.3_release.sh
+        bash test_release.sh
       shell: bash
     
     - name: Test theme editor startup
