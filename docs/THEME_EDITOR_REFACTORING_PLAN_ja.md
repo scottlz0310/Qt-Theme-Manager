@@ -29,9 +29,27 @@
 
 ## 🏗️ 目標アーキテクチャ
 
-### 統合アプリケーション構造
+### 🔒 **重要な方針: 既存ライブラリの保護**
+
+**`theme_manager/`パッケージは変更しません**
+- ✅ **安定性保証**: 実績のあるコアライブラリを保護
+- ✅ **リスク削減**: テスト済みAPIへの影響を回避
+- ✅ **互換性維持**: 既存ユーザーへの破壊的変更なし
+- ✅ **開発効率**: GUIレイヤーのみに集中
+
+### アーキテクチャ分離
+
 ```
-qt_theme_studio/                    # 新しい統合アプリケーションパッケージ
+# 既存ライブラリ（変更なし）
+theme_manager/                      # ✅ 現状維持 - 触らない
+├── __init__.py                    # 安定版API
+├── main.py                        # コアライブラリ
+├── cli/                          # CLI機能
+├── qt/                           # Qt統合モジュール
+└── ...                           # 全ての既存機能
+
+# 新しいGUIアプリケーション（新規作成）
+qt_theme_studio/                    # 🆕 新しい統合アプリケーションパッケージ
 ├── __init__.py
 ├── main.py                         # メインアプリケーションエントリーポイント
 ├── config/
@@ -39,12 +57,12 @@ qt_theme_studio/                    # 新しい統合アプリケーションパ
 │   ├── app_config.py              # アプリケーション設定
 │   ├── editor_config.py           # エディター固有設定
 │   └── ui_config.py               # UIレイアウトとスタイリング
-├── models/
+├── adapters/                       # 🔗 既存ライブラリとの橋渡し
 │   ├── __init__.py
-│   ├── theme_model.py             # テーマデータ管理
-│   ├── color_model.py             # 色計算と変換
-│   ├── zebra_model.py             # ゼブラパターン生成
-│   └── project_model.py           # プロジェクト/ワークスペース管理
+│   ├── theme_adapter.py           # theme_manager.qt との連携
+│   ├── preview_adapter.py         # 既存プレビュー機能の活用
+│   ├── api_adapter.py             # 既存APIラッパー
+│   └── format_adapter.py          # 🆕 フォーマット変換システム
 ├── views/
 │   ├── __init__.py
 │   ├── main_window.py             # メインアプリケーションウィンドウ
@@ -58,27 +76,25 @@ qt_theme_studio/                    # 新しい統合アプリケーションパ
 │       ├── contrast_slider.py     # WCAG準拠コントラスト制御
 │       ├── theme_tree.py          # テーマ階層ブラウザー
 │       ├── preview_widget.py      # リアルタイムプレビューコンポーネント
-│       ├── export_dialog.py       # テーマエクスポート/インポートダイアログ
+│       ├── export_dialog.py       # 🆕 スマートエクスポート/インポートダイアログ
 │       └── settings_panel.py      # アプリケーション設定
 ├── controllers/
 │   ├── __init__.py
 │   ├── app_controller.py          # メインアプリケーションロジック
-│   ├── theme_controller.py        # テーマ編集操作
+│   ├── theme_controller.py        # テーマ編集操作（theme_manager経由）
 │   ├── zebra_controller.py        # ゼブラパターン管理
 │   ├── preview_controller.py      # プレビュー同期
-│   └── export_controller.py       # インポート/エクスポート操作
+│   └── export_controller.py       # 🆕 フォーマット中立インポート/エクスポート操作
 ├── services/
 │   ├── __init__.py
-│   ├── theme_service.py           # テーマファイルI/O操作
-│   ├── validation_service.py      # テーマ検証とテスト
+│   ├── gui_service.py             # GUI固有サービス
+│   ├── validation_service.py      # GUI用検証（theme_manager活用）
 │   ├── backup_service.py          # 自動保存とバックアップ
 │   └── plugin_service.py          # 将来のプラグインシステム
 ├── utilities/
 │   ├── __init__.py
-│   ├── color_utils.py             # 色空間変換
+│   ├── gui_utils.py               # GUI専用ユーティリティ
 │   ├── accessibility_utils.py     # WCAG準拠チェック
-│   ├── file_utils.py              # ファイル操作ヘルパー
-│   ├── qt_utils.py                # Qtフレームワークユーティリティ
 │   ├── logger_utils.py            # ロギングシステム
 │   └── qt_framework_manager.py    # Qtフレームワーク切り替えシステム
 └── resources/
@@ -88,8 +104,30 @@ qt_theme_studio/                    # 新しい統合アプリケーションパ
     └── styles/                    # アプリケーションスタイリング
 ```
 
+### 🔗 **既存ライブラリとの連携方針**
+
+1. **アダプターパターンの活用**
+   - `qt_theme_studio.adapters`で既存APIをラップ
+   - GUIレイヤーと既存ライブラリの疎結合
+
+2. **既存機能の再利用**
+   - `theme_manager.qt.loader` - テーマ読み込み
+   - `theme_manager.qt.stylesheet` - スタイルシート生成
+   - `theme_manager.qt.controller` - テーマ操作
+   - `theme_manager.main` - コア機能
+
+3. **API安定性の保証**
+   - 既存のパブリックAPIは一切変更しない
+   - 新しい機能は`qt_theme_studio`内で完結
+
 ### 新しい統合ランチャー
 ```
+# 旧個別ランチャー（削除対象）
+launch_theme_editor.py              # → 削除
+launch_zebra_theme_editor.py        # → 削除  
+launch_gui_preview.py               # → 削除
+
+# 新しい統合ランチャー
 launch_theme_studio.py              # すべての機能への単一エントリーポイント
 ```
 
@@ -114,9 +152,10 @@ launch_theme_studio.py              # すべての機能への単一エントリ
    - 画像としてプレビューエクスポート
    - レスポンシブレイアウトテスト
 
-4. **テーマ管理**
+4. **スマートテーマ管理**
    - テーマギャラリーブラウザー
-   - インポート/エクスポート機能
+   - **フォーマット中立インポート/エクスポート機能**
+   - **ラウンドトリップ変換対応**（元フォーマット保持）
    - バージョン管理統合
    - テーマテンプレートとプリセット
 
@@ -132,7 +171,82 @@ launch_theme_studio.py              # すべての機能への単一エントリ
    - デバッグ情報エクスポート
    - パフォーマンス分析
 
-## 📊 実装フェーズ
+## � フォーマット変換システム詳細仕様
+
+### 6.1 概要
+- **目的**: 複数のテーマフォーマット間での双方向変換
+- **設計原則**: メタデータ保持、可逆変換、フォーマット中立
+- **対応フォーマット**: QSS、JSON、VS Code、Sublime Text、その他
+
+### 6.2 技術アーキテクチャ
+
+```
+format_system/
+├── core/
+│   ├── base_converter.py      # 変換基底クラス
+│   ├── metadata_handler.py    # メタデータ管理
+│   └── conversion_registry.py # フォーマット登録システム
+├── converters/
+│   ├── qss_converter.py       # QSS ⟷ 内部形式
+│   ├── json_converter.py      # JSON ⟷ 内部形式
+│   ├── vscode_converter.py    # VS Code ⟷ 内部形式
+│   └── sublime_converter.py   # Sublime ⟷ 内部形式
+├── validators/
+│   ├── format_validator.py    # フォーマット検証
+│   └── content_validator.py   # 内容整合性検証
+└── dialogs/
+    ├── smart_import_dialog.py # 自動判別インポート
+    └── export_wizard.py      # エクスポートウィザード
+```
+
+### 6.3 変換プロセス
+
+#### インポート処理
+1. **フォーマット自動判別**: ファイル拡張子＋内容解析
+2. **適切な変換器選択**: 登録済み変換器から最適選択
+3. **メタデータ抽出**: 元フォーマット固有情報保持
+4. **内部形式変換**: theme_manager互換データ構造へ
+5. **検証実行**: データ整合性とフォーマット準拠確認
+
+#### エクスポート処理
+1. **ターゲット選択**: ユーザー指定または推奨フォーマット
+2. **メタデータ結合**: 保存済みメタデータと現在状態統合
+3. **フォーマット変換**: 内部形式から目標フォーマットへ
+4. **最適化実行**: ターゲット固有の最適化適用
+5. **検証・出力**: 結果検証後ファイル出力
+
+### 6.4 メタデータ保持システム
+
+```python
+class ThemeMetadata:
+    """テーマメタデータ管理"""
+    original_format: str          # 元フォーマット識別子
+    format_specific: Dict[str, Any]  # フォーマット固有データ
+    conversion_history: List[Dict]   # 変換履歴
+    custom_properties: Dict          # カスタムプロパティ
+    validation_results: Dict         # 検証結果キャッシュ
+```
+
+### 6.5 双方向変換保証
+
+- **可逆性原則**: A→B→A変換で情報損失最小化
+- **メタデータ継承**: 変換チェーン全体でメタデータ保持
+- **差分検出**: 変換前後の差分自動検出・報告
+- **復元機能**: 元フォーマット情報からの復元サポート
+
+### 6.6 スマートエクスポート機能
+
+#### 自動最適化
+- **フォーマット特化**: 各フォーマットの特徴に最適化
+- **互換性考慮**: ターゲット環境の制約反映
+- **パフォーマンス**: 出力サイズ・読み込み速度最適化
+
+#### 品質保証
+- **プレビュー機能**: エクスポート前結果確認
+- **互換性検証**: ターゲット環境での動作確認
+- **エラー修正**: 自動修正 + 手動修正オプション
+
+## �📊 実装フェーズ
 
 ### フェーズ1: 基盤セットアップ（3-4日）
 **ブランチ**: `refactor/phase1-foundation`
@@ -156,30 +270,45 @@ launch_theme_studio.py              # すべての機能への単一エントリ
 - 設定が正常に読み込まれる
 - すべてのQtフレームワーク（PyQt5/PyQt6/PySide6）をサポート
 
-### フェーズ2: モデル層実装（2-3日）
-**ブランチ**: `refactor/phase2-models`
+### フェーズ2: アダプター層実装（2-3日）
+**ブランチ**: `refactor/phase2-adapters`
 
 **目標**:
-- データモデルの抽出とリファクタリング
-- 色計算エンジンの実装
-- ゼブラパターン生成ロジックの作成
-- テーマ検証システムの追加
+- 既存`theme_manager`ライブラリとの安全な連携
+- APIラッパーの作成
+- データ変換レイヤーの実装
+- 既存機能の活用
 
 **成果物**:
-- [ ] 完全なCRUD操作を持つ`ThemeModel`
-- [ ] 高度な色空間サポートを持つ`ColorModel`
-- [ ] WCAG準拠の`ZebraModel`
-- [ ] ワークスペース管理用`ProjectModel`
-- [ ] モデル用包括的単体テスト
+- [ ] `ThemeAdapter`インターフェース実装
+- [ ] 既存APIラッパー作成
+- [ ] データ変換レイヤー
+- [ ] 互換性テストスイート
+
+### フェーズ3: フォーマット変換システム（4-5日）
+**ブランチ**: `refactor/phase3-format-conversion`
+
+**目標**:
+- フォーマット中立インポート/エクスポートシステム
+- メタデータ保持機能
+- ラウンドトリップ変換対応
+- スマートエクスポート機能
+
+**成果物**:
+- [ ] `format_system/`パッケージ実装
+- [ ] QSS、JSON、VS Codeコンバーター
+- [ ] メタデータハンドラー
+- [ ] スマートインポート/エクスポートダイアログ
+- [ ] 変換テストスイート
 
 **検証基準**:
-- すべての色計算が現在の実装と一致する
-- ゼブラパターン生成が同一の結果を生成する
-- テーマロード/保存が互換性を維持する
-- 単体テストカバレッジ > 90%
+- 各フォーマット間の双方向変換が正常動作
+- メタデータが適切に保持される
+- ラウンドトリップ変換でデータ損失が最小限
+- スマートインポートがフォーマットを正確に判別
 
-### フェーズ3: ビュー層開発（4-5日）
-**ブランチ**: `refactor/phase3-views`
+### フェーズ4: コアエディタータブ（3-4日）
+**ブランチ**: `refactor/phase4-editor-tabs`
 
 **目標**:
 - モジュラーUIコンポーネントの作成
@@ -201,30 +330,33 @@ launch_theme_studio.py              # すべての機能への単一エントリ
 - プレビューがリアルタイムで更新される
 - ゼブラエディターが現在の機能パリティを維持する
 
-### フェーズ4: コントローラー統合（2-3日）
-**ブランチ**: `refactor/phase4-controllers`
+### フェーズ5: コントローラー統合（2-3日）
+**ブランチ**: `refactor/phase5-controllers`
 
 **目標**:
 - アプリケーションロジック層の実装
 - ビューとモデルの接続
 - 高度なテーマ操作の追加
-- プラグインシステム基盤の作成
+- フォーマット変換システムの統合
 
 **成果物**:
 - [ ] メインアプリケーションフロー用`AppController`
 - [ ] 編集操作用`ThemeController`
 - [ ] ゼブラパターン管理用`ZebraController`
 - [ ] ライブ更新用`PreviewController`
-- [ ] インポート/エクスポート機能用`ExportController`
+- [ ] フォーマット変換統合用`ExportController`
+- [ ] **フォーマット中立インポート/エクスポート用`ExportController`**
 
 **検証基準**:
 - すべてのユーザーインタラクションが正しく動作する
 - データがコンポーネント間で適切に流れる
+- 複数フォーマットでのインポート/エクスポートが正常動作する
+- ラウンドトリップ変換が元フォーマットを保持する
 - エラーハンドリングがエッジケースをカバーする
 - パフォーマンスが現在の実装と同等または上回る
 
-### フェーズ5: サービス層と高度機能（3-4日）
-**ブランチ**: `refactor/phase5-services`
+### フェーズ6: サービス層と高度機能（3-4日）
+**ブランチ**: `refactor/phase6-services`
 
 **目標**:
 - プロフェッショナルグレード機能の追加
@@ -250,8 +382,8 @@ launch_theme_studio.py              # すべての機能への単一エントリ
 - ロギングシステムが正しく動作する
 - Qtフレームワーク切り替えが安全に実行される
 
-### フェーズ6: テストと最終調整（2-3日）
-**ブランチ**: `refactor/phase6-testing`
+### フェーズ7: テストと最終調整（2-3日）
+**ブランチ**: `refactor/phase7-testing`
 
 **目標**:
 - 包括的テストスイート
@@ -275,7 +407,6 @@ launch_theme_studio.py              # すべての機能への単一エントリ
 ## 🔄 移行戦略
 
 ### 後方互換性
-- 既存の起動スクリプトを非推奨ラッパーとして維持
 - すべての現在のAPIとファイル形式を保持
 - 自動移行ツールの提供
 - 破壊的変更の明確な文書化
@@ -299,24 +430,28 @@ launch_theme_studio.py              # すべての機能への単一エントリ
 - ユーティリティ関数: 100%カバレッジ
 - 色計算: 包括的エッジケース
 - ファイル操作: モックベーステスト
+- **フォーマット変換**: 各変換器の詳細テスト
 
 ### 統合テスト
 - コンポーネント間相互作用検証
 - クロスQtフレームワーク互換性
 - テーマロード/保存ワークフロー
 - プレビュー同期精度
+- **ラウンドトリップ変換**: フォーマット間双方向変換検証
 
 ### ユーザー受け入れテスト
 - 現在のユーザーワークフロー保持
 - 新機能ユーザビリティ検証
 - パフォーマンス比較テスト
 - アクセシビリティ準拠検証
+- **フォーマット変換ワークフロー**: エンドツーエンドテスト
 
 ### パフォーマンステスト
 - アプリケーション起動時間
 - テーマ切り替え応答性
 - メモリ使用量最適化
 - 大きなテーマファイル処理
+- **変換速度**: 大容量ファイル変換性能
 
 ## 📈 成功指標
 
@@ -338,26 +473,49 @@ launch_theme_studio.py              # すべての機能への単一エントリ
 
 ### リファクタリング対象ファイル
 ```
+# 既存ライブラリ（変更なし - 完全保護）
+theme_manager/                      # ✅ 一切変更しない
+├── __init__.py                    # 安定版API保持
+├── main.py                        # コアライブラリ保持
+├── qt/                           # Qt統合モジュール保持
+└── ...                           # 全機能現状維持
+
+# リファクタリング対象（GUI層のみ）
 現在 → 新しい場所
-launch_theme_editor.py → qt_theme_studio/views/theme_editor_view.py
-launch_zebra_theme_editor.py → qt_theme_studio/views/zebra_editor_view.py
-launch_gui_preview.py → qt_theme_studio/views/preview_view.py
+launch_theme_editor.py → qt_theme_studio/views/theme_editor_view.py + 非推奨ラッパー保持
+launch_zebra_theme_editor.py → qt_theme_studio/views/zebra_editor_view.py + 非推奨ラッパー保持
+launch_gui_preview.py → qt_theme_studio/views/preview_view.py + 非推奨ラッパー保持
 theme_editor_zebra_extension.py → qt_theme_studio/controllers/zebra_controller.py
-zebra_pattern_editor.py → qt_theme_studio/models/zebra_model.py
-theme_manager/qt/preview.py → qt_theme_studio/views/components/preview_widget.py
-theme_manager/qt/theme_editor.py → qt_theme_studio/models/theme_model.py
+zebra_pattern_editor.py → qt_theme_studio/controllers/zebra_controller.py（統合）
+
+# 活用される既存機能（変更なし）
+theme_manager/qt/preview.py → qt_theme_studio/adapters/preview_adapter.py（経由）
+theme_manager/qt/theme_editor.py → qt_theme_studio/adapters/theme_adapter.py（経由）
+theme_manager/qt/loader.py → 直接活用（変更なし）
+theme_manager/qt/stylesheet.py → 直接活用（変更なし）
 ```
 
-### 非推奨にするファイル
-- すべての現在の起動スクリプト（互換性ラッパーとして維持）
-- スタンドアロンゼブラエディター
-- 個別プレビューアプリケーション
+### 削除するファイル
+- 個別起動スクリプト（統合により不要）
+  - `launch_theme_editor.py` → 削除
+  - `launch_zebra_theme_editor.py` → 削除
+  - `launch_gui_preview.py` → 削除
+- 一部のヘルパースクリプト（統合により不要になったもの）
+  - `theme_editor_zebra_extension.py` → 機能を`qt_theme_studio`に統合
+  - `zebra_pattern_editor.py` → 機能を`qt_theme_studio`に統合
 
 ### 新規作成ファイル
 - `launch_theme_studio.py` - 統合アプリケーションランチャー
-- 上記で概説された完全なMVCアーキテクチャ
-- 包括的テストスイート
-- 更新されたドキュメント
+- `qt_theme_studio/` - 完全新規のGUIアプリケーションパッケージ
+- アダプター層 - 既存ライブラリとの橋渡し
+- GUI専用のテストスイート
+- 更新されたGUI用ドキュメント
+
+### 🔒 **保護されるファイル（変更禁止）**
+- `theme_manager/` - **全てのファイル・サブディレクトリ**
+- 既存のCLIツール - `theme_manager/cli/`
+- 既存のAPIドキュメント - 現状維持
+- 既存の設定ファイル形式 - 互換性保持
 
 ## 🚀 リリース後計画
 
@@ -397,6 +555,109 @@ theme_manager/qt/theme_editor.py → qt_theme_studio/models/theme_model.py
 - [ ] パフォーマンス分析
 
 ## 🔧 新規追加ソリューション詳細
+
+### フォーマット中立インポート/エクスポートシステム
+
+#### 目的
+- **複数フォーマット対応**: QSS、JSON、VS Code、WebStorm等の幅広いテーマフォーマット
+- **ラウンドトリップ変換**: インポート→編集→エクスポートで情報ロスなし
+- **既存ライブラリ活用**: `theme_manager`の安定したAPIを最大限活用
+- **ユーザビリティ向上**: フォーマットを意識せずにテーマ編集が可能
+
+#### アーキテクチャ設計
+
+**1. アダプターパターンによるフォーマット抽象化**
+```
+qt_theme_studio/adapters/
+├── format_adapter.py           # 統一フォーマット変換システム
+├── theme_format_converter.py   # フォーマット別変換器基底クラス
+├── converters/
+│   ├── qtm_converter.py        # Qt-Theme-Manager標準フォーマット
+│   ├── qss_converter.py        # Qtスタイルシート変換
+│   ├── json_converter.py       # 汎用JSON形式変換
+│   ├── vscode_converter.py     # VS Codeテーマ変換
+│   └── webstorm_converter.py   # WebStormテーマ変換
+└── format_metadata.py          # メタデータ保持システム
+```
+
+**2. ラウンドトリップ対応データ構造**
+- **FormatAwareThemeData**: 元フォーマット情報付きテーマデータ
+- **ImportMetadata**: インポート時の詳細情報保持
+- **OriginalStructure**: 元ファイルの構造・順序・コメント保持
+
+**3. 統一内部フォーマット**
+- 既存の`theme_manager`フォーマットを基準とする統一仕様
+- すべての変換は内部フォーマットを経由
+- フォーマット固有情報はメタデータで保持
+
+#### 主要機能
+
+**1. 自動フォーマット検出**
+- ファイル拡張子による初期判定
+- 内容解析による精密判定
+- 複数フォーマット候補の提示
+
+**2. メタデータ保持システム**
+- 元ファイルの構造情報保持
+- JSON順序・コメント・空白の保持
+- フォーマット固有設定の保持
+- 変換時の警告・注意事項記録
+
+**3. スマートエクスポートUI**
+- 元フォーマットでの推奨エクスポート
+- 任意フォーマットへの変換オプション
+- エクスポート前プレビュー機能
+- 変換品質インジケーター
+
+**4. プラグイン拡張システム**
+- カスタムフォーマットの追加対応
+- サードパーティフォーマット支援
+- コミュニティ拡張の受け入れ
+
+#### 技術仕様
+
+**対応予定フォーマット**
+- **Qt-Theme-Manager**: 標準内部フォーマット（100%互換）
+- **QSS**: Qtスタイルシート（`theme_manager.qt.stylesheet`活用）
+- **JSON**: 汎用JSON形式（カスタマイズ可能）
+- **VS Code**: `.json`テーマファイル（colors, tokenColors対応）
+- **WebStorm**: IntelliJ系IDE テーマ
+- **CSS**: Web CSS風記法（実験的）
+
+**変換品質レベル**
+- **完全互換**: 情報ロスなしの双方向変換
+- **高品質**: 主要情報保持、一部メタデータ欠損
+- **基本互換**: 基本色・プロパティのみ変換
+- **実験的**: 部分対応、手動調整必要
+
+#### 実装戦略
+
+**フェーズ1: 基本フォーマット対応**
+- Qt-Theme-Manager（既存）
+- QSS（`theme_manager`活用）
+- 汎用JSON
+
+**フェーズ2: 主要IDE対応**
+- VS Code形式
+- WebStorm形式
+
+**フェーズ3: プラグインシステム**
+- カスタムフォーマット追加機能
+- コミュニティ拡張対応
+
+#### 品質保証
+
+**テスト戦略**
+- 各フォーマットのラウンドトリップテスト
+- 大量テーマファイルでの変換精度検証
+- エッジケース・破損ファイル対応テスト
+- パフォーマンステスト（大容量ファイル）
+
+**エラーハンドリング**
+- 部分的変換の継続実行
+- 詳細エラーログと修復提案
+- 安全なフォールバック処理
+- ユーザーフレンドリーなエラーメッセージ
 
 ### 統合ロギングシステム
 
@@ -919,133 +1180,10 @@ class SettingsPanel(QWidget):
 - パフォーマンス回帰テスト
 - クロスプラットフォーム検証
 
-## 🤖 AI別実装戦略
-
-### GitHub Copilot GPT-4.1 実装仕様
-
-**ブランチ**: `feature/gpt4.1`
-
-**重点領域**:
-- 安定性・信頼性最優先
-- エンタープライズレベルのコード品質
-- 包括的テストカバレッジ
-- 豊富なドキュメント
-
-**アーキテクチャ方針**:
-- 伝統的MVC + Repository パターン
-- SOLID原則厳守
-- デザインパターン活用
-- 例外処理の徹底
-
-**品質基準**:
-- テストカバレッジ > 95%
-- 型ヒント 100%
-- docstring カバレッジ 100%
-- PEP8 完全準拠
-
-### Claude Sonnet 4.0 実装仕様
-
-**ブランチ**: `feature/cs4.0`
-
-**重点領域**:
-- ユーザーエクスペリエンス革新
-- アクセシビリティ完全準拠
-- 直感的インターフェース設計
-- 創造的問題解決
-
-**アーキテクチャ方針**:
-- ユーザー中心設計
-- リアクティブUI パターン
-- 状態管理の最適化
-- レスポンシブレイアウト
-
-**品質基準**:
-- WCAG 2.1 AAA準拠
-- ユーザビリティテスト実施
-- A11yツール検証
-- 多言語対応考慮
-
-### Cursor Composer 実装仕様（オプション）
-
-**ブランチ**: `feature/cursor`
-
-**重点領域**:
-- パフォーマンス最適化
-- モダン技術活用
-- スケーラビリティ重視
-- 開発効率向上
-
-**アーキテクチャ方針**:
-- 非同期処理活用
-- メモリ効率最適化
-- 並行処理実装
-- キャッシュ戦略
-
-**品質基準**:
-- 起動時間 < 2秒
-- メモリ使用量最小化
-- CPU使用率最適化
-- プロファイリング実施
-
-## 🔄 AI実装比較・統合プロセス
-
-### フェーズ1: 並行実装
-```bash
-# 各AIによる独立完全実装
-git checkout -b feature/gpt4.1
-git checkout -b feature/cs4.0
-# オプション: git checkout -b feature/cursor
-```
-
-### フェーズ2: 実装評価
-```bash
-# 比較分析用ブランチ
-git checkout -b analysis
-
-# 評価観点
-- コード品質（可読性、保守性）
-- パフォーマンス（速度、メモリ）
-- UX（使いやすさ、アクセシビリティ）
-- 実装完成度（機能網羅性）
-- テスト品質（網羅性、堅牢性）
-- ドキュメント品質（完全性、明確性）
-```
-
-### フェーズ3: ベストプラクティス統合
-```bash
-# 最終統合版ブランチ
-git checkout -b integration
-
-# 統合方針例
-- アーキテクチャ基盤: GitHub Copilot実装 (feature/gpt4.1)
-- UIコンポーネント: Claude Sonnet実装 (feature/cs4.0)
-- パフォーマンス層: Cursor Composer実装 (feature/cursor) ※実装した場合
-```
-
-## 💰 コスト・時間最適化推奨案
-
-### 最小有効実装（推奨開始点）
-```
-1. GitHub Copilot実装（VS Code環境活用） → feature/gpt4.1
-2. Claude Sonnet実装（UX革新重視） → feature/cs4.0
-3. 比較・統合作業
-```
-
-**予想工数**: 3-5日（AI実装） + 1-2日（統合）
-**予想コスト**: 中程度（2つのAIサービス利用）
-
-### 拡張実装（リソース次第）
-```
-上記 + Cursor Composer実装（パフォーマンス最適化） → feature/cursor
-```
-
-**追加工数**: +2-3日
-**追加コスト**: +中程度
-
 ---
 
-**次のステップ**: この計画をレビューし、利用可能なリソースに基づいて実装AI数を決定後、各AI実装を開始。
+**次のステップ**: この計画をレビューし、フェーズ1から実装を開始。
 
-**連絡先**: 質問や明確化についてはGitHub Copilotまで。
+**開発体制**: 単体開発（Amazon Kiro支援）
 
-**バージョン**: 1.0.0 - AI実装戦略追加版
+**バージョン**: 1.0.0 - リファクタリング計画
