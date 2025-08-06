@@ -4,7 +4,9 @@ Main entry point for the theme manager CLI.
 """
 
 import sys
+
 from .cli.themectl import main as cli_main
+
 
 def main():
     """Main entry point with editor support."""
@@ -13,24 +15,30 @@ def main():
         # Launch theme editor
         try:
             from .qt.theme_editor import launch_theme_editor
+
             print("Starting advanced theme editor...")
             editor = launch_theme_editor()
-            
+
             if editor is not None:
                 from .qt.theme_editor import qt_available
+
                 if qt_available:
                     try:
                         from PyQt5.QtWidgets import QApplication
                     except ImportError:
                         try:
-                            from PyQt6.QtWidgets import QApplication  
+                            from PyQt6.QtWidgets import QApplication
                         except ImportError:
                             from PySide6.QtWidgets import QApplication
-                    
+
                     app = QApplication.instance()
                     if app is not None:
                         print("Theme editor launched successfully!")
-                        sys.exit(app.exec_() if hasattr(app, 'exec_') else app.exec())
+                        sys.exit(
+                            app.exec_()
+                            if hasattr(app, "exec_")
+                            else app.exec()
+                        )
                 else:
                     print("ERROR: Qt libraries not found.")
                     print("Please install with:")
@@ -44,6 +52,7 @@ def main():
     else:
         # Use existing CLI
         cli_main()
+
 
 if __name__ == "__main__":
     main()

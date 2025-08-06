@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
@@ -8,7 +8,10 @@ setup(
     version="0.2.4",
     author="scottlz0310",
     author_email="scott.lz0310@gmail.com",
-    description="A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications",
+    description=(
+        "A comprehensive theme management library for "
+        "PyQt5/PyQt6/PySide6 applications"
+    ),
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/scottlz0310/Qt-Theme-Manager",
@@ -39,12 +42,12 @@ setup(
             "pytest>=6.0",
             "pytest-qt>=4.0",
             "black",
-            "isort", 
+            "isort",
             "flake8",
         ],
         "all": [
             "PyQt5>=5.15.0",
-            "PyQt6>=6.2.0", 
+            "PyQt6>=6.2.0",
             "PySide6>=6.0.0",
         ],
     },

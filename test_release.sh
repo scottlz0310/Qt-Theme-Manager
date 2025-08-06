@@ -34,7 +34,7 @@ python3 --version || {
 
 # 必要なパッケージのインストール確認
 echo_info "📦 依存関係の確認"
-pip3 install -r requirements.txt || {
+pip3 install -e . || {
     echo_error "依存関係のインストールに失敗しました"
     exit 1
 }
@@ -127,7 +127,6 @@ required_files = [
     'theme_manager/qt/__init__.py',
     'setup.py',
     'pyproject.toml',
-    'requirements.txt',
     'README.md',
     'LICENSE'
 ]
@@ -160,8 +159,12 @@ with open('setup.py', 'r') as f:
 # pyproject.toml からバージョンを取得
 with open('pyproject.toml', 'r') as f:
     pyproject_content = f.read()
-    pyproject_version = re.search(r'version = [\'\"](.*?)[\'\"]', pyproject_content)
-    pyproject_version = pyproject_version.group(1) if pyproject_version else None
+    pyproject_version = re.search(
+        r'version = [\'\"](.*?)[\'\"]', pyproject_content
+    )
+    pyproject_version = (
+        pyproject_version.group(1) if pyproject_version else None
+    )
 
 # __init__.py からバージョンを取得
 with open('theme_manager/__init__.py', 'r') as f:

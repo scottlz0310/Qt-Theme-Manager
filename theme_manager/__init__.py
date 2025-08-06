@@ -7,7 +7,7 @@ Supports dynamic theme switching with advanced theme editor and 16+ built-in the
 
 NEW in v0.2.4: Zebra Pattern Auto-Generation
 - WCAG-compliant alternating row colors with real-time contrast adjustment
-- Scientific color calculations using HSL/HSV color spaces  
+- Scientific color calculations using HSL/HSV color spaces
 - 3 accessibility levels (subtle/moderate/high)
 - Cross-platform support (PyQt5/PyQt6/PySide6)
 
@@ -24,7 +24,7 @@ from .qt.stylesheet import StylesheetGenerator
 
 __all__ = [
     "ThemeController",
-    "apply_theme_to_widget", 
+    "apply_theme_to_widget",
     "ThemeLoader",
     "StylesheetGenerator",
 ]

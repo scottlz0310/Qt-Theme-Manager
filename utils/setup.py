@@ -3,6 +3,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
+
 def setup_theme_manager_project(project_name="theme_manager_project"):
     # Define paths
     base_dir = Path.cwd() / project_name
@@ -28,6 +29,6 @@ def setup_theme_manager_project(project_name="theme_manager_project"):
 
     print("Project setup complete.")
 
+
 # Run the setup
 setup_theme_manager_project()
-

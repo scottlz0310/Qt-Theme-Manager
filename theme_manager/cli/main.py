@@ -4,7 +4,9 @@ ThemeManager CLI main entry point
 """
 
 import sys
+
 from .themectl import main as themectl_main
+
 
 def main():
     """Main entry point for theme-manager CLI command"""
@@ -16,6 +18,7 @@ def main():
     except Exception as e:
         print(f"Error: {e}")
         return 1
+
 
 if __name__ == "__main__":
     sys.exit(main())

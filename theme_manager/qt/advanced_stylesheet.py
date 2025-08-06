@@ -3,13 +3,14 @@ Enhanced QSS stylesheet generation for comprehensive theme components.
 Supports advanced component styling with the theme editor.
 """
 
-from typing import Dict, Any
+from typing import Any, Dict
+
 from .stylesheet import StylesheetGenerator
 
 
 class AdvancedStylesheetGenerator(StylesheetGenerator):
     """Enhanced stylesheet generator with comprehensive component support."""
-    
+
     def generate_qss(self) -> str:
         """Generate complete QSS stylesheet with enhanced component support."""
         qss_parts = [
@@ -26,26 +27,29 @@ class AdvancedStylesheetGenerator(StylesheetGenerator):
             self._generate_status_styles(),
             self._generate_text_styles(),
         ]
-        
+
         return "\n\n".join(filter(None, qss_parts))
-    
+
     def _generate_enhanced_button_styles(self) -> str:
         """Generate enhanced button styles with hover and pressed states."""
         button_config = self.theme_config.get("button", {})
-        
-        normal_color = button_config.get("normal", self.theme_config.get("primaryColor", "#4a90e2"))
+
+        normal_color = button_config.get(
+            "normal", self.theme_config.get("primaryColor", "#4a90e2")
+        )
         hover_color = button_config.get("hover", "#5ba0f2")
-        pressed_color = button_config.get("pressed", "#357abd") 
+        pressed_color = button_config.get("pressed", "#357abd")
         disabled_color = button_config.get("disabled", "#a0a0a0")
         border_color = button_config.get("border", "#2c5aa0")
-        
+
         # Calculate optimal text colors
         from .theme_editor import ColorUtils
+
         normal_text = ColorUtils.get_optimal_text_color(normal_color)
         hover_text = ColorUtils.get_optimal_text_color(hover_color)
         pressed_text = ColorUtils.get_optimal_text_color(pressed_color)
         disabled_text = ColorUtils.get_optimal_text_color(disabled_color)
-        
+
         return f"""
 /* Enhanced Button Styles */
 QPushButton {{
@@ -91,18 +95,18 @@ QPushButton[class="primary"]:hover {{
     border: 2px solid {hover_color};
 }}
 """
-    
+
     def _generate_enhanced_input_styles(self) -> str:
         """Generate enhanced input field styles."""
         input_config = self.theme_config.get("input", {})
-        
+
         bg_color = input_config.get("background", "#ffffff")
         text_color = input_config.get("text", "#000000")
         border_color = input_config.get("border", "#cccccc")
         focus_color = input_config.get("focus", "#4a90e2")
         placeholder_color = input_config.get("placeholder", "#999999")
         selection_color = input_config.get("selection", "#4a90e2")
-        
+
         return f"""
 /* Enhanced Input Styles */
 QLineEdit, QTextEdit, QPlainTextEdit, QSpinBox, QDoubleSpinBox {{
@@ -141,16 +145,16 @@ QSpinBox::down-button:hover, QDoubleSpinBox::down-button:hover {{
     background-color: {focus_color};
 }}
 """
-    
+
     def _generate_enhanced_panel_styles(self) -> str:
         """Generate enhanced panel and group box styles."""
         panel_config = self.theme_config.get("panel", {})
-        
+
         bg_color = panel_config.get("background", "#f5f5f5")
         border_color = panel_config.get("border", "#cccccc")
         title_bg = panel_config.get("title_background", "#e0e0e0")
         title_text = panel_config.get("title_text", "#333333")
-        
+
         return f"""
 /* Enhanced Panel Styles */
 QGroupBox {{
@@ -188,18 +192,18 @@ QFrame[frameShape="5"] {{ /* Panel frame */
     border: 1px inset {border_color};
 }}
 """
-    
+
     def _generate_enhanced_menu_styles(self) -> str:
         """Generate enhanced menu and combo box styles."""
         menu_config = self.theme_config.get("menu", {})
-        
+
         bg_color = menu_config.get("background", "#ffffff")
         text_color = menu_config.get("text", "#000000")
         hover_color = menu_config.get("hover", "#e0e0e0")
         selected_color = menu_config.get("selected", "#4a90e2")
         selected_text = menu_config.get("selected_text", "#ffffff")
         separator_color = menu_config.get("separator", "#cccccc")
-        
+
         return f"""
 /* Enhanced Menu Styles */
 QComboBox {{
@@ -282,16 +286,16 @@ QMenu::separator {{
     margin: 4px 8px;
 }}
 """
-    
+
     def _generate_enhanced_progress_styles(self) -> str:
         """Generate enhanced progress bar and slider styles."""
         progress_config = self.theme_config.get("progress", {})
-        
+
         bg_color = progress_config.get("background", "#f0f0f0")
         chunk_color = progress_config.get("chunk", "#4a90e2")
         groove_color = progress_config.get("groove", "#e0e0e0")
         handle_color = progress_config.get("handle", "#4a90e2")
-        
+
         return f"""
 /* Enhanced Progress Styles */
 QProgressBar {{
@@ -358,16 +362,16 @@ QSlider::add-page:vertical {{
     border-radius: 3px;
 }}
 """
-    
+
     def _generate_enhanced_scrollbar_styles(self) -> str:
         """Generate enhanced scrollbar styles."""
         scrollbar_config = self.theme_config.get("scrollbar", {})
-        
+
         bg_color = scrollbar_config.get("background", "#f8f8f8")
         handle_color = scrollbar_config.get("handle", "#c0c0c0")
         handle_hover = scrollbar_config.get("handle_hover", "#a0a0a0")
         handle_pressed = scrollbar_config.get("handle_pressed", "#808080")
-        
+
         return f"""
 /* Enhanced Scrollbar Styles */
 QScrollBar:vertical {{
@@ -432,17 +436,17 @@ QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {{
     height: 0px;
 }}
 """
-    
+
     def _generate_enhanced_list_styles(self) -> str:
         """Generate enhanced list widget styles."""
         menu_config = self.theme_config.get("menu", {})
-        
+
         bg_color = menu_config.get("background", "#ffffff")
         text_color = menu_config.get("text", "#000000")
         hover_color = menu_config.get("hover", "#e0e0e0")
         selected_color = menu_config.get("selected", "#4a90e2")
         selected_text = menu_config.get("selected_text", "#ffffff")
-        
+
         return f"""
 /* Enhanced List Styles */
 QListWidget, QTreeWidget, QTableWidget {{
@@ -484,17 +488,17 @@ QHeaderView::section:hover {{
     background-color: {hover_color};
 }}
 """
-    
+
     def _generate_enhanced_tab_styles(self) -> str:
         """Generate enhanced tab widget styles."""
         panel_config = self.theme_config.get("panel", {})
         menu_config = self.theme_config.get("menu", {})
-        
+
         bg_color = panel_config.get("background", "#f5f5f5")
         selected_color = menu_config.get("selected", "#4a90e2")
         selected_text = menu_config.get("selected_text", "#ffffff")
         text_color = menu_config.get("text", "#000000")
-        
+
         return f"""
 /* Enhanced Tab Styles */
 QTabWidget::pane {{
@@ -538,11 +542,13 @@ QTabBar::tab:!selected {{
     def _generate_checkbox_radio_styles(self) -> str:
         """Generate enhanced checkbox and radio button styles."""
         button_config = self.theme_config.get("button", {})
-        
-        normal_color = button_config.get("normal", self.theme_config.get("primaryColor", "#4a90e2"))
+
+        normal_color = button_config.get(
+            "normal", self.theme_config.get("primaryColor", "#4a90e2")
+        )
         bg_color = self.theme_config.get("backgroundColor", "#ffffff")
         text_color = self.theme_config.get("textColor", "#000000")
-        
+
         return f"""
 /* Enhanced Checkbox and Radio Styles */
 QCheckBox, QRadioButton {{

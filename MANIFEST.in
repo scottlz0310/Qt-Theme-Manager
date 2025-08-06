@@ -2,7 +2,6 @@ include README.md
 include README_ja.md
 include LICENSE
 include CHANGELOG.md
-include requirements.txt
 include INSTALL.md
 include INSTALL_ja.md
 include API_REFERENCE.md

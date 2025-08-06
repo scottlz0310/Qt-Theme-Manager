@@ -68,9 +68,9 @@ packages = ["theme_manager", "theme_manager.qt", "theme_manager.cli", "theme_man
 theme_manager = ["config/*.json"]
 
 [tool.black]
-line-length = 88
+line-length = 79
 target-version = ['py37']
 
 [tool.isort]
 profile = "black"
-line_length = 88
+line_length = 79
