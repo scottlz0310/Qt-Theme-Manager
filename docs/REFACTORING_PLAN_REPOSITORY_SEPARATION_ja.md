@@ -42,7 +42,7 @@ qt-theme-manager/
 ### 2. qt-theme-studio（GUIツール専用）
 **目的**: 統合テーマエディターGUIアプリケーション
 **配布**: GitHub Releases
-**依存関係**: qt-theme-manager + GUI関連(PySide6)
+**依存関係**: qt-theme-manager + GUI関連（Qt自動判別）
 
 ```
 qt-theme-studio/
@@ -104,7 +104,7 @@ qt-theme-studio/
 
 3. **依存関係設定**
    - qt-theme-managerを依存関係として追加
-   - GUI関連依存関係の追加
+   - GUI関連依存関係の追加（Qt自動判別機能を活用）
 
 4. **統合アプリケーション開発**
    - MVCアーキテクチャ実装
@@ -222,7 +222,7 @@ qt-theme-studio/
 - 新規リポジトリ作成
 - プロジェクト構造設定
 - 基本MVCアーキテクチャ実装
-- 依存関係設定
+- 依存関係設定（Qt自動判別機能を活用）
 
 #### 週4-7日: コア機能実装
 - 統合テーマエディター
@@ -260,12 +260,10 @@ name = "qt-theme-manager"
 version = "1.0.0"
 description = "A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications"
 dependencies = [
-    "PySide6>=6.0.0"
+    # 自動判別: PySide6 → PyQt6 → PyQt5 の順で利用可能なものを自動選択
 ]
 
 [project.optional-dependencies]
-pyqt5 = ["PyQt5>=5.15.0"]
-pyqt6 = ["PyQt6>=6.2.0"]
 dev = [
     "pytest>=6.0",
     "pytest-qt>=4.0",
@@ -283,9 +281,9 @@ version = "1.0.0"
 description = "Integrated theme editor GUI application for Qt applications"
 dependencies = [
     "qt-theme-manager>=1.0.0",
-    "PySide6>=6.0.0",
     "pillow>=8.0.0",
     "colorama>=0.4.0"
+    # Qt依存関係はqt-theme-managerの自動判別機能を使用
 ]
 
 [project.optional-dependencies]
