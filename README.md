@@ -7,92 +7,125 @@
 
 A comprehensive theme management library for PyQt5/PyQt6/PySide6 applications, providing dynamic theme switching with an advanced theme editor and 16+ built-in themes.
 
-## ✨ What's New in v0.2.4
+## 🎯 ライブラリ分離思想
 
-### 🦓 NEW: Zebra Pattern Auto-Generation
-- **Real-time Contrast Adjustment**: Interactive slider and direct input for contrast ratios (1.15:1 to 1.80:1)
-- **WCAG 2.1 Compliant**: Scientific color calculations with HSL/HSV color space support
-- **3 Accessibility Levels**: Subtle (1.15:1), Moderate (1.30:1), High (1.80:1) contrast options
-- **Multi-platform Support**: PyQt5/PyQt6/PySide6 cross-framework compatibility
-- **Integrated Theme Editor**: New zebra tab in theme editor with live preview
-- **Standalone Mode**: Dedicated zebra pattern editor for focused color work
+### 背景と目的
 
-### 🎨 Enhanced Theme Features
-- **Enhanced CLI Preview Features**: Support for `--config` and `--theme` options
-- **Major Accessibility Improvements**: 6% lightness contrast for zebra stripes (WCAG-compliant)
-- **Theme Format Conversion**: Convert custom themes to Qt-Theme-Manager format
-- **Unified Theme Improvements**: Accessibility optimization across all 16 themes
-- **Entry Points Added**: `theme-editor`, `theme-preview` commands for easy launching
-- **Python 3.9+ Support**: Dropped Python 3.8 support, optimized for modern environments
+Qt-Theme-Managerは、**純粋なライブラリ**として設計されており、テーマ管理の核となる機能に特化しています。この設計思想は、以下の原則に基づいています：
 
-## ✨ What's New in v0.2.1
+#### 関心の分離による保守性向上
+- **ライブラリコア**: テーマ管理、スタイルシート生成、Qt統合機能
+- **GUIツール**: テーマエディタ、プレビューアプリケーション（別リポジトリ: qt-theme-studio）
+- **明確な責任分界**: 各コンポーネントが独立した責任を持つ
 
-- 🔧 **Fixed GUI Startup Issues**: Theme editor now launches reliably across all Qt frameworks
-- ⚙️ **Enhanced Qt Compatibility**: Full support for PyQt5, PyQt6, and PySide6
-- 🚀 **Improved Startup Methods**: Both module and script execution work perfectly
-- 📦 **Better Error Handling**: Cleaner error messages and interruption support
+#### 外部開発者の貢献促進
+- **シンプルなAPI**: 最小限の依存関係で使いやすいインターフェース
+- **モジュラー設計**: 機能ごとに独立したモジュール構造
+- **拡張性**: カスタムテーマやプラグインの開発が容易
+
+#### 長期的な持続可能性
+- **独立したリリースサイクル**: ライブラリとGUIツールの個別更新
+- **軽量な配布**: 必要最小限のファイルサイズ
+- **後方互換性**: 既存APIの安定性保証
+
+### 利点
+
+1. **開発効率の向上**: 関心の分離により、各部分の開発・テスト・保守が独立して行える
+2. **コードの再利用性**: ライブラリ機能を他のプロジェクトで簡単に利用可能
+3. **品質の向上**: 焦点を絞った開発により、より高品質なコードを実現
+4. **コミュニティの拡大**: シンプルな構造により、外部開発者の参加が促進される
+
+### アーキテクチャ
+
+```
+qt-theme-manager (ライブラリ)
+├── qt_theme_manager/          # コアライブラリパッケージ
+│   ├── qt/                    # Qt統合モジュール
+│   ├── cli/                   # コマンドライン機能
+│   └── config/                # 設定管理
+└── 最小限の依存関係
+
+qt-theme-studio (GUIツール - 別リポジトリ)
+├── テーマエディタ
+├── プレビューアプリケーション
+├── 高度な編集機能
+└── GUI固有の依存関係
+```
+
+この分離により、ライブラリユーザーは軽量で高性能なテーマ管理機能を利用でき、GUI機能が必要な場合は別途qt-theme-studioを使用できます。
+
+## ✨ ライブラリ機能
+
+### 🎯 コア機能
+- **動的テーマ切り替え**: 実行時のテーマ変更とスタイル適用
+- **Qt自動検出**: PySide6 → PyQt6 → PyQt5の自動選択
+- **スタイルシート生成**: テーマ設定からQSSの自動生成
+- **設定管理**: テーマ設定の永続化と管理
+- **CLI機能**: コマンドライン経由でのテーマ操作
+
+### 🔧 技術的特徴
+- **軽量設計**: 最小限の依存関係で高性能
+- **クロスプラットフォーム**: Windows/macOS/Linux対応
+- **マルチフレームワーク**: PyQt5/PyQt6/PySide6サポート
+- **後方互換性**: 既存APIの安定性保証
+- **Python 3.9+**: モダンなPython環境に最適化
+
+### ♿ アクセシビリティ
+- **WCAG準拠**: 科学的な色彩計算による最適なコントラスト
+- **縞模様最適化**: 6%明度コントラストによる読みやすさ向上
+- **目の疲労軽減**: 長時間使用に配慮した色彩設計
 
 ## Features
 
 - 🎨 **16+ Built-in Themes**: Light, Dark, High Contrast, and colorful themes
-- 🦓 **NEW: Zebra Pattern Auto-Generation**: WCAG-compliant alternating row colors with real-time contrast adjustment
-- ♿ **Advanced Accessibility**: Scientific color calculations for optimal contrast ratios (1.15:1-1.80:1)
-- ✨ **Enhanced Theme Editor**: Professional-grade theme creation tools with integrated zebra pattern generator
 - 🔄 **Dynamic Theme Switching**: Change themes at runtime without restarting
 - 💾 **Persistent Settings**: Theme preferences are automatically saved
-- 🖥️ **Multi-mode GUI Tools**: Integrated editor, standalone zebra editor, and preview applications
-- 📟 **Enhanced CLI Support**: Theme preview with custom configs and themes
 - 🎯 **Easy Integration**: Simple API for applying themes to widgets/applications
 - ⚡ **QSS Generation**: Automatic stylesheet generation from theme configurations
-- 🔄 **Theme Format Conversion**: Convert custom themes to Qt-Theme-Manager format
+- 📟 **CLI Support**: Command-line theme management
+- ♿ **Accessibility Features**: WCAG-compliant color calculations and contrast optimization
+- 🔧 **Qt Auto-Detection**: Automatic framework detection (PySide6/PyQt6/PyQt5)
+- 📦 **Lightweight**: Minimal dependencies for optimal performance
 
-## 🚀 30-Second Quick Start
+## 🚀 30秒クイックスタート
 
-**Want to try the NEW zebra pattern auto-generation?**
-
-```bash
-# Install and launch integrated theme editor with zebra patterns
-pip install qt-theme-manager[pyqt6]
-python launch_zebra_theme_editor.py --mode full
-
-# Or try the standalone zebra pattern editor
-python launch_zebra_theme_editor.py --mode standalone
-
-# Demo the zebra generation capabilities
-python launch_zebra_theme_editor.py --mode demo
-```
-
-**Want to try the enhanced theme editor?**
-
-```bash
-# Launch theme editor (New entry points!)
-theme-editor
-
-# Alternative launch methods (all work reliably):
-python -m theme_manager.qt.theme_editor
-python launch_theme_editor.py  # If you cloned the repo
-```
-
-**Want to add beautiful themes to your Qt app in just 3 lines of code?**
+**3行のコードでQt アプリに美しいテーマを追加:**
 
 ```python
-from theme_manager.qt.controller import apply_theme_to_widget
+from qt_theme_manager import apply_theme_to_widget
 
-# That's it! Apply current theme to any widget:
+# ウィジェットに現在のテーマを適用
 apply_theme_to_widget(your_widget)
 ```
 
-**Want to switch themes dynamically?**
+**動的なテーマ切り替え:**
 
 ```python
-from theme_manager.qt.controller import ThemeController
+from qt_theme_manager import ThemeController
 
 controller = ThemeController()
-controller.set_theme("dark")  # or "light", "blue", "cyberpunk", etc.
+controller.set_theme("dark")  # "light", "blue", "cyberpunk"など
 controller.apply_theme_to_application()
 ```
 
-**16 beautiful themes ready to use:** `dark`, `light`, `blue`, `green`, `cyberpunk`, `ocean`, and more!
+**CLIでのテーマ管理:**
+
+```bash
+# インストール
+pip install qt-theme-manager[pyqt6]
+
+# テーマ一覧表示
+qt-theme-manager list
+
+# テーマ切り替え
+qt-theme-manager set dark
+```
+
+**16の美しいテーマが利用可能:** `dark`, `light`, `blue`, `green`, `cyberpunk`, `ocean`など
+
+### GUIツールについて
+テーマエディタやプレビューアプリケーションは、別リポジトリ（**qt-theme-studio**）に移行されました。
+ライブラリとしての機能に集中することで、より軽量で高性能なテーマ管理を実現しています。
 
 ---
 
@@ -142,7 +175,7 @@ pip install -e .[pyqt6]    # For PyQt6
 ### Basic Usage
 
 ```python
-from theme_manager.qt.controller import apply_theme_to_widget
+from qt_theme_manager.qt.controller import apply_theme_to_widget
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
 app = QApplication([])
@@ -158,7 +191,7 @@ app.exec_()
 ### Using ThemeController
 
 ```python
-from theme_manager.qt.controller import ThemeController
+from qt_theme_manager.qt.controller import ThemeController
 
 # Initialize theme controller
 controller = ThemeController()
@@ -176,115 +209,63 @@ controller.apply_theme_to_application()
 
 ## Command Line Interface
 
-### 🎨 GUI Tools (Enhanced in v0.2.4!)
+### 🖥️ CLI機能
 
-After installing via pip, you can use these convenient GUI tools:
-
-```bash
-# Launch the advanced theme editor
-theme-editor
-
-# Launch theme preview window  
-theme-preview
-
-# NEW: Launch zebra pattern theme editor (integrated mode)
-python launch_zebra_theme_editor.py --mode full
-
-# NEW: Launch standalone zebra pattern editor
-python launch_zebra_theme_editor.py --mode standalone
-
-# NEW: Demo zebra pattern generation capabilities
-python launch_zebra_theme_editor.py --mode demo
-
-# Enhanced preview with custom configuration and theme (v0.2.3)
-theme-preview --config custom_themes.json --theme ocean
-theme-preview --config accessibility_themes.json --theme orange
-theme-preview -c my_themes.json -t dark
-
-# Use CLI tools
-theme-manager --help
-```
-
-### ⚡ CLI Options (New in v0.2.3!)
-
-The `theme-preview` command now supports flexible options:
-
-- `--config`, `-c`: Specify custom theme configuration file (JSON format)
-- `--theme`, `-t`: Set initial theme to apply on startup
-- `--help`, `-h`: Show help message with usage examples
-
-### 🎯 Usage Examples
+Qt-Theme-Managerは、コマンドライン経由でのテーマ管理をサポートしています：
 
 ```bash
-# Preview with default themes
-theme-preview
+# 利用可能なテーマ一覧を表示
+qt-theme-manager list
 
-# Use custom accessibility-improved themes
-theme-preview --config accessibility_themes.json
+# 現在のテーマを表示
+qt-theme-manager current
 
-# Start with specific theme
-theme-preview --theme amber
+# テーマを設定
+qt-theme-manager set dark
 
-# Combine custom config and theme
-theme-preview --config my_improved_themes.json --theme "Orange (Improved)"
+# テーマをQSSファイルにエクスポート
+qt-theme-manager export dark dark_theme.qss
+
+# ヘルプを表示
+qt-theme-manager --help
 ```
 
-#### Theme Editor Features
-- **Color theory-based color selection** (complementary, triadic, analogous)
-- **Real-time preview** of all changes
-- **Component-specific settings** for detailed customization
-- **Accessibility features** with contrast ratio checking
-- **Import/Export** custom themes
+### 🎨 GUIツールについて（移行済み）
 
-#### Theme Preview Features
-- **16 built-in themes** to test instantly
-- **Live switching** between themes
-- **All Qt widgets** displayed for comprehensive testing
+テーマエディタやプレビューアプリケーションなどのGUIツールは、**qt-theme-studio**リポジトリに移行されました：
 
-### ♿ Accessibility Enhancements (New in v0.2.3!)
+- **テーマエディタ**: 高度なテーマ作成・編集機能
+- **プレビューアプリケーション**: リアルタイムテーマプレビュー
+- **Zebraパターンエディタ**: アクセシビリティ対応の縞模様生成
 
-Qt-Theme-Manager now provides enhanced accessibility features:
+これらのツールを使用する場合は、qt-theme-studioリポジトリをご利用ください。
 
-#### Zebra Stripe Optimization
-- **6% lightness contrast** for alternating row colors
-- **WCAG-compliant design** for better readability
-- **Eye-strain reduction** for long-term usage
-- **Automatic application** to QListWidget, QTreeWidget, QTableWidget
+### ♿ アクセシビリティ機能
 
-#### Usage Example
+ライブラリには以下のアクセシビリティ機能が組み込まれています：
+
 ```python
-# Enable zebra stripes with improved accessibility
+# 縞模様の自動最適化
 list_widget.setAlternatingRowColors(True)
 controller.apply_theme_to_widget(list_widget)
-# Colors are automatically optimized for accessibility
+# WCAG準拠の色彩が自動適用されます
 ```
 
-#### Available Accessibility-Enhanced Themes
-- Orange (Improved) - Enhanced contrast for orange theme
-- Yellow (Improved) - Improved readability for yellow theme  
-- Lime (Improved) - Optimized green-yellow theme
-- Amber (Improved) - Enhanced amber theme with better contrast
+### レガシーCLIメソッド
 
-### Legacy CLI Methods
-
-For advanced users or scripting:
+高度なユーザーやスクリプト用：
 
 ```bash
-# New entry points (recommended)
-theme-manager list
-theme-manager set dark
-theme-manager export dark dark_theme.qss
-theme-manager current
+# 推奨方法
+qt-theme-manager list
+qt-theme-manager set dark
+qt-theme-manager export dark dark_theme.qss
+qt-theme-manager current
 
-# Legacy methods  
-python -m theme_manager.cli.main list
-python -m theme_manager.cli.main set dark
-python -m theme_manager.cli.main export dark dark_theme.qss
-python -m theme_manager.cli.main current
-```
-
-```bash
-python -m theme_manager.main current
+# レガシーメソッド
+python -m qt_theme_manager.cli.main list
+python -m qt_theme_manager.cli.main set dark
+python -m qt_theme_manager.main current
 ```
 
 ## Available Themes
@@ -345,7 +326,7 @@ Themes are defined in `config/theme_settings.json`. Each theme includes:
 ### Custom Theme Configuration
 
 ```python
-from theme_manager.qt.controller import ThemeController
+from qt_theme_manager.qt.controller import ThemeController
 
 # Use custom config file
 controller = ThemeController("/path/to/custom/config.json")
@@ -354,7 +335,7 @@ controller = ThemeController("/path/to/custom/config.json")
 ### Theme Preview Window
 
 ```python
-from theme_manager.qt.preview import show_preview
+from qt_theme_manager.qt.preview import show_preview
 
 # Show interactive preview window
 preview_window = show_preview()
@@ -363,7 +344,7 @@ preview_window = show_preview()
 ### Manual QSS Generation
 
 ```python
-from theme_manager.qt.stylesheet import StylesheetGenerator
+from qt_theme_manager.qt.stylesheet import StylesheetGenerator
 
 theme_config = {...}  # Your theme configuration
 generator = StylesheetGenerator(theme_config)
@@ -378,28 +359,36 @@ button_qss = generator.generate_widget_qss('button')
 ## Project Structure
 
 ```
-theme_manager/
-├── __init__.py                 # Main package exports
+qt_theme_manager/               # ライブラリコアパッケージ
+├── __init__.py                 # パブリックAPI
+├── main.py                     # CLIエントリーポイント
 ├── config/
-│   └── theme_settings.json     # Theme definitions
-├── qt/
+│   └── theme_settings.json     # テーマ定義
+├── qt/                         # Qt統合モジュール
 │   ├── __init__.py
-│   ├── loader.py               # JSON configuration loader
-│   ├── stylesheet.py           # QSS generation
-│   ├── controller.py           # Theme management
-│   └── preview.py              # GUI preview window
-├── cli/
-│   ├── __init__.py
-│   └── themectl.py             # CLI interface
-└── main.py                     # CLI entry point
+│   ├── detection.py            # Qt自動検出
+│   ├── loader.py               # 設定ファイル読み込み
+│   ├── stylesheet.py           # QSS生成
+│   ├── advanced_stylesheet.py  # 高度なスタイル機能
+│   └── controller.py           # テーマ管理
+└── cli/                        # CLI機能
+    ├── __init__.py
+    └── themectl.py             # CLIインターフェース
 ```
+
+### 移行されたGUIツール
+以下のGUIツールは**qt-theme-studio**リポジトリに移行されました：
+- テーマエディタ
+- プレビューアプリケーション  
+- Zebraパターンエディタ
+- 各種起動スクリプト
 
 ## Testing
 
 Run the test suite to verify functionality:
 
 ```bash
-python test_theme_manager.py
+python test_qt_theme_manager.py
 ```
 
 This will test:

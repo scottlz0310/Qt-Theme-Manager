@@ -52,4 +52,4 @@ jobs:
       run: |
         sleep 30  # Wait for TestPyPI to process
         pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ qt-theme-manager
-        python -c "import theme_manager; print(f'Installed version: {theme_manager.__version__}')"
+        python -c "import qt_theme_manager; print(f'Installed version: {qt_theme_manager.__version__}')"

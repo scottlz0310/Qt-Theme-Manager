@@ -148,4 +148,4 @@ jobs:
     - name: Test installation from built package
       run: |
         pip install dist/*.whl
-        python -c "import theme_manager; print(f'Version: {theme_manager.__version__}')"
+        python -c "import qt_theme_manager; print(f'Version: {qt_theme_manager.__version__}')"

@@ -1,22 +1,78 @@
+# ライブラリ配布用ドキュメント（必須）
 include README.md
 include README_ja.md
 include LICENSE
 include CHANGELOG.md
+
+# ライブラリ専用ドキュメント
 include INSTALL.md
 include INSTALL_ja.md
 include API_REFERENCE.md
 include API_REFERENCE_ja.md
 include EXAMPLES.md
 include EXAMPLES_ja.md
-include DEVELOPMENT.md
-include THEME_EDITOR_GUIDE.md
-recursive-include theme_manager *.py
-recursive-include theme_manager *.json
-recursive-include docs *.md
+
+# パッケージング設定ファイル
+include pyproject.toml
+include setup.py
+
+# ライブラリコアパッケージ（qt_theme_manager/のみ）
+recursive-include qt_theme_manager *.py
+recursive-include qt_theme_manager *.json
+recursive-include qt_theme_manager *.md
+
+# 設定ファイル
+recursive-include config *.json
+
+# === 除外設定 ===
+
+# 開発環境・ビルド成果物
 prune .venv
 prune venv
 prune __pycache__
 prune *.pyc
 prune .git
+prune .pytest_cache
+prune .kiro
+prune build
+prune dist
+prune *.egg-info
+
+# GUI関連ファイルの完全除外
+prune migrate
+exclude launch_*.py
+exclude *_editor.py
+exclude analyze_*.py
+exclude improve_*.py
+exclude zebra_*.py
+exclude theme_editor_*.py
+
+# 開発・テスト関連ディレクトリ
+prune temp
+prune sandbox
+prune docs
+prune examples
+prune scripts
+prune utils
+prune qt
+prune cli
+
+# テストファイル
 global-exclude *test*.py
 global-exclude *_test.py
+global-exclude test_*.py
+prune tests
+
+# 開発設定ファイル
+exclude .gitignore
+exclude .flake8
+exclude .mypy.ini
+exclude tox.ini
+exclude pytest.ini
+exclude test_*.sh
+exclude release.sh
+
+# その他の除外
+exclude DEVELOPMENT.md
+exclude PREVIEW_TOOL_GUIDE.md
+exclude __init__.py

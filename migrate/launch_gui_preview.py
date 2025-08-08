@@ -65,8 +65,8 @@ def main():
 
     # モジュールの確認
     try:
-        from theme_manager.qt.controller import qt_available
-        from theme_manager.qt.preview import show_preview
+        from qt_theme_manager.qt.controller import qt_available
+        from qt_theme_manager.qt.preview import show_preview
 
         if not qt_available:
             print("❌ Qt framework が利用できません")
@@ -101,7 +101,7 @@ def main():
     print("🚀 GUIプレビューを起動しています...")
     try:
         # 動的にQtフレームワークを検出・インポート
-        from theme_manager.qt.controller import qt_available, qt_framework
+        from qt_theme_manager.qt.controller import qt_available, qt_framework
 
         if not qt_available:
             print("❌ Qtフレームワークが利用できません")
@@ -151,12 +151,12 @@ def main():
 def test_mode(args):
     """テストモードでの動作確認"""
     try:
-        from theme_manager.qt.controller import (
+        from qt_theme_manager.qt.controller import (
             ThemeController,
             qt_available,
             qt_framework,
         )
-        from theme_manager.qt.preview import show_preview
+        from qt_theme_manager.qt.preview import show_preview
 
         if not qt_available:
             print("❌ Qtフレームワークが利用できません")

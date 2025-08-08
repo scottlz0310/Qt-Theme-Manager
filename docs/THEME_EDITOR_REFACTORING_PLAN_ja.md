@@ -17,8 +17,8 @@
 - `launch_gui_preview.py` - テーマプレビューアプリケーション
 - `theme_editor_zebra_extension.py` - ゼブラ統合拡張
 - `zebra_pattern_editor.py` - コアゼブラ生成ロジック
-- `theme_manager/qt/preview.py` - プレビューモジュール
-- `theme_manager/qt/theme_editor.py` - コアテーマエディターモジュール
+- `qt_theme_manager/qt/preview.py` - プレビューモジュール
+- `qt_theme_manager/qt/theme_editor.py` - コアテーマエディターモジュール
 
 ### 現在の課題
 1. **コードの重複**: 重複する機能を持つ複数の起動スクリプト
@@ -31,7 +31,7 @@
 
 ### 🔒 **重要な方針: 既存ライブラリの保護**
 
-**`theme_manager/`パッケージは変更しません**
+**`qt_theme_manager/`パッケージは変更しません**
 - ✅ **安定性保証**: 実績のあるコアライブラリを保護
 - ✅ **リスク削減**: テスト済みAPIへの影響を回避
 - ✅ **互換性維持**: 既存ユーザーへの破壊的変更なし
@@ -41,7 +41,7 @@
 
 ```
 # 既存ライブラリ（変更なし）
-theme_manager/                      # ✅ 現状維持 - 触らない
+qt_theme_manager/                      # ✅ 現状維持 - 触らない
 ├── __init__.py                    # 安定版API
 ├── main.py                        # コアライブラリ
 ├── cli/                          # CLI機能
@@ -59,7 +59,7 @@ qt_theme_studio/                    # 🆕 新しい統合アプリケーショ�
 │   └── ui_config.py               # UIレイアウトとスタイリング
 ├── adapters/                       # 🔗 既存ライブラリとの橋渡し
 │   ├── __init__.py
-│   ├── theme_adapter.py           # theme_manager.qt との連携
+│   ├── theme_adapter.py           # qt_theme_manager.qt との連携
 │   ├── preview_adapter.py         # 既存プレビュー機能の活用
 │   ├── api_adapter.py             # 既存APIラッパー
 │   └── format_adapter.py          # 🆕 フォーマット変換システム

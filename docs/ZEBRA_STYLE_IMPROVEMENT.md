@@ -39,7 +39,7 @@ tree_widget.setAlternatingRowColors(True)
 table_widget.setAlternatingRowColors(True)
 
 # テーママネージャでテーマ適用
-from theme_manager.qt.controller import ThemeController
+from qt_theme_manager.qt.controller import ThemeController
 controller = ThemeController()
 controller.apply_theme("dark")  # または任意のテーマ
 ```

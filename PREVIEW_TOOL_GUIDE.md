@@ -125,7 +125,7 @@ theme-preview --config zebra_test.json --theme test_theme
 
 ```python
 # PhotoGeoViewのコード（変更不要）
-from theme_manager.qt.controller import ThemeController
+from qt_theme_manager.qt.controller import ThemeController
 
 # 改善されたJSONファイルを使用
 controller = ThemeController(config_path="improved_themes.json")

@@ -57,8 +57,8 @@ jobs:
         echo "Testing basic imports..."
         python -c "
         try:
-            import theme_manager
-            print('✅ theme_manager import successful')
+            import qt_theme_manager
+            print('✅ qt_theme_manager import successful')
         except ImportError as e:
             print(f'ℹ️  theme_manager import issue: {e}')
         

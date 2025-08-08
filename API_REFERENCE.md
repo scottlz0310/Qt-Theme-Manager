@@ -1,126 +1,31 @@
-# ThemeManager API Reference
+# Qt-Theme-Manager Library API Reference
 
-This document provides detailed information about all APIs available in the ThemeManager library.
+This document provides detailed information about all APIs available in the Qt-Theme-Manager library.
 
-## 🆕 New in v0.2.4
+## 📚 ライブラリ専用API
 
-### Zebra Pattern Auto-Generation
+Qt-Theme-Managerは純粋なライブラリとして設計されており、以下のコア機能を提供します：
 
-```python
-# Zebra Pattern Generator (WCAG-compliant color calculations)
-from zebra_pattern_editor import ZebraPatternGenerator
+### 主要機能
+- **テーマ管理**: 動的なテーマ切り替えとスタイル適用
+- **Qt統合**: PyQt5/PyQt6/PySide6の自動検出と対応
+- **スタイルシート生成**: テーマ設定からQSSの自動生成
+- **設定管理**: テーマ設定の永続化と管理
+- **CLI機能**: コマンドライン経由でのテーマ操作
 
-# Generate zebra color with specific contrast ratio
-zebra_color = ZebraPatternGenerator.generate_zebra_color(
-    base_color="#ffffff", 
-    contrast_target=1.2, 
-    method="auto"  # "auto", "hsl", "hsv"
-)
-
-# Generate accessibility-compliant zebra patterns
-result = ZebraPatternGenerator.generate_accessibility_compliant_zebra(
-    base_color="#2d3748",
-    accessibility_level="moderate"  # "subtle", "moderate", "high"
-)
-print(f"Zebra color: {result['zebra_color']}")
-print(f"Contrast ratio: {result['contrast_ratio']:.2f}:1")
-
-# Calculate contrast ratio between colors
-contrast = ZebraPatternGenerator.get_contrast_ratio("#ffffff", "#ebebeb")
-```
-
-### Integrated Theme Editor with Zebra Patterns
-
-```python
-# Launch integrated theme editor with zebra pattern functionality
-import subprocess
-subprocess.run(["python", "launch_zebra_theme_editor.py", "--mode", "full"])
-
-# Standalone zebra pattern editor
-subprocess.run(["python", "launch_zebra_theme_editor.py", "--mode", "standalone"])
-
-# Demo zebra generation capabilities
-subprocess.run(["python", "launch_zebra_theme_editor.py", "--mode", "demo"])
-```
-
-### Theme Editor Extension API
-
-```python
-# Extend existing theme editor with zebra functionality
-from theme_editor_zebra_extension import extend_theme_editor_with_zebra
-
-# Get extended theme editor class with zebra pattern support
-ExtendedThemeEditor = extend_theme_editor_with_zebra()
-
-if ExtendedThemeEditor:
-    editor = ExtendedThemeEditor()
-    editor.show()
-```
-
-### GUI Tools Entry Points
-
-```python
-# Theme Editor (also available as `theme-editor` command)
-from theme_manager.qt.theme_editor import launch_theme_editor
-launch_theme_editor()
-
-# Theme Preview (also available as `theme-preview` command)  
-from theme_manager.qt.preview import launch_preview
-launch_preview()
-```
-
-### Advanced Features
-
-- Enhanced `ThemeController` with improved error handling
-- New accessibility features in theme editor
-- Expanded theme configuration options
+### GUIツールについて
+テーマエディタやプレビューアプリケーションなどのGUIツールは、別リポジトリ（qt-theme-studio）に移行されました。
+ライブラリとしての機能に集中することで、軽量で高性能なテーマ管理を実現しています。
 
 ## Table of Contents
 
-1. [GUI Tools](#gui-tools)
-2. [ThemeController](#themecontroller)
-3. [ThemeLoader](#themeloader) 
-4. [StylesheetGenerator](#stylesheetgenerator)
-5. [Utility Functions](#utility-functions)
-6. [Configuration File Specification](#configuration-file-specification)
-7. [Error Handling](#error-handling)
-
-## GUI Tools
-
-### launch_theme_editor()
-
-Launch the advanced theme editor application.
-
-```python
-from theme_manager.qt.theme_editor import launch_theme_editor
-
-launch_theme_editor(config_path=None)
-```
-
-**Parameters:**
-- `config_path` (Optional): Path to theme configuration file
-
-**Features:**
-- Color theory-based design tools
-- Real-time preview
-- Component-specific customization
-- Accessibility features
-- Import/Export functionality
-
-### launch_preview()
-
-Launch the theme preview application.
-
-```python
-from theme_manager.qt.preview import launch_preview
-
-launch_preview()
-```
-
-**Features:**
-- 16+ built-in themes
-- Live theme switching
-- Comprehensive widget showcase
+1. [ThemeController](#themecontroller)
+2. [ThemeLoader](#themeloader) 
+3. [StylesheetGenerator](#stylesheetgenerator)
+4. [Utility Functions](#utility-functions)
+5. [Configuration File Specification](#configuration-file-specification)
+6. [Error Handling](#error-handling)
+7. [CLI Interface](#cli-interface)
 
 ## ThemeController
 
@@ -383,7 +288,7 @@ Convenience function to apply theme to a widget.
 
 **Example:**
 ```python
-from theme_manager import apply_theme_to_widget
+from qt_theme_manager import apply_theme_to_widget
 
 # Apply current theme
 apply_theme_to_widget(my_widget)
@@ -401,7 +306,7 @@ Convenience function to apply theme to entire application.
 
 **Example:**
 ```python
-from theme_manager import apply_theme_to_application
+from qt_theme_manager import apply_theme_to_application
 
 # Apply current theme to entire application
 apply_theme_to_application()
@@ -528,7 +433,7 @@ except KeyError:
 ### Error Handling Example
 
 ```python
-from theme_manager.qt.controller import ThemeController
+from qt_theme_manager.qt.controller import ThemeController
 import json
 
 def safe_theme_setup():
@@ -584,4 +489,44 @@ class MyApp:
         self.theme_controller.save_settings()  # Save at the end
 ```
 
-Use this API reference to efficiently utilize the ThemeManager library.
+## CLI Interface
+
+Qt-Theme-Managerは、コマンドライン経由でのテーマ操作をサポートしています。
+
+### 基本コマンド
+
+```bash
+# 利用可能なテーマ一覧を表示
+qt-theme-manager list
+
+# 現在のテーマを表示
+qt-theme-manager current
+
+# テーマを設定
+qt-theme-manager set dark
+
+# テーマをQSSファイルにエクスポート
+qt-theme-manager export dark dark_theme.qss
+```
+
+### プログラムからのCLI使用
+
+```python
+from qt_theme_manager.cli.main import main
+import sys
+
+# CLIコマンドをプログラムから実行
+sys.argv = ['qt-theme-manager', 'set', 'dark']
+main()
+```
+
+### 利用可能なコマンド
+
+- `list`: 利用可能なテーマ一覧を表示
+- `current`: 現在のテーマ名を表示
+- `set <theme_name>`: 指定したテーマに切り替え
+- `export <theme_name> <output_file>`: テーマをQSSファイルにエクスポート
+
+---
+
+Use this API reference to efficiently utilize the Qt-Theme-Manager library.

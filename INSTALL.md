@@ -1,82 +1,63 @@
-# Qt-Theme-Manager Installation Guide
+# Qt-Theme-Manager Library Installation Guide
 
-## What's New in v0.2.4
+## 📚 ライブラリ専用インストール
 
-### 🦓 NEW: Zebra Pattern Auto-Generation Tools
+Qt-Theme-Managerは純粋なライブラリとして設計されており、軽量で高性能なテーマ管理機能を提供します。
 
-After installation, you can now use these enhanced GUI tools:
+### 主要機能
+- **動的テーマ切り替え**: 実行時のテーマ変更
+- **Qt自動検出**: PySide6 → PyQt6 → PyQt5の自動選択
+- **スタイルシート生成**: テーマ設定からQSSの自動生成
+- **CLI機能**: コマンドライン経由でのテーマ操作
+- **軽量設計**: 最小限の依存関係
 
-```bash
-# NEW: Zebra pattern-enabled theme editor
-python launch_zebra_theme_editor.py --mode full
-
-# NEW: Standalone zebra pattern editor  
-python launch_zebra_theme_editor.py --mode standalone
-
-# NEW: Demo zebra generation capabilities
-python launch_zebra_theme_editor.py --mode demo
-
-# Traditional GUI tools:
-theme-editor    # Launch the advanced theme editor
-theme-preview   # Launch theme preview window
-theme-manager   # CLI theme management tools
-```
-
-### Features Added:
-- **Real-time contrast adjustment** (1.15:1 to 1.80:1)
-- **WCAG 2.1 compliant** scientific color calculations
-- **3 accessibility levels** (subtle/moderate/high)
-- **Cross-platform support** (PyQt5/PyQt6/PySide6)
-- **Integrated theme editor** with zebra pattern tab
+### GUIツールについて
+テーマエディタやプレビューアプリケーションは、別リポジトリ（qt-theme-studio）に移行されました。
+ライブラリとしての機能に集中することで、より効率的な開発体験を提供します。
 
 ## System Requirements
 
-- **Python**: 3.9 or higher (Python 3.8 support ended)
+- **Python**: 3.9 or higher
 - **Operating System**: Windows, macOS, Linux
-- **Qt Framework**: PyQt5, PyQt6, or PySide6 (required for GUI tools)
+- **Qt Framework**: PyQt5, PyQt6, or PySide6 (自動検出)
 
 ## Installation Options
 
-### Option 1: Install from PyPI (Recommended)
+### Option 1: Install from PyPI (推奨)
 
-#### Quick Installation with GUI Tools
+#### 基本インストール
 ```bash
-# Install with PyQt6 (recommended for new projects)
-pip install qt-theme-manager[pyqt6]
-
-# Then use GUI tools:
-theme-editor    # Advanced theme editor
-theme-preview   # Theme preview window
+# 基本インストール（Qt自動検出）
+pip install qt-theme-manager
 ```
 
-#### Framework-Specific Installation
+#### フレームワーク指定インストール
 ```bash
-# Install with your preferred Qt framework
-pip install qt-theme-manager[pyqt6]    # For PyQt6
-pip install qt-theme-manager[pyqt5]    # For PyQt5
-pip install qt-theme-manager[pyside6]  # For PySide6
+# 特定のQtフレームワークと一緒にインストール
+pip install qt-theme-manager[pyqt6]    # PyQt6用
+pip install qt-theme-manager[pyqt5]    # PyQt5用
+pip install qt-theme-manager[pyside6]  # PySide6用
 
-# Install with all Qt frameworks
+# 全フレームワーク対応
 pip install qt-theme-manager[all]
 ```
 
-#### Basic Installation (No GUI Tools)
+#### 開発者向けインストール
 ```bash
-# Basic installation with automatic Qt framework detection
-pip install qt-theme-manager
-# Note: GUI tools require a Qt framework to be installed separately
+# 開発依存関係を含む
+pip install qt-theme-manager[dev]
 ```
 
-### Option 2: Install from Source (For Developers)
+### Option 2: ソースからのインストール（開発者向け）
 
-#### 1. Clone the Repository
+#### 1. リポジトリのクローン
 
 ```bash
 git clone https://github.com/scottlz0310/Qt-Theme-Manager.git
 cd Qt-Theme-Manager
 ```
 
-#### 2. Create Virtual Environment (Recommended)
+#### 2. 仮想環境の作成（推奨）
 
 #### Windows
 ```bash
@@ -90,47 +71,65 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-#### 3. Install in Development Mode
+#### 3. 開発モードでのインストール
 
 ```bash
-# Install with your preferred Qt framework
-pip install -e .[pyqt6]    # For PyQt6
-pip install -e .[pyqt5]    # For PyQt5
-pip install -e .[pyside6]  # For PySide6
+# 特定のQtフレームワークと一緒にインストール
+pip install -e .[pyqt6]    # PyQt6用
+pip install -e .[pyqt5]    # PyQt5用
+pip install -e .[pyside6]  # PySide6用
 
-# Or install with all frameworks
+# 全フレームワーク対応
 pip install -e .[all]
-```
 
-### 4. Verify Installation
-
-```bash
-cd Theme-Manager
-python -c "from theme_manager import ThemeController; print('Installation successful')"
-```
-
-## Developer Installation
-
-### Install Development Dependencies
-
-```bash
-pip install pytest>=6.0 pytest-qt>=4.0
-```
-
-### Install using setup.py
-
-```bash
-# Install in development mode
-pip install -e .
-
-# Install with PyQt5 dependencies
-pip install -e .[pyqt5]
-
-# Install with PySide6 dependencies
-pip install -e .[pyside6]
-
-# Install with development dependencies
+# 開発依存関係を含む
 pip install -e .[dev]
+```
+
+#### 4. インストールの確認
+
+```bash
+python -c "from qt_theme_manager import ThemeController; print('インストール成功')"
+```
+
+## ライブラリの使用方法
+
+### 基本的な使用例
+
+```python
+from qt_theme_manager import ThemeController, apply_theme_to_widget
+
+# テーマコントローラーの初期化
+controller = ThemeController()
+
+# 利用可能なテーマの確認
+themes = controller.get_available_themes()
+print("利用可能なテーマ:", list(themes.keys()))
+
+# テーマの切り替え
+controller.set_theme("dark")
+
+# ウィジェットにテーマを適用
+apply_theme_to_widget(your_widget)
+
+# アプリケーション全体にテーマを適用
+controller.apply_theme_to_application()
+```
+
+### CLIの使用
+
+```bash
+# 利用可能なテーマ一覧
+qt-theme-manager list
+
+# 現在のテーマを表示
+qt-theme-manager current
+
+# テーマの設定
+qt-theme-manager set dark
+
+# QSSファイルのエクスポート
+qt-theme-manager export dark dark_theme.qss
 ```
 
 ## Troubleshooting
@@ -157,7 +156,7 @@ FileNotFoundError: theme_settings.json not found
 **Solution**: Make sure you're running the library from the correct directory
 ```bash
 cd Theme-Manager
-python -m theme_manager.main list
+python -m qt_theme_manager.main list
 ```
 
 #### 3. Python Version Error
@@ -203,18 +202,18 @@ conda install pyside6
 
 ## Verification
 
-### Basic Test
+### 基本テスト
 ```bash
-# CLI test
-python -m theme_manager.main list
+# CLIテスト
+qt-theme-manager list
 
-# GUI test (requires desktop environment)
-python -c "from theme_manager.qt.preview import show_preview; show_preview()"
+# ライブラリテスト
+python -c "from qt_theme_manager import ThemeController; print('動作確認OK')"
 ```
 
-### Run Complete Test Suite
+### 完全なテストスイートの実行
 ```bash
-python test_theme_manager.py
+pytest tests/
 ```
 
 ## Next Steps

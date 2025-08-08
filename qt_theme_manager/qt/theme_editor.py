@@ -5,24 +5,22 @@ Provides intelligent theme creation with accessibility guidelines.
 
 import colorsys
 import json
-import math
 from pathlib import Path
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Optional, Tuple, Union
 
 # Import Qt availability from controller
-from .controller import qt_available, qt_framework
+from .controller import qt_available
 
 # Import handling for Qt libraries
 if qt_available:
     try:
         from PyQt5.QtCore import Qt, QTimer, pyqtSignal
-        from PyQt5.QtGui import QColor, QFont, QPalette
+        from PyQt5.QtGui import QColor, QFont
         from PyQt5.QtWidgets import (
             QApplication,
             QCheckBox,
             QColorDialog,
             QComboBox,
-            QDoubleSpinBox,
             QFileDialog,
             QFrame,
             QGridLayout,
@@ -56,13 +54,12 @@ if qt_available:
     except ImportError:
         try:
             from PyQt6.QtCore import Qt, QTimer, pyqtSignal
-            from PyQt6.QtGui import QColor, QFont, QPalette
+            from PyQt6.QtGui import QColor, QFont
             from PyQt6.QtWidgets import (
                 QApplication,
                 QCheckBox,
                 QColorDialog,
                 QComboBox,
-                QDoubleSpinBox,
                 QFileDialog,
                 QFrame,
                 QGridLayout,
@@ -96,13 +93,12 @@ if qt_available:
         except ImportError:
             from PySide6.QtCore import Qt, QTimer
             from PySide6.QtCore import Signal as pyqtSignal
-            from PySide6.QtGui import QColor, QFont, QPalette
+            from PySide6.QtGui import QColor, QFont
             from PySide6.QtWidgets import (
                 QApplication,
                 QCheckBox,
                 QColorDialog,
                 QComboBox,
-                QDoubleSpinBox,
                 QFileDialog,
                 QFrame,
                 QGridLayout,
@@ -135,7 +131,6 @@ if qt_available:
             QtAlignCenter = Qt.AlignmentFlag.AlignCenter
 
 from .controller import ThemeController
-from .stylesheet import StylesheetGenerator
 
 
 class ClickableWidget(QWidget):

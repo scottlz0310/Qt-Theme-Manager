@@ -6,9 +6,9 @@ Launch script for the advanced theme editor.
 import sys
 from pathlib import Path
 
-# Add the theme_manager to the path
+# Add the qt_theme_manager to the path
 current_dir = Path(__file__).parent
-theme_manager_dir = current_dir / "theme_manager"
+qt_theme_manager_dir = current_dir / "qt_theme_manager"
 sys.path.insert(0, str(current_dir))
 
 
@@ -27,7 +27,7 @@ def main():
         print("=" * 60)
 
         # Check Qt availability
-        from theme_manager.qt.theme_editor import qt_available
+        from qt_theme_manager.qt.theme_editor import qt_available
 
         if not qt_available:
             print("❌ Qtライブラリが見つかりません。")
@@ -48,7 +48,7 @@ def main():
             except ImportError:
                 from PySide6.QtWidgets import QApplication
 
-        from theme_manager.qt.theme_editor import ThemeEditorWindow
+        from qt_theme_manager.qt.theme_editor import ThemeEditorWindow
 
         # Create application if needed
         app = QApplication.instance()

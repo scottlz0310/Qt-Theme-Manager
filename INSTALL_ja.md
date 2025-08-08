@@ -106,7 +106,7 @@ pip install -e .[all]
 
 ```bash
 cd Theme-Manager
-python -c "from theme_manager import ThemeController; print('インストール成功')"
+python -c "from qt_theme_manager import ThemeController; print('インストール成功')"
 ```
 
 ## 開発者向けインストール
@@ -157,7 +157,7 @@ FileNotFoundError: theme_settings.json not found
 **解決方法**: 正しいディレクトリからライブラリを実行しているか確認
 ```bash
 cd Theme-Manager
-python -m theme_manager.main list
+python -m qt_theme_manager.main list
 ```
 
 #### 3. Python バージョンエラー
@@ -206,15 +206,15 @@ conda install pyside6
 ### 基本テスト
 ```bash
 # CLIテスト
-python -m theme_manager.main list
+python -m qt_theme_manager.main list
 
 # GUIテスト（デスクトップ環境が必要）
-python -c "from theme_manager.qt.preview import show_preview; show_preview()"
+python -c "from qt_theme_manager.qt.preview import show_preview; show_preview()"
 ```
 
 ### 完全なテストスイートの実行
 ```bash
-python test_theme_manager.py
+python test_qt_theme_manager.py
 ```
 
 ## 次のステップ

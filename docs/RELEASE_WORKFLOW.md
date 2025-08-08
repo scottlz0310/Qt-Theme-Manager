@@ -48,7 +48,7 @@ python -m build
 pip install dist/qt_theme_manager-0.2.0-py3-none-any.whl
 
 # 機能テスト
-python -c "from theme_manager import ThemeController; print('Import successful')"
+python -c "from qt_theme_manager import ThemeController; print('Import successful')"
 ```
 
 ### 5. PyPI公開

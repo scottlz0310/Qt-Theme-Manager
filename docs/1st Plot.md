@@ -15,7 +15,7 @@
 #### ディレクトリ構成（初期）
 
 ```
-theme_manager/
+qt_theme_manager/
 ├── __init__.py
 ├── config/
 │   └── theme_settings.json         # テーマ定義と状態管理
@@ -71,7 +71,7 @@ theme_manager/
 ### 🛠 使用例（PyQt5）
 
 ```python
-from theme_manager.qt.controller import apply_theme_to_widget
+from qt_theme_manager.qt.controller import apply_theme_to_widget
 
 app = QApplication([])
 window = QMainWindow()

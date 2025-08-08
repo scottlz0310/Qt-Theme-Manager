@@ -65,8 +65,8 @@ sed -i "s/version = \".*\"/version = \"$VERSION\"/" pyproject.toml
 sed -i "s/version=\".*\"/version=\"$VERSION\"/" setup.py
 
 # __init__.py
-sed -i "s/__version__ = \".*\"/__version__ = \"$VERSION\"/" theme_manager/__init__.py
-sed -i "s/Version: .*/Version: $VERSION/" theme_manager/__init__.py
+sed -i "s/__version__ = \".*\"/__version__ = \"$VERSION\"/" qt_theme_manager/__init__.py
+sed -i "s/Version: .*/Version: $VERSION/" qt_theme_manager/__init__.py
 
 echo_success "バージョン番号を $VERSION に更新しました"
 
@@ -79,7 +79,7 @@ echo_success "パッケージのビルドとチェックが完了しました"
 
 # Gitコミットとタグ作成
 echo_info "📋 変更をコミット中..."
-git add pyproject.toml setup.py theme_manager/__init__.py
+git add pyproject.toml setup.py qt_theme_manager/__init__.py
 git commit -m "🏷️ Bump version to $VERSION
 
 $DESCRIPTION

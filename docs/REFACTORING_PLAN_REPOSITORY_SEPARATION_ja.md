@@ -24,7 +24,7 @@ Qt-Theme-Managerを**ライブラリ**と**GUIツール**に分離し、それ�
 
 ```
 qt-theme-manager/
-├── qt-theme_manager/           # コアライブラリ
+├── qt_theme_manager/           # コアライブラリ
 │   ├── __init__.py
 │   ├── main.py
 │   ├── cli/                # CLI機能
@@ -129,7 +129,7 @@ qt-theme-studio/
 
 ### qt-theme-manager（ライブラリ）に残すファイル
 ```
-✅ theme_manager/           # コアライブラリ（全ファイル）
+✅ qt_theme_manager/           # コアライブラリ（全ファイル）
 ✅ pyproject.toml          # プロジェクト設定
 ✅ setup.py               # パッケージング設定
 ✅ MANIFEST.in            # 配布ファイル設定
@@ -361,7 +361,7 @@ dev = [
 - 応答はすべて日本語で行う、ドキュメントは英語で記述するが、日本語版も必ず作成する。
 - print文は禁止。必ず logger を使用すること。
 - メインのエントリーポイント以外のスクリプトは root に配置しない。適切なフォルダに整理すること。
-- `theme_manager/` パッケージは一切変更しない。既存ライブラリの保護を最優先とする。
+- `qt_theme_manager/` パッケージは一切変更しない。既存ライブラリの保護を最優先とする。
 - GUIアプリケーションは `qt_theme_studio/` 以下に構築し、MVCアーキテクチャを遵守すること。
 - 統合ランチャーは `launch_theme_studio.py` のみとし、旧ランチャーは削除対象とする。
 

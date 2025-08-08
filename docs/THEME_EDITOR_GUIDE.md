@@ -25,7 +25,7 @@ python launch_zebra_theme_editor.py --mode demo
 ### 従来のテーマエディター
 ```bash
 # モジュール実行（推奨）
-python -m theme_manager.qt.theme_editor
+python -m qt_theme_manager.qt.theme_editor
 
 # 専用ランチャー
 python launch_theme_editor.py
@@ -68,7 +68,7 @@ theme-editor  # pip install qt-theme-manager後
 
 ```python
 # 使用例
-from theme_manager.qt.theme_editor import ColorUtils
+from qt_theme_manager.qt.theme_editor import ColorUtils
 
 # 輝度計算
 luminance = ColorUtils.get_luminance("#007acc")  # 0.213
@@ -352,7 +352,7 @@ python launch_theme_editor.py --theme dark --base-color "#BB86FC"
 
 ```python
 # 創作活動向けの鮮やかなテーマ
-from theme_manager.qt.theme_editor import ColorUtils
+from qt_theme_manager.qt.theme_editor import ColorUtils
 
 utils = ColorUtils()
 # 補色を活用した印象的なテーマ

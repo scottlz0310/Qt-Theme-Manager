@@ -3,8 +3,6 @@ Enhanced QSS stylesheet generation for comprehensive theme components.
 Supports advanced component styling with the theme editor.
 """
 
-from typing import Any, Dict
-
 from .stylesheet import StylesheetGenerator
 
 

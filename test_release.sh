@@ -45,15 +45,15 @@ python3 -c "
 import sys
 sys.path.insert(0, '.')
 try:
-    import theme_manager
-    from theme_manager.main import main
+    import qt_theme_manager
+    from qt_theme_manager.main import main
     print('✅ theme_manager import: OK')
 except ImportError as e:
     print(f'❌ theme_manager import: FAIL - {e}')
     sys.exit(1)
 
 try:
-    from theme_manager.cli.themectl import main as cli_main
+    from qt_theme_manager.cli.themectl import main as cli_main
     print('✅ CLI main function: OK')
 except Exception as e:
     print(f'❌ CLI main function: FAIL - {e}')
@@ -66,7 +66,7 @@ python3 -c "
 import sys
 sys.path.insert(0, '.')
 try:
-    from theme_manager.cli.main import main as cli_main
+    from qt_theme_manager.cli.main import main as cli_main
     print('✅ CLI import: OK')
 except ImportError as e:
     print(f'❌ CLI import: FAIL - {e}')
@@ -103,7 +103,7 @@ except ImportError:
 if qt_available:
     print(f'✅ Qt framework ({qt_framework}): Available')
     try:
-        from theme_manager.qt import loader, stylesheet
+        from qt_theme_manager.qt import loader, stylesheet
         print('✅ Qt modules import: OK')
     except ImportError as e:
         print(f'❌ Qt modules import: FAIL - {e}')
@@ -121,10 +121,10 @@ import os
 import sys
 
 required_files = [
-    'theme_manager/__init__.py',
-    'theme_manager/main.py',
-    'theme_manager/cli/__init__.py',
-    'theme_manager/qt/__init__.py',
+    'qt_theme_manager/__init__.py',
+    'qt_theme_manager/main.py',
+    'qt_theme_manager/cli/__init__.py',
+    'qt_theme_manager/qt/__init__.py',
     'setup.py',
     'pyproject.toml',
     'README.md',
@@ -167,7 +167,7 @@ with open('pyproject.toml', 'r') as f:
     )
 
 # __init__.py からバージョンを取得
-with open('theme_manager/__init__.py', 'r') as f:
+with open('qt_theme_manager/__init__.py', 'r') as f:
     init_content = f.read()
     init_version = re.search(r'__version__ = [\'\"](.*?)[\'\"]', init_content)
     init_version = init_version.group(1) if init_version else None

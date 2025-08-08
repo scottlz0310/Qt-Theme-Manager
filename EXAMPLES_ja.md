@@ -80,7 +80,7 @@ print(f"白とライトグレーのコントラスト: {contrast:.2f}:1")
 
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel
-from theme_manager.qt.controller import apply_theme_to_widget
+from qt_theme_manager.qt.controller import apply_theme_to_widget
 
 class MinimalApp(QMainWindow):
     def __init__(self):
@@ -114,7 +114,7 @@ from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, 
     QPushButton, QLabel, QComboBox
 )
-from theme_manager.qt.controller import ThemeController
+from qt_theme_manager.qt.controller import ThemeController
 
 class ThemeSwitcherApp(QMainWindow):
     def __init__(self):
@@ -190,7 +190,7 @@ from PyQt5.QtWidgets import (
     QListWidget, QMenuBar, QToolBar, QStatusBar, QAction
 )
 from PyQt5.QtCore import Qt
-from theme_manager.qt.controller import ThemeController
+from qt_theme_manager.qt.controller import ThemeController
 
 class FullGuiApp(QMainWindow):
     def __init__(self):
@@ -333,7 +333,7 @@ if __name__ == "__main__":
 import json
 import tempfile
 import os
-from theme_manager.qt.controller import ThemeController
+from qt_theme_manager.qt.controller import ThemeController
 
 # カスタムテーマ設定
 custom_theme_config = {
@@ -410,7 +410,7 @@ if __name__ == "__main__":
 
 ```bash
 # 利用可能なテーマを一覧表示
-python -m theme_manager.main list
+python -m qt_theme_manager.main list
 
 # 出力例:
 # Available themes:
@@ -424,13 +424,13 @@ python -m theme_manager.main list
 #     Description: 明るい背景のクリーンテーマ
 
 # テーマを変更
-python -m theme_manager.main set light
+python -m qt_theme_manager.main set light
 
 # 現在のテーマを確認
-python -m theme_manager.main current
+python -m qt_theme_manager.main current
 
 # QSSをファイルにエクスポート
-python -m theme_manager.main export dark my_dark_theme.qss
+python -m qt_theme_manager.main export dark my_dark_theme.qss
 ```
 
 ## 高度な使用方法
@@ -443,9 +443,9 @@ python -m theme_manager.main export dark my_dark_theme.qss
 高度なテーマ管理の例
 """
 
-from theme_manager.qt.controller import ThemeController
-from theme_manager.qt.stylesheet import StylesheetGenerator
-from theme_manager.qt.loader import ThemeLoader
+from qt_theme_manager.qt.controller import ThemeController
+from qt_theme_manager.qt.stylesheet import StylesheetGenerator
+from qt_theme_manager.qt.loader import ThemeLoader
 
 class AdvancedThemeManager:
     def __init__(self):
@@ -556,7 +556,7 @@ from PyQt5.QtWidgets import (
     QPushButton, QLabel, QGraphicsOpacityEffect
 )
 from PyQt5.QtCore import QPropertyAnimation, QEasingCurve, pyqtSlot
-from theme_manager.qt.controller import ThemeController
+from qt_theme_manager.qt.controller import ThemeController
 
 class AnimatedThemeApp(QMainWindow):
     def __init__(self):

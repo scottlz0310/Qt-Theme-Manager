@@ -43,7 +43,7 @@ def adjust_brightness(hex_color, lightness_change_percent):
 def generate_improved_zebra_colors():
     """改善されたゼブラ色の提案を生成"""
     # テーマ設定を読み込み
-    config_path = Path("theme_manager/config/theme_settings.json")
+    config_path = Path("qt_theme_manager/config/theme_settings.json")
     with open(config_path, "r", encoding="utf-8") as f:
         config = json.load(f)
 

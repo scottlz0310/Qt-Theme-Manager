@@ -17,7 +17,7 @@ except ImportError:
 
 # 既存のテーマエディターのインポートを試行
 try:
-    from theme_manager.qt.theme_editor import (
+    from qt_theme_manager.qt.theme_editor import (
         ColorSliderGroup,
         ThemeEditorWindow,
     )

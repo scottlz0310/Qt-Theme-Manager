@@ -328,7 +328,7 @@ if not is_valid:
 
 **例:**
 ```python
-from theme_manager import apply_theme_to_widget
+from qt_theme_manager import apply_theme_to_widget
 
 # 現在のテーマを適用
 apply_theme_to_widget(my_widget)
@@ -346,7 +346,7 @@ apply_theme_to_widget(my_widget, "dark")
 
 **例:**
 ```python
-from theme_manager import apply_theme_to_application
+from qt_theme_manager import apply_theme_to_application
 
 # 現在のテーマをアプリケーション全体に適用
 apply_theme_to_application()
@@ -473,7 +473,7 @@ except KeyError:
 ### エラーハンドリングの例
 
 ```python
-from theme_manager.qt.controller import ThemeController
+from qt_theme_manager.qt.controller import ThemeController
 import json
 
 def safe_theme_setup():

@@ -76,7 +76,7 @@ python launch_theme_editor.py  # リポジトリをクローンした場合
 **たった3行でQtアプリに美しいテーマを追加したい？**
 
 ```python
-from theme_manager.qt.controller import apply_theme_to_widget
+from qt_theme_manager.qt.controller import apply_theme_to_widget
 
 # これだけ！任意のウィジェットに現在のテーマを適用:
 apply_theme_to_widget(your_widget)
@@ -85,7 +85,7 @@ apply_theme_to_widget(your_widget)
 **動的にテーマを切り替えたい？**
 
 ```python
-from theme_manager.qt.controller import ThemeController
+from qt_theme_manager.qt.controller import ThemeController
 
 controller = ThemeController()
 controller.set_theme("dark")  # または "light", "blue", "cyberpunk" など
@@ -140,7 +140,7 @@ pip install -e .[pyqt6]    # PyQt6の場合
 ### 基本的な使用方法
 
 ```python
-from theme_manager.qt.controller import apply_theme_to_widget
+from qt_theme_manager.qt.controller import apply_theme_to_widget
 from PyQt5.QtWidgets import QApplication, QMainWindow
 
 app = QApplication([])
@@ -156,7 +156,7 @@ app.exec_()
 ### ThemeControllerの使用
 
 ```python
-from theme_manager.qt.controller import ThemeController
+from qt_theme_manager.qt.controller import ThemeController
 
 # テーマコントローラーを初期化
 controller = ThemeController()
@@ -309,7 +309,7 @@ python -m theme_manager.main current
 ### カスタムテーマ設定
 
 ```python
-from theme_manager.qt.controller import ThemeController
+from qt_theme_manager.qt.controller import ThemeController
 
 # カスタム設定ファイルを使用
 controller = ThemeController("/path/to/custom/config.json")
@@ -318,7 +318,7 @@ controller = ThemeController("/path/to/custom/config.json")
 ### テーマプレビューウィンドウ
 
 ```python
-from theme_manager.qt.preview import show_preview
+from qt_theme_manager.qt.preview import show_preview
 
 # インタラクティブなプレビューウィンドウを表示
 preview_window = show_preview()
@@ -327,7 +327,7 @@ preview_window = show_preview()
 ### 手動QSS生成
 
 ```python
-from theme_manager.qt.stylesheet import StylesheetGenerator
+from qt_theme_manager.qt.stylesheet import StylesheetGenerator
 
 theme_config = {...}  # あなたのテーマ設定
 generator = StylesheetGenerator(theme_config)

@@ -10,14 +10,26 @@ setup(
     author_email="scott.lz0310@gmail.com",
     description=(
         "A comprehensive theme management library for "
-        "PyQt5/PyQt6/PySide6 applications"
+        "PyQt5/PyQt6/PySide6 applications with automatic Qt framework "
+        "detection"
     ),
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/scottlz0310/Qt-Theme-Manager",
-    packages=find_packages(),
+    project_urls={
+        "Homepage": "https://github.com/scottlz0310/Qt-Theme-Manager",
+        "Documentation": "https://github.com/scottlz0310/Qt-Theme-Manager/blob/main/README.md",
+        "Repository": "https://github.com/scottlz0310/Qt-Theme-Manager",
+        "Bug Tracker": "https://github.com/scottlz0310/Qt-Theme-Manager/issues",
+    },
+    packages=[
+        "qt_theme_manager",
+        "qt_theme_manager.qt",
+        "qt_theme_manager.cli",
+        "qt_theme_manager.config",
+    ],
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
@@ -29,10 +41,12 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Software Development :: User Interfaces",
         "Topic :: Desktop Environment",
+        "Environment :: X11 Applications :: Qt",
     ],
     python_requires=">=3.9",
     install_requires=[
-        # Base requirements (no Qt framework by default)
+        # Qt自動検出のため基本依存関係なし
+        # ユーザーは必要に応じてQt frameworkをインストール
     ],
     extras_require={
         "pyqt5": ["PyQt5>=5.15.0"],
@@ -41,9 +55,11 @@ setup(
         "dev": [
             "pytest>=6.0",
             "pytest-qt>=4.0",
-            "black",
-            "isort",
-            "flake8",
+            "pytest-cov>=3.0",
+            "black>=22.0",
+            "isort>=5.0",
+            "flake8>=4.0",
+            "mypy>=0.900",
         ],
         "all": [
             "PyQt5>=5.15.0",
@@ -53,13 +69,23 @@ setup(
     },
     include_package_data=True,
     package_data={
-        "theme_manager": ["config/*.json"],
+        "qt_theme_manager": ["config/*.json"],
     },
     entry_points={
         "console_scripts": [
-            "theme-manager=theme_manager.cli.main:main",
-            "theme-editor=theme_manager.qt.theme_editor:launch_theme_editor",
-            "theme-preview=theme_manager.qt.preview:launch_preview",
+            "qt-theme-manager=qt_theme_manager.cli.main:main",
         ],
     },
+    keywords=[
+        "theme",
+        "gui",
+        "qt",
+        "styling",
+        "pyside",
+        "pyqt",
+        "library",
+        "ui",
+        "desktop",
+    ],
+    zip_safe=False,
 )

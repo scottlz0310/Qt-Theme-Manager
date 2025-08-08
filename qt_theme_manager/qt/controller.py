@@ -4,57 +4,61 @@ Handles theme switching, application, and state management.
 """
 
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Dict, Optional, Union
+from typing import Any, Dict, Optional, Union
 
-# Import handling for Qt libraries
-qt_available = False
-PYQT5_AVAILABLE = False
-PYQT6_AVAILABLE = False
-PYSIDE_AVAILABLE = False
+from ..config.logging_config import get_logger
+from .detection import (
+    QtFrameworkNotFoundError,
+    QtVersionError,
+    detect_qt_framework,
+)
 
+logger = get_logger(__name__)
+
+# Initialize Qt framework detection
 try:
-    from PyQt5.QtCore import QObject, pyqtSignal
-    from PyQt5.QtWidgets import QApplication, QWidget
-
+    qt_framework, qt_modules = detect_qt_framework()
     qt_available = True
-    PYQT5_AVAILABLE = True
-    qt_framework = "PyQt5"
-except ImportError:
-    try:
-        from PyQt6.QtCore import QObject, pyqtSignal
-        from PyQt6.QtWidgets import QApplication, QWidget
 
-        qt_available = True
-        PYQT6_AVAILABLE = True
-        qt_framework = "PyQt6"
-    except ImportError:
-        try:
-            from PySide6.QtCore import QObject
-            from PySide6.QtCore import Signal as pyqtSignal
-            from PySide6.QtWidgets import QApplication, QWidget
+    # Extract Qt classes from detected modules
+    QObject = qt_modules["QObject"]
+    pyqtSignal = qt_modules["pyqtSignal"]
+    QApplication = qt_modules["QApplication"]
+    QWidget = qt_modules["QWidget"]
 
-            qt_available = True
-            PYSIDE_AVAILABLE = True
-            qt_framework = "PySide6"
-        except ImportError:
-            # Create stub classes for when Qt is not available
-            class QObject:
-                def __init__(self):
-                    pass
+    logger.info(
+        f"Qt framework detected: {qt_framework} v{qt_modules.get('version', 'unknown')}"
+    )
 
-            class QWidget:
-                def setStyleSheet(self, stylesheet: str) -> None:
-                    pass
+except (QtFrameworkNotFoundError, QtVersionError) as e:
+    qt_available = False
+    qt_framework = "None"
+    logger.warning(f"Qt framework not available: {e}")
 
-            class QApplication:
-                @staticmethod
-                def instance():
-                    return None
+    # Create stub classes for when Qt is not available
+    class QObject:
+        def __init__(self):
+            pass
 
-                def setStyleSheet(self, stylesheet: str) -> None:
-                    pass
+    class QWidget:
+        def setStyleSheet(self, stylesheet: str) -> None:
+            pass
 
-            qt_framework = "None"
+    class QApplication:
+        @staticmethod
+        def instance():
+            return None
+
+        def setStyleSheet(self, stylesheet: str) -> None:
+            pass
+
+    # Create stub signal for compatibility
+    def pyqtSignal(*args, **kwargs):
+        def decorator(func):
+            return func
+
+        return decorator
+
 
 from .loader import ThemeLoader
 from .stylesheet import StylesheetGenerator
@@ -96,8 +100,8 @@ class ThemeController(QObject):
                 )
 
         except Exception as e:
-            print(
-                f"Warning: Failed to load theme '{self.current_theme_name}': {e}"
+            logger.warning(
+                f"Failed to load theme '{self.current_theme_name}': {e}"
             )
             # Fallback to light theme
             self._load_fallback_theme()
@@ -190,11 +194,11 @@ class ThemeController(QObject):
             ):
                 self.theme_changed.emit(theme_name)
 
-            print(f"Theme changed from '{old_theme}' to '{theme_name}'")
+            logger.info(f"Theme changed from '{old_theme}' to '{theme_name}'")
             return True
 
         except Exception as e:
-            print(f"Failed to set theme '{theme_name}': {e}")
+            logger.error(f"Failed to set theme '{theme_name}': {e}")
             return False
 
     def apply_theme_to_widget(self, widget: "QWidget") -> bool:
@@ -207,21 +211,21 @@ class ThemeController(QObject):
         Returns:
             True if theme was successfully applied, False otherwise
         """
-        if not (PYQT5_AVAILABLE or PYQT6_AVAILABLE or PYSIDE_AVAILABLE):
-            print(
-                "Warning: PyQt5/PyQt6/PySide6 not available, cannot apply theme to widget"
+        if not qt_available:
+            logger.warning(
+                f"Qt framework not available ({qt_framework}), cannot apply theme to widget"
             )
             return False
 
         if widget is None:
-            print("Warning: Widget is None, cannot apply theme")
+            logger.warning("Widget is None, cannot apply theme")
             return False
 
         try:
             widget.setStyleSheet(self.current_stylesheet)
             return True
         except Exception as e:
-            print(f"Failed to apply theme to widget: {e}")
+            logger.error(f"Failed to apply theme to widget: {e}")
             return False
 
     def apply_theme_to_application(
@@ -236,9 +240,9 @@ class ThemeController(QObject):
         Returns:
             True if theme was successfully applied, False otherwise
         """
-        if not (PYQT5_AVAILABLE or PYQT6_AVAILABLE or PYSIDE_AVAILABLE):
-            print(
-                "Warning: PyQt5/PyQt6/PySide6 not available, cannot apply theme to application"
+        if not qt_available:
+            logger.warning(
+                f"Qt framework not available ({qt_framework}), cannot apply theme to application"
             )
             return False
 
@@ -246,14 +250,14 @@ class ThemeController(QObject):
             app = QApplication.instance()
 
         if app is None:
-            print("Warning: No QApplication instance found")
+            logger.warning("No QApplication instance found")
             return False
 
         try:
             app.setStyleSheet(self.current_stylesheet)
             return True
         except Exception as e:
-            print(f"Failed to apply theme to application: {e}")
+            logger.error(f"Failed to apply theme to application: {e}")
             return False
 
     def export_qss(
@@ -290,11 +294,11 @@ class ThemeController(QObject):
                 f.write(f"/* Generated by ThemeManager */\n\n")
                 f.write(stylesheet)
 
-            print(f"QSS exported to: {output_path}")
+            logger.info(f"QSS exported to: {output_path}")
             return True
 
         except Exception as e:
-            print(f"Failed to export QSS: {e}")
+            logger.error(f"Failed to export QSS: {e}")
             return False
 
     def reload_themes(self) -> bool:
@@ -309,11 +313,11 @@ class ThemeController(QObject):
             self.loader._settings = None
             self._load_current_theme()
 
-            print("Theme configurations reloaded")
+            logger.info("Theme configurations reloaded")
             return True
 
         except Exception as e:
-            print(f"Failed to reload themes: {e}")
+            logger.error(f"Failed to reload themes: {e}")
             return False
 
 
@@ -344,7 +348,7 @@ def apply_theme_to_widget(
         return controller.apply_theme_to_widget(widget)
 
     except Exception as e:
-        print(f"Failed to apply theme to widget: {e}")
+        logger.error(f"Failed to apply theme to widget: {e}")
         return False
 
 
@@ -374,5 +378,5 @@ def apply_theme_to_application(
         return controller.apply_theme_to_application(app)
 
     except Exception as e:
-        print(f"Failed to apply theme to application: {e}")
+        logger.error(f"Failed to apply theme to application: {e}")
         return False

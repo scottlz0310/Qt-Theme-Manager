@@ -6,12 +6,68 @@ Provides sample widget window to preview themes with theme switching buttons.
 from pathlib import Path
 from typing import Optional, Union
 
-# Import Qt availability from controller
-from .controller import qt_available, qt_framework
+from ..config.logging_config import get_logger
+from .detection import (
+    QtFrameworkNotFoundError,
+    detect_qt_framework,
+    is_qt_available,
+)
 
-# Import handling for Qt libraries
-if qt_available:
-    try:
+logger = get_logger(__name__)
+
+# Initialize Qt framework detection for preview
+try:
+    qt_framework, qt_modules = detect_qt_framework()
+    qt_available = True
+
+    # Import Qt modules based on detected framework
+    if qt_framework == "PySide6":
+        from PySide6.QtCore import Qt
+        from PySide6.QtGui import QAction
+        from PySide6.QtWidgets import (
+            QApplication,
+            QComboBox,
+            QFrame,
+            QGridLayout,
+            QGroupBox,
+            QHBoxLayout,
+            QLabel,
+            QLineEdit,
+            QListWidget,
+            QListWidgetItem,
+            QMainWindow,
+            QPushButton,
+            QScrollArea,
+            QStatusBar,
+            QTextEdit,
+            QToolBar,
+            QVBoxLayout,
+            QWidget,
+        )
+    elif qt_framework == "PyQt6":
+        from PyQt6.QtCore import Qt
+        from PyQt6.QtGui import QAction
+        from PyQt6.QtWidgets import (
+            QApplication,
+            QComboBox,
+            QFrame,
+            QGridLayout,
+            QGroupBox,
+            QHBoxLayout,
+            QLabel,
+            QLineEdit,
+            QListWidget,
+            QListWidgetItem,
+            QMainWindow,
+            QPushButton,
+            QScrollArea,
+            QStatusBar,
+            QTextEdit,
+            QToolBar,
+            QVBoxLayout,
+            QWidget,
+        )
+    elif qt_framework == "PyQt5":
         from PyQt5.QtCore import Qt
         from PyQt5.QtWidgets import (
             QAction,
@@ -34,53 +90,19 @@ if qt_available:
             QVBoxLayout,
             QWidget,
         )
-    except ImportError:
-        try:
-            from PyQt6.QtCore import Qt
-            from PyQt6.QtGui import QAction
-            from PyQt6.QtWidgets import (
-                QApplication,
-                QComboBox,
-                QFrame,
-                QGridLayout,
-                QGroupBox,
-                QHBoxLayout,
-                QLabel,
-                QLineEdit,
-                QListWidget,
-                QListWidgetItem,
-                QMainWindow,
-                QPushButton,
-                QScrollArea,
-                QStatusBar,
-                QTextEdit,
-                QToolBar,
-                QVBoxLayout,
-                QWidget,
-            )
-        except ImportError:
-            from PySide6.QtWidgets import (
-                QApplication,
-                QMainWindow,
-                QWidget,
-                QVBoxLayout,
-                QHBoxLayout,
-                QPushButton,
-                QLabel,
-                QLineEdit,
-                QTextEdit,
-                QComboBox,
-                QListWidget,
-                QGroupBox,
-                QFrame,
-                QToolBar,
-                QStatusBar,
-                QListWidgetItem,
-                QScrollArea,
-                QGridLayout,
-            )
-            from PySide6.QtCore import Qt
-            from PySide6.QtGui import QAction
+
+    logger.info(f"Qt framework loaded for preview: {qt_framework}")
+
+except QtFrameworkNotFoundError as e:
+    qt_available = False
+    qt_framework = "None"
+    logger.warning(f"Qt framework not available for preview: {e}")
+
+    # Create stub classes for when Qt is not available
+    class QMainWindow:
+        def __init__(self):
+            pass
+
 
 from .controller import ThemeController
 
