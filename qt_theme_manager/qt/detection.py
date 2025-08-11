@@ -1,6 +1,7 @@
 """
 Qt framework detection module.
-Handles automatic detection of available Qt frameworks with proper error handling.
+Handles automatic detection of available Qt frameworks with \
+proper error handling.
 """
 
 from typing import Any, Dict, Optional, Tuple
@@ -43,7 +44,7 @@ class QtDetector:
     # Minimum version requirements for each framework
     MIN_VERSIONS = {"PySide6": "6.0.0", "PyQt6": "6.2.0", "PyQt5": "5.15.0"}
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._cached_framework: Optional[str] = None
         self._cached_modules: Optional[Dict[str, Any]] = None
         self._detection_attempted = False

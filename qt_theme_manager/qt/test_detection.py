@@ -19,17 +19,17 @@ from .detection import (
 class TestQtDetection(unittest.TestCase):
     """Test cases for Qt framework detection."""
 
-    def setUp(self):
+    def setUp(self) -> None:
         """Set up test environment."""
         self.detector = QtDetector()
         # Clear any cached results
         self.detector.clear_cache()
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         """Clean up after tests."""
         clear_qt_cache()
 
-    def test_pyside6_detection(self):
+    def test_pyside6_detection(self) -> None:
         """Test PySide6 detection."""
         with patch.dict(
             "sys.modules",
@@ -66,7 +66,7 @@ class TestQtDetection(unittest.TestCase):
                 self.assertIn("QObject", modules)
                 self.assertIn("pyqtSignal", modules)
 
-    def test_pyqt6_detection(self):
+    def test_pyqt6_detection(self) -> None:
         """Test PyQt6 detection when PySide6 is not available."""
         with patch(
             "qt_theme_manager.qt.detection.QtDetector._try_pyside6"
@@ -92,7 +92,7 @@ class TestQtDetection(unittest.TestCase):
                 self.assertEqual(framework, "PyQt6")
                 self.assertEqual(modules["version"], "6.2.0")
 
-    def test_pyqt5_detection(self):
+    def test_pyqt5_detection(self) -> None:
         """Test PyQt5 detection when PySide6 and PyQt6 are not available."""
         with patch(
             "qt_theme_manager.qt.detection.QtDetector._try_pyside6"

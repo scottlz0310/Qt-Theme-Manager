@@ -118,7 +118,7 @@ QLineEdit, QTextEdit, QPlainTextEdit, QSpinBox, QDoubleSpinBox {{
     selection-color: white;
 }}
 
-QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus, 
+QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus, \
 QSpinBox:focus, QDoubleSpinBox:focus {{
     border-color: {focus_color};
     outline: none;
@@ -330,7 +330,8 @@ QSlider::handle:horizontal {{
 QSlider::handle:horizontal:hover {{
     background-color: {handle_color};
     border-color: {handle_color};
-    /* QSS doesn't support transform:scale, using padding for visual feedback */
+    /* QSS doesn't support transform:scale, using padding for \
+visual feedback */
     padding: 1px;
 }}
 
@@ -469,7 +470,8 @@ QListWidget::item:hover, QTreeWidget::item:hover, QTableWidget::item:hover {{
     background-color: {hover_color};
 }}
 
-QListWidget::item:selected, QTreeWidget::item:selected, QTableWidget::item:selected {{
+QListWidget::item:selected, QTreeWidget::item:selected, \
+QTableWidget::item:selected {{
     background-color: {selected_color};
     color: {selected_text};
 }}
@@ -576,7 +578,7 @@ QCheckBox::indicator:checked, QRadioButton::indicator:checked {{
 }}
 
 QCheckBox::indicator:checked {{
-    image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEwIDNMNC41IDguNUwyIDYiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPgo=);
+    image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEwIDNMNC41IDguNUwyIDYiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMTIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K);
 }}
 
 QRadioButton::indicator:checked {{

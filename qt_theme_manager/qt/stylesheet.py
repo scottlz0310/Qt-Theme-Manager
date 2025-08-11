@@ -7,7 +7,8 @@ from typing import Any, Dict
 
 
 class StylesheetGenerator:
-    """Generator for PyQt5/PySide6 QSS stylesheets from theme configurations."""
+    """Generator for PyQt5/PySide6 QSS stylesheets from \
+theme configurations."""
 
     def __init__(self, theme_config: Dict[str, Any]):
         """

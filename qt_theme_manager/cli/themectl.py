@@ -7,6 +7,7 @@ type safety, and minimal resource usage.
 """
 
 import argparse
+import logging
 import sys
 from pathlib import Path
 from typing import Optional, Union
@@ -387,9 +388,7 @@ Supported Qt Frameworks:
     )
 
     # List command
-    list_parser = subparsers.add_parser(
-        "list", help="List all available themes"
-    )
+    subparsers.add_parser("list", help="List all available themes")
 
     # Set command
     set_parser = subparsers.add_parser("set", help="Set active theme")
@@ -403,14 +402,10 @@ Supported Qt Frameworks:
     export_parser.add_argument("output", help="Output file path")
 
     # Current command
-    current_parser = subparsers.add_parser(
-        "current", help="Show current theme information"
-    )
+    subparsers.add_parser("current", help="Show current theme information")
 
     # Version command
-    version_parser = subparsers.add_parser(
-        "version", help="Show version information"
-    )
+    subparsers.add_parser("version", help="Show version information")
 
     args = parser.parse_args()
 

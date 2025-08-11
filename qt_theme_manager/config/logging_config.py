@@ -148,7 +148,7 @@ class LoggingConfig:
 
         try:
             with open(config_file, "r", encoding="utf-8") as f:
-                config = json.load(f)
+                config: Dict[str, Any] = json.load(f)
 
             # Validate required keys
             required_keys = ["version", "formatters", "handlers", "loggers"]
@@ -262,7 +262,7 @@ class LoggingConfig:
 
             # Test write permission
             with open(log_file_path, "a", encoding="utf-8") as f:
-                pass  # Just test if we can open for writing
+                f.write("")  # Just test if we can write
 
         except PermissionError:
             raise PermissionError(f"Cannot write to log file: {log_file_path}")

@@ -61,7 +61,9 @@ class ThemeLoader:
             self.load_settings()
 
         if self._settings is not None:
-            return self._settings.get("available_themes", {})
+            themes = self._settings.get("available_themes", {})
+            if isinstance(themes, dict):
+                return themes
         return {}
 
     def get_current_theme(self) -> str:
@@ -75,7 +77,9 @@ class ThemeLoader:
             self.load_settings()
 
         if self._settings is not None:
-            return self._settings.get("current_theme", "light")
+            theme = self._settings.get("current_theme", "light")
+            if isinstance(theme, str):
+                return theme
         return "light"
 
     def get_theme_config(self, theme_name: str) -> Optional[Dict[str, Any]]:
@@ -99,11 +103,22 @@ class ThemeLoader:
             settings: Settings dictionary to save
         """
         try:
+            # Ensure directory exists
+            self.config_path.parent.mkdir(parents=True, exist_ok=True)
+
             with open(self.config_path, "w", encoding="utf-8") as f:
                 json.dump(settings, f, indent=2, ensure_ascii=False)
-            self._settings = settings
+
         except Exception as e:
             raise IOError(f"Failed to save theme settings: {e}")
+
+    def reload_themes(self) -> None:
+        """
+        Reload theme settings from file.
+        Forces reload of cached settings.
+        """
+        self._settings = None
+        self.load_settings()
 
     def update_current_theme(self, theme_name: str) -> None:
         """

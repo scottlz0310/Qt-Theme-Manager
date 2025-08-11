@@ -1,4 +1,4 @@
-from setuptools import find_packages, setup
+from setuptools import setup
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
@@ -18,8 +18,10 @@ setup(
     url="https://github.com/scottlz0310/Qt-Theme-Manager",
     project_urls={
         "Homepage": "https://github.com/scottlz0310/Qt-Theme-Manager",
-        "Documentation": "https://github.com/scottlz0310/Qt-Theme-Manager/blob/main/README.md",
-        "Repository": "https://github.com/scottlz0310/Qt-Theme-Manager",
+        "Documentation": "https://github.com/scottlz0310/Qt-Theme-Manager/"
+        "blob/main/README.md",
+        "Repository": "https://github.com/scottlz0310/"
+        "Qt-Theme-Manager",
         "Bug Tracker": "https://github.com/scottlz0310/Qt-Theme-Manager/issues",
     },
     packages=[
