@@ -5,6 +5,15 @@ Supports advanced component styling with the theme editor.
 
 from .stylesheet import StylesheetGenerator
 
+# SVG icons as base64 encoded data
+CHECKMARK_SVG = (
+    "PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIg"
+    "ZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4K"
+    "PHBhdGggZD0iTTEwIDNMNC41IDguNUwyIDYiIHN0cm9rZT0id2hpdGUiIHN0cm9r"
+    "ZS13aWR0aD0iMTIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVq"
+    "b2luPSJyb3VuZCIvPgo8L3N2Zz4K"
+)
+
 
 class AdvancedStylesheetGenerator(StylesheetGenerator):
     """Enhanced stylesheet generator with comprehensive component support."""
@@ -40,13 +49,12 @@ class AdvancedStylesheetGenerator(StylesheetGenerator):
         disabled_color = button_config.get("disabled", "#a0a0a0")
         border_color = button_config.get("border", "#2c5aa0")
 
-        # Calculate optimal text colors
-        from .theme_editor import ColorUtils
-
-        normal_text = ColorUtils.get_optimal_text_color(normal_color)
-        hover_text = ColorUtils.get_optimal_text_color(hover_color)
-        pressed_text = ColorUtils.get_optimal_text_color(pressed_color)
-        disabled_text = ColorUtils.get_optimal_text_color(disabled_color)
+        # Calculate optimal text colors (simplified for library version)
+        # Note: ColorUtils from theme_editor is not available in pure library
+        normal_text = "#ffffff"  # Default to white for dark buttons
+        hover_text = "#ffffff"
+        pressed_text = "#ffffff"
+        disabled_text = "#ffffff"
 
         return f"""
 /* Enhanced Button Styles */
@@ -578,7 +586,7 @@ QCheckBox::indicator:checked, QRadioButton::indicator:checked {{
 }}
 
 QCheckBox::indicator:checked {{
-    image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEwIDNMNC41IDguNUwyIDYiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMTIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4K);
+    image: url(data:image/svg+xml;base64,{CHECKMARK_SVG});
 }}
 
 QRadioButton::indicator:checked {{

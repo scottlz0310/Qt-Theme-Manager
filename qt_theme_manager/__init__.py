@@ -3,8 +3,9 @@ Qt Theme Manager - Pure Library Edition
 =======================================
 
 A comprehensive theme management library for PyQt5/PyQt6/PySide6.
-This library provides core theme management functionality without GUI dependencies,
-following the principle of separation of concerns for better maintainability.
+This library provides core theme management functionality without GUI
+dependencies, following the principle of separation of concerns for better
+maintainability.
 
 Core Features:
 - Dynamic theme switching with 16+ built-in themes

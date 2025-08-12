@@ -4,7 +4,7 @@ Handles theme switching, application, and state management.
 """
 
 from pathlib import Path
-from typing import Any, Dict, Optional, Union, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 
 from ..config.logging_config import get_logger
 from .detection import (
@@ -18,18 +18,18 @@ from .stylesheet import StylesheetGenerator
 if TYPE_CHECKING:
     # Static type definitions for mypy
     from typing import Protocol
-    
+
     class QObjectProtocol(Protocol):
         def __init__(self) -> None: ...
-    
+
     class QWidgetProtocol(Protocol):
         def setStyleSheet(self, stylesheet: str) -> None: ...
-    
+
     class QApplicationProtocol(Protocol):
         @staticmethod
         def instance() -> Optional["QApplicationProtocol"]: ...
         def setStyleSheet(self, stylesheet: str) -> None: ...
-    
+
     # Type aliases for static analysis
     QtQObject = QObjectProtocol
     QtQWidget = QWidgetProtocol
@@ -64,21 +64,26 @@ except (QtFrameworkNotFoundError, QtVersionError) as e:
     logger.warning(f"Qt framework not available: {e}")
 
     # Create stub classes for when Qt is not available
-    class QObject:
+    class MockQObject:
         def __init__(self) -> None:
             pass
 
-    class QWidget:
+    class MockQWidget:
         def setStyleSheet(self, stylesheet: str) -> None:
             pass
 
-    class QApplication:
+    class MockQApplication:
         @staticmethod
-        def instance() -> Optional["QApplication"]:
+        def instance() -> Optional["MockQApplication"]:
             return None
 
         def setStyleSheet(self, stylesheet: str) -> None:
             pass
+
+    # Assign mock classes to expected names
+    QObject = MockQObject
+    QWidget = MockQWidget
+    QApplication = MockQApplication
 
     # Create stub signal for compatibility
     def pyqtSignal(*args: Any, **kwargs: Any) -> Any:
@@ -88,10 +93,10 @@ except (QtFrameworkNotFoundError, QtVersionError) as e:
         return decorator
 
 
-# Runtime type aliases (will be assigned dynamically)
-QtQObject = QObject
-QtQWidget = QWidget
-QtQApplication = QApplication
+# Update runtime type aliases
+QtQObject = QObject  # type: ignore[misc,no-redef]
+QtQWidget = QWidget  # type: ignore[misc,no-redef]
+QtQApplication = QApplication  # type: ignore[misc,no-redef]
 
 
 class ThemeController(QtQObject):
@@ -104,7 +109,13 @@ class ThemeController(QtQObject):
         Args:
             config_path: Path to theme configuration file
         """
-        super().__init__()
+        # Initialize Qt parent class if available
+        if hasattr(super(), "__init__"):
+            try:
+                super().__init__()  # type: ignore[safe-super]
+            except Exception:
+                # Handle case where Qt is not properly initialized
+                pass
 
         self.loader = ThemeLoader(config_path)
         self.current_theme_name = ""
@@ -130,9 +141,7 @@ class ThemeController(QtQObject):
                 )
 
         except Exception as e:
-            logger.warning(
-                f"Failed to load current theme: {e}"
-            )
+            logger.warning(f"Failed to load current theme: {e}")
             self._load_fallback_theme()
 
     def _load_fallback_theme(self) -> None:
@@ -208,6 +217,10 @@ class ThemeController(QtQObject):
             True if theme was applied successfully, False otherwise
         """
         try:
+            if not qt_available:
+                logger.warning("Qt framework not available")
+                return False
+
             if not self.current_stylesheet:
                 logger.warning("No current stylesheet to apply")
                 return False
@@ -325,6 +338,10 @@ def apply_theme_to_widget(
         True if theme was applied successfully, False otherwise
     """
     try:
+        if not qt_available:
+            logger.warning("Qt framework not available")
+            return False
+
         controller = ThemeController(config_path)
         if theme_name:
             controller.set_theme(theme_name, save_settings=False)

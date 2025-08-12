@@ -11,15 +11,10 @@ from .controller import (
 from .loader import ThemeLoader
 from .stylesheet import StylesheetGenerator
 
-# Try to import preview module (optional, requires Qt)
-try:
-    from .preview import ThemePreviewWindow, show_preview
-
-    preview_available = True
-except ImportError:
-    preview_available = False
-    ThemePreviewWindow = None
-    show_preview = None
+# Preview functionality is not available in pure library version
+preview_available = False
+ThemePreviewWindow = None
+show_preview = None
 
 __all__ = [
     "ThemeLoader",
@@ -28,6 +23,3 @@ __all__ = [
     "apply_theme_to_widget",
     "apply_theme_to_application",
 ]
-
-if preview_available:
-    __all__.extend(["ThemePreviewWindow", "show_preview"])
