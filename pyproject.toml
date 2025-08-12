@@ -29,7 +29,6 @@ keywords = [
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
-
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
@@ -40,7 +39,6 @@ classifiers = [
     "Topic :: Software Development :: User Interfaces",
     "Topic :: Desktop Environment",
     "Environment :: X11 Applications :: Qt",
-    "Framework :: Qt",
 ]
 requires-python = ">=3.9"
 dependencies = [
