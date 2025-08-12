@@ -3,7 +3,7 @@ name: Publish to PyPI
 on:
   push:
     tags:
-      - 'v[0-9]+\.[0-9]+\.[0-9]+'$'     # 正確に v0.2.4 形式のみ
+      - 'v[0-9]+.[0-9]+.[0-9]+'     # 正確に v0.2.4 形式のみ
 
 jobs:
   debug-trigger:
