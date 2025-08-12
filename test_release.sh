@@ -47,9 +47,9 @@ sys.path.insert(0, '.')
 try:
     import qt_theme_manager
     from qt_theme_manager.main import main
-    print('✅ theme_manager import: OK')
+    print('✅ qt_theme_manager import: OK')
 except ImportError as e:
-    print(f'❌ theme_manager import: FAIL - {e}')
+    print(f'❌ qt_theme_manager import: FAIL - {e}')
     sys.exit(1)
 
 try:

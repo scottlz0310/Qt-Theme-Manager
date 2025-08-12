@@ -94,7 +94,7 @@ jobs:
         bash test_release.sh
       shell: bash
     
-    - name: Test theme editor startup
+    - name: Test library functionality
       env:
         DISPLAY: :99
         QT_QPA_PLATFORM: ${{ runner.os == 'macOS' && 'offscreen' || runner.os == 'Windows' && 'offscreen' || 'xcb' }}
@@ -102,24 +102,23 @@ jobs:
         XDG_RUNTIME_DIR: /tmp/runtime-runner
         PYTHONIOENCODING: utf-8
       run: |
-        # Test module execution
-        timeout 10s python -m theme_manager.qt.theme_editor || true
-        
-        # Test script execution (if available)
-        if [ -f launch_theme_editor.py ]; then
-          timeout 10s python launch_theme_editor.py || true
-        fi
+        # Test library import and basic functionality
+        python -c "
+        import qt_theme_manager
+        print(f'Qt-Theme-Manager v{qt_theme_manager.__version__} loaded successfully')
+        from qt_theme_manager import ThemeController, detect_qt_framework
+        print('Core components imported successfully')
+        "
       shell: bash
-      continue-on-error: true  # GUI tests may timeout, but that's OK
     
     - name: Test CLI commands
       env:
         PYTHONIOENCODING: utf-8
       run: |
-        python -m theme_manager.main list
-        python -m theme_manager.main current
-        python -m theme_manager.main set dark
-        python -m theme_manager.main export dark test_dark.qss
+        python -m qt_theme_manager.cli.main list
+        python -m qt_theme_manager.cli.main current
+        python -m qt_theme_manager.cli.main set dark
+        python -m qt_theme_manager.cli.main export dark test_dark.qss
       shell: bash
 
   build-test:
