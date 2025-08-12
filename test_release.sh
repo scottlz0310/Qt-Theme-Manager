@@ -27,21 +27,21 @@ echo_info "🚀 Qt-Theme-Manager リリーステスト開始"
 
 # Python環境確認
 echo_info "🐍 Python環境の確認"
-python3 --version || {
-    echo_error "Python3が見つかりません"
+python --version || {
+    echo_error "Pythonが見つかりません"
     exit 1
 }
 
 # 必要なパッケージのインストール確認
 echo_info "📦 依存関係の確認"
-pip3 install -e . || {
+pip install -e . || {
     echo_error "依存関係のインストールに失敗しました"
     exit 1
 }
 
 # コアライブラリのテスト
 echo_info "🔧 コアライブラリのテスト"
-python3 -c "
+python -c "
 import sys
 sys.path.insert(0, '.')
 try:
@@ -62,7 +62,7 @@ except Exception as e:
 
 # CLI機能のテスト
 echo_info "💻 CLI機能のテスト"
-python3 -c "
+python -c "
 import sys
 sys.path.insert(0, '.')
 try:
@@ -75,7 +75,7 @@ except ImportError as e:
 
 # Qt統合のテスト（環境に応じて）
 echo_info "🖼️ Qt統合のテスト"
-python3 -c "
+python -c "
 import sys
 sys.path.insert(0, '.')
 
@@ -116,7 +116,7 @@ else:
 
 # パッケージ構造の確認
 echo_info "📂 パッケージ構造の確認"
-python3 -c "
+python -c "
 import os
 import sys
 
@@ -145,19 +145,19 @@ else:
 
 # バージョン整合性の確認
 echo_info "🔢 バージョン整合性の確認"
-python3 -c "
+python -c "
 import sys
 sys.path.insert(0, '.')
 import re
 
 # setup.py からバージョンを取得
-with open('setup.py', 'r') as f:
+with open('setup.py', 'r', encoding='utf-8') as f:
     setup_content = f.read()
     setup_version = re.search(r'version=[\'\"](.*?)[\'\"]', setup_content)
     setup_version = setup_version.group(1) if setup_version else None
 
 # pyproject.toml からバージョンを取得
-with open('pyproject.toml', 'r') as f:
+with open('pyproject.toml', 'r', encoding='utf-8') as f:
     pyproject_content = f.read()
     pyproject_version = re.search(
         r'version = [\'\"](.*?)[\'\"]', pyproject_content
@@ -167,7 +167,7 @@ with open('pyproject.toml', 'r') as f:
     )
 
 # __init__.py からバージョンを取得
-with open('qt_theme_manager/__init__.py', 'r') as f:
+with open('qt_theme_manager/__init__.py', 'r', encoding='utf-8') as f:
     init_content = f.read()
     init_version = re.search(r'__version__ = [\'\"](.*?)[\'\"]', init_content)
     init_version = init_version.group(1) if init_version else None
@@ -193,7 +193,7 @@ if [ -d "examples" ]; then
     for example in examples/basic/*.py; do
         if [ -f "$example" ]; then
             echo_info "Testing $example"
-            python3 "$example" --help > /dev/null 2>&1 || {
+            python "$example" --help > /dev/null 2>&1 || {
                 echo_warning "Example $example test failed, but continuing"
             }
         fi
