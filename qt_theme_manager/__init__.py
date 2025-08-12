@@ -25,7 +25,7 @@ Version: 0.2.4
 License: MIT
 """
 
-__version__ = "0.2.4"
+__version__ = "1.0.0"
 __author__ = "ThemeManager Team"
 __license__ = "MIT"
 

@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="qt-theme-manager",
-    version="0.2.4",
+    version="1.0.0",
     author="scottlz0310",
     author_email="scott.lz0310@gmail.com",
     description=(
@@ -31,7 +31,7 @@ setup(
         "qt_theme_manager.config",
     ],
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
