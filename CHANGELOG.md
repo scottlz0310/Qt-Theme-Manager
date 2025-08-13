@@ -1,4 +1,19 @@
 # Changelog
+## [1.0.1] - 2025-08-13
+
+### Fixed
+- logging: `LoggingConfig.DEFAULT_CONFIG` のネスト構造がテスト等で破壊的に変更され得た問題を修正（deepcopyで取得）
+- Windows 環境でのUnicode課題の改善（ログ・パブリッシュ関連）
+- PyPI公開ワークフローのYAML構文/設定の不具合修正
+- 不正なPyPI Classifierの削除とメタデータ整合
+
+### Tests
+- CLI全体の包括的なユニットテストを追加（引数分岐、例外系、サブコマンド挙動）
+- カバレッジを約99%に向上、`__main__`ブロックをカバレッジ対象外化
+
+### CI/CD
+- GitHub Actionsの安定化（ジョブ設定・依存関係の明確化 等）
+
 
 All notable changes to this project will be documented in this file.
 

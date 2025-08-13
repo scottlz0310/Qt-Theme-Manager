@@ -5,7 +5,7 @@
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/qt-theme-manager)](https://pypi.org/project/qt-theme-manager/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A **pure theme management library** for PyQt5/PyQt6/PySide6 applications with automatic Qt framework detection, providing dynamic theme switching and 16+ built-in themes. **v1.0.0 - Production Ready!**
+A **pure theme management library** for PyQt5/PyQt6/PySide6 applications with automatic Qt framework detection, providing dynamic theme switching and 16+ built-in themes. **v1.0.1 - Production Ready!**
 
 ## 🎯 ライブラリ分離思想
 
