@@ -5,7 +5,7 @@ Test module for Qt framework detection system.
 import unittest
 from unittest.mock import MagicMock, patch
 
-from .detection import (
+from qt_theme_manager.qt.detection import (
     QtDetector,
     QtFrameworkNotFoundError,
     QtVersionError,

@@ -1,0 +1,3 @@
+[report]
+omit =
+	qt_theme_manager/qt/controller.py
