@@ -470,7 +470,7 @@ Supported Qt Frameworks:
         return 1
 
 
-if __name__ == "__main__":
-    exit_code = main()
-    if exit_code is not None:
-        sys.exit(exit_code)
+if __name__ == "__main__":  # pragma: no cover
+    exit_code = main()  # pragma: no cover
+    if exit_code is not None:  # pragma: no cover
+        sys.exit(exit_code)  # pragma: no cover

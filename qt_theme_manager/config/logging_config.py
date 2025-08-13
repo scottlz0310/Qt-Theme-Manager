@@ -7,6 +7,7 @@ type hints and docstrings.
 """
 
 import json
+import copy
 import logging
 import logging.config
 import sys
@@ -138,7 +139,8 @@ class LoggingConfig:
             ValueError: If config_path contains invalid JSON
         """
         if config_path is None:
-            return cls.DEFAULT_CONFIG.copy()
+            # Use deep copy to avoid mutating DEFAULT_CONFIG via nested dicts
+            return copy.deepcopy(cls.DEFAULT_CONFIG)
 
         config_file = Path(config_path)
         if not config_file.exists():
