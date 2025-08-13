@@ -2,7 +2,8 @@
 
 このドキュメントでは、Qt-Theme-Managerライブラリの様々な使用方法を具体例とともに説明します。
 
-## 🆕 v0.2.4の新機能: ゼブラパターン自動生成
+## 1.0.x 向けの注意
+GUI関連の例は qt-theme-studio に移行しました。
 
 ### ゼブラパターンツールでのクイックスタート
 
@@ -22,7 +23,7 @@ theme-editor
 # すべてのテーマを即座にプレビュー
 theme-preview
 
-# カスタムテーマでの強化プレビュー（v0.2.3）
+# カスタムテーマでの強化プレビュー
 theme-preview --config my_themes.json --theme ocean
 
 # CLI管理

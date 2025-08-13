@@ -379,7 +379,7 @@ Supported Qt Frameworks:
     parser.add_argument(
         "--version",
         action="version",
-        version="Qt Theme Manager CLI v1.0.0",
+        version="Qt Theme Manager CLI v1.0.1",
         help="Show version information",
     )
 
@@ -420,7 +420,7 @@ Supported Qt Frameworks:
 
     # Handle version command early (no CLI initialization needed)
     if args.command == "version":
-        print("Qt Theme Manager CLI v1.0.0")
+        print("Qt Theme Manager CLI v1.0.1")
         print("A comprehensive theme management library for Qt applications")
         print("Library-only architecture with zero GUI dependencies")
         print("Supports: PySide6 (recommended), PyQt6, PyQt5")

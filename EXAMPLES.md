@@ -2,7 +2,8 @@
 
 This document provides various usage examples and practical implementations of the Qt-Theme-Manager library.
 
-## 🆕 New in v0.2.4: Zebra Pattern Auto-Generation
+## Notes for v1.0.x
+GUI-related examples moved to qt-theme-studio.
 
 ### Quick Start with Zebra Pattern Tools
 
@@ -22,7 +23,7 @@ theme-editor
 # Preview all themes instantly
 theme-preview
 
-# Enhanced preview with custom themes (v0.2.3)
+# Enhanced preview with custom themes
 theme-preview --config my_themes.json --theme ocean
 
 # CLI management

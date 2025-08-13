@@ -137,7 +137,7 @@ qt-theme-manager set dark
 # Basic installation
 pip install qt-theme-manager
 
-# Install with your preferred Qt framework (Enhanced compatibility in v0.2.1!)
+# Install with your preferred Qt framework
 pip install qt-theme-manager[pyqt6]    # For PyQt6 (recommended)
 pip install qt-theme-manager[pyqt5]    # For PyQt5  
 pip install qt-theme-manager[pyside6]  # For PySide6
@@ -146,7 +146,7 @@ pip install qt-theme-manager[pyside6]  # For PySide6
 pip install qt-theme-manager[all]
 ```
 
-> **✨ New in v0.2.1**: Enhanced Qt framework compatibility ensures reliable operation across PyQt5, PyQt6, and PySide6.
+
 
 ### Option 2: Install from source (for developers)
 

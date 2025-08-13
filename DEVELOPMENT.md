@@ -4,7 +4,7 @@
 
 ### 新しいコンポーネントの構成
 
-v0.2.4で追加されたゼブラパターン自動生成機能は以下のアーキテクチャで構成されています：
+注: v1.0.x ではGUI機能は別リポジトリ（qt-theme-studio）に移行しています。
 
 1. **コア生成エンジン** (`zebra_pattern_editor.py`)
    - `ZebraPatternGenerator`: 科学的色計算クラス
@@ -30,14 +30,14 @@ v0.2.4で追加されたゼブラパターン自動生成機能は以下のア�
 
 ## 🚀 自動リリースワークフロー
 
-v0.2.1から、PyPIへの自動リリースが可能になりました！
+PyPIへの自動リリースワークフローは1.0.xでも継続しています。
 
 ### 簡単リリース方法
 
 1. **自動リリーススクリプト使用（推奨）**
    ```bash
    # バージョン番号と説明を指定
-   ./release.sh 0.2.2 "Fix critical GUI bugs and enhance performance"
+   ./release.sh 1.0.1 "Fixes and quality improvements"
    ```
 
 2. **手動リリース**
@@ -45,8 +45,8 @@ v0.2.1から、PyPIへの自動リリースが可能になりました！
    # バージョンを更新（pyproject.toml, setup.py, __init__.py）
    # コミットしてタグを作成
    git add -A
-   git commit -m "Release v0.2.2"
-   git tag v0.2.2
+   git commit -m "Release v1.0.1"
+   git tag v1.0.1
    git push origin main --tags
    ```
 
@@ -105,7 +105,7 @@ READMEにCI/CDステータスバッジを追加済み：
 - **状況**: GitHubが先行、PyPIが追従待ち
 
 ### リリースタイミング
-1. **マイナーリリース (v0.2.0)**: 機能追加が多数あるため推奨
+1. **メジャー/マイナー/パッチの選択**: 1.0.x では後方互換維持の範囲でパッチ/マイナーを選択
 2. **タイミング**: 
    - テーマエディタの安定性確認後
    - ドキュメント整備完了後
