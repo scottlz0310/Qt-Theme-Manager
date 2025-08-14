@@ -7,7 +7,7 @@ name = "qt-theme-manager"
 version = "1.0.1"
 description = "A pure theme management library for PyQt5/PyQt6/PySide6 applications with automatic Qt framework detection"
 readme = "README.md"
-license = "MIT"
+license = { file = "LICENSE" }
 authors = [
     {name = "scottlz0310", email = "scott.lz0310@gmail.com"}
 ]
