@@ -228,3 +228,21 @@ requirements.txt
 # Auto-generated entries
 .vscode/launch.json
 .vscode/tasks.json
+
+# Auto-generated entries from templates
+$RECYCLE.BIN/
+*.7z
+*.backup
+*.bak
+*.orig
+*.rar
+*.sublime-project
+*.sublime-workspace
+*.swo
+*.swp
+*.tar.gz
+*.zip
+*~
+.venv
+Desktop.ini
+logs/
