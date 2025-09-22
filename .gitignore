@@ -246,3 +246,9 @@ $RECYCLE.BIN/
 .venv
 Desktop.ini
 logs/
+
+# Auto-generated entries from templates
+*.vsix
+.history/
+.vscode/*.code-snippets
+.vscode/extensions.json
