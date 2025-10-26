@@ -141,9 +141,9 @@ class TestCrossPlatformCompatibility:
         # Test different line ending styles
         content_lines = ["Line 1", "Line 2", "Line 3"]
 
-        # Write with platform-specific line endings
-        content = os.linesep.join(content_lines)
-        test_file.write_text(content, encoding="utf-8")
+        # Write with newline mode to handle platform differences
+        with open(test_file, "w", encoding="utf-8", newline="") as f:
+            f.write("\n".join(content_lines))
 
         # Read back and verify
         read_content = test_file.read_text(encoding="utf-8")
