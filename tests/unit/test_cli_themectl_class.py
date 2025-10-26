@@ -53,9 +53,7 @@ def _mock_cli_with_controller() -> MagicMock:
     patcher_ctrl = patch.object(
         themectl, "ThemeController", return_value=controller_mock
     )
-    patcher_load = patch.object(
-        themectl, "ThemeLoader", return_value=loader_mock
-    )
+    patcher_load = patch.object(themectl, "ThemeLoader", return_value=loader_mock)
     patcher_ctrl.start()
     patcher_load.start()
 
@@ -293,15 +291,15 @@ def test_init_with_directory_path_raises(tmp_path: Path) -> None:
 
 def test_init_import_error_is_propagated() -> None:
     from qt_theme_manager.cli import themectl
-    with patch.object(
-        themectl, "ThemeController", side_effect=ImportError("x")
-    ):
+
+    with patch.object(themectl, "ThemeController", side_effect=ImportError("x")):
         with pytest.raises(ImportError):
             themectl.ThemeCLI()
 
 
 def test_init_general_exception_is_propagated() -> None:
     from qt_theme_manager.cli import themectl
+
     with patch.object(themectl, "ThemeLoader", side_effect=RuntimeError("x")):
         with pytest.raises(RuntimeError):
             themectl.ThemeCLI()
@@ -309,6 +307,7 @@ def test_init_general_exception_is_propagated() -> None:
 
 def test_list_themes_exception_exits() -> None:
     from qt_theme_manager.cli.themectl import ThemeCLI
+
     controller = _mock_cli_with_controller()
     controller.get_available_themes.side_effect = RuntimeError("boom")
 
@@ -321,6 +320,7 @@ def test_list_themes_exception_exits() -> None:
 
 def test_set_theme_no_themes_exits() -> None:
     from qt_theme_manager.cli.themectl import ThemeCLI
+
     controller = _mock_cli_with_controller()
     controller.get_available_themes.return_value = {}
 
@@ -333,6 +333,7 @@ def test_set_theme_no_themes_exits() -> None:
 
 def test_set_theme_failure_exits() -> None:
     from qt_theme_manager.cli.themectl import ThemeCLI
+
     controller = _mock_cli_with_controller()
     controller.get_available_themes.return_value = {"x": {}}
     controller.get_current_theme_name.return_value = "y"
@@ -347,6 +348,7 @@ def test_set_theme_failure_exits() -> None:
 
 def test_set_theme_exception_exits() -> None:
     from qt_theme_manager.cli.themectl import ThemeCLI
+
     controller = _mock_cli_with_controller()
     controller.get_available_themes.return_value = {"x": {}}
     controller.get_current_theme_name.return_value = "y"
@@ -361,6 +363,7 @@ def test_set_theme_exception_exits() -> None:
 
 def test_export_qss_no_themes_exits(tmp_path: Path) -> None:
     from qt_theme_manager.cli.themectl import ThemeCLI
+
     controller = _mock_cli_with_controller()
     controller.get_available_themes.return_value = {}
 
@@ -373,6 +376,7 @@ def test_export_qss_no_themes_exits(tmp_path: Path) -> None:
 
 def test_export_qss_not_found_exits(tmp_path: Path) -> None:
     from qt_theme_manager.cli.themectl import ThemeCLI
+
     controller = _mock_cli_with_controller()
     controller.get_available_themes.return_value = {"y": {}}
 
@@ -385,6 +389,7 @@ def test_export_qss_not_found_exits(tmp_path: Path) -> None:
 
 def test_export_qss_failed_export_exits(tmp_path: Path) -> None:
     from qt_theme_manager.cli.themectl import ThemeCLI
+
     controller = _mock_cli_with_controller()
     controller.get_available_themes.return_value = {"x": {}}
     controller.export_qss.return_value = False
@@ -400,6 +405,7 @@ def test_show_current_no_themes_but_current_set(
     capsys: "pytest.CaptureFixture[str]",
 ) -> None:
     from qt_theme_manager.cli.themectl import ThemeCLI
+
     controller = _mock_cli_with_controller()
     controller.get_current_theme_name.return_value = "light"
     controller.get_available_themes.return_value = {}
@@ -414,6 +420,7 @@ def test_show_current_no_themes_but_current_set(
 
 def test_show_current_exception_exits() -> None:
     from qt_theme_manager.cli.themectl import ThemeCLI
+
     controller = _mock_cli_with_controller()
     controller.get_current_theme_name.return_value = "light"
     controller.get_available_themes.side_effect = RuntimeError("boom")

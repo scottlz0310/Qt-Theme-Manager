@@ -4,7 +4,7 @@ Handles theme switching, application, and state management.
 """
 
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Dict, Optional, Union
+from typing import TYPE_CHECKING, Any, Optional, Union
 
 from ..config.logging_config import get_logger
 from .detection import (
@@ -54,8 +54,7 @@ try:
     QWidget = qt_modules["QWidget"]
 
     logger.info(
-        f"Qt framework detected: {qt_framework} "
-        f"v{qt_modules.get('version', 'unknown')}"
+        f"Qt framework detected: {qt_framework} v{qt_modules.get('version', 'unknown')}"
     )
 
 except (QtFrameworkNotFoundError, QtVersionError) as e:
@@ -94,9 +93,9 @@ except (QtFrameworkNotFoundError, QtVersionError) as e:
 
 
 # Update runtime type aliases
-QtQObject = QObject  # type: ignore[misc,no-redef]
-QtQWidget = QWidget  # type: ignore[misc,no-redef]
-QtQApplication = QApplication  # type: ignore[misc,no-redef]
+QtQObject = QObject  # type: ignore[misc]
+QtQWidget = QWidget  # type: ignore[misc]
+QtQApplication = QApplication  # type: ignore[misc]
 
 
 class ThemeController(QtQObject):
@@ -128,9 +127,7 @@ class ThemeController(QtQObject):
         """Load the current theme from configuration."""
         try:
             self.current_theme_name = self.loader.get_current_theme()
-            theme_config = self.loader.get_theme_config(
-                self.current_theme_name
-            )
+            theme_config = self.loader.get_theme_config(self.current_theme_name)
 
             if theme_config:
                 generator = StylesheetGenerator(theme_config)
@@ -155,7 +152,7 @@ class ThemeController(QtQObject):
             self.current_theme_name = "error"
             self.current_stylesheet = ""
 
-    def get_available_themes(self) -> Dict[str, Dict[str, Any]]:
+    def get_available_themes(self) -> dict[str, dict[str, Any]]:
         """Get all available themes."""
         return self.loader.get_available_themes()
 
@@ -233,9 +230,7 @@ class ThemeController(QtQObject):
             logger.error(f"Failed to apply theme to widget: {e}")
             return False
 
-    def apply_theme_to_application(
-        self, app: Optional[QtQApplication] = None
-    ) -> bool:
+    def apply_theme_to_application(self, app: Optional[QtQApplication] = None) -> bool:
         """
         Apply current theme to the entire application.
 

@@ -4,7 +4,7 @@ Converts theme configuration to PyQt5/PySide6 QSS stylesheets.
 Supports both basic and advanced styling modes.
 """
 
-from typing import Any, Dict
+from typing import Any
 
 # SVG icons as base64 encoded data for advanced mode
 CHECKMARK_SVG = (
@@ -20,9 +20,7 @@ class StylesheetGenerator:
     """Enhanced generator for PyQt5/PySide6 QSS stylesheets from \
 theme configurations with basic and advanced modes."""
 
-    def __init__(
-        self, theme_config: Dict[str, Any], advanced_mode: bool = False
-    ):
+    def __init__(self, theme_config: dict[str, Any], advanced_mode: bool = False):
         """
         Initialize stylesheet generator with theme configuration.
 
@@ -624,7 +622,7 @@ QMenu::separator {{
     def _generate_enhanced_progress_styles(self) -> str:
         """Generate enhanced progress bar styles."""
         progress_config = self.theme_config.get("progress", {})
-        bg_color = self.theme_config.get("backgroundColor", "#ffffff")
+        self.theme_config.get("backgroundColor", "#ffffff")
         text_color = self.theme_config.get("textColor", "#000000")
 
         bg = progress_config.get("background", "#e2e8f0")
@@ -656,13 +654,13 @@ QProgressBar[textVisible="false"] {{
     def _generate_enhanced_scrollbar_styles(self) -> str:
         """Generate enhanced scrollbar styles."""
         scrollbar_config = self.theme_config.get("scrollbar", {})
-        bg_color = self.theme_config.get("backgroundColor", "#ffffff")
-        text_color = self.theme_config.get("textColor", "#000000")
+        self.theme_config.get("backgroundColor", "#ffffff")
+        self.theme_config.get("textColor", "#000000")
 
         bg = scrollbar_config.get("background", "#f7fafc")
         handle = scrollbar_config.get("handle", "#cbd5e0")
         handle_hover = scrollbar_config.get("handle_hover", "#a0aec0")
-        border = scrollbar_config.get("border", "#e2e8f0")
+        scrollbar_config.get("border", "#e2e8f0")
 
         return f"""
 /* Enhanced Scrollbar Styles */
@@ -904,7 +902,7 @@ QCheckBox::indicator:disabled, QRadioButton::indicator:disabled {{
             raise ValueError(f"Unsupported widget type: {widget_type}")
 
     @staticmethod
-    def validate_theme_config(theme_config: Dict[str, Any]) -> bool:
+    def validate_theme_config(theme_config: dict[str, Any]) -> bool:
         """
         Validate theme configuration structure.
 

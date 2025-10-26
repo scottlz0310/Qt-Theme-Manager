@@ -1,107 +1,130 @@
-# PyPI自動リリース設定ガイド
+# CI/CDワークフロー
 
-このディレクトリには、Qt Theme ManagerをPyPIに自動リリースするためのGitHub Actionsワークフローが含まれています。
+このディレクトリには、Qt Theme Managerの自動化されたCI/CDワークフローが含まれています。
 
-## 🚀 自動リリースの設定方法
+## 🚀 ワークフロー概要
 
-### 1. PyPI APIトークンの取得
+### 1. **ci.yml** - 継続的インテグレーション
+- **トリガー**: main/developブランチへのpush、PR作成・更新
+- **マトリックス**: Ubuntu/Windows/macOS × Python 3.9/3.11/3.13
+- **チェック項目**:
+  - ruff check (リント)
+  - ruff format (フォーマット)
+  - mypy (型チェック)
+  - pytest (テスト + カバレッジ)
+- **カバレッジ**: Codecovに自動アップロード
 
-1. [PyPI](https://pypi.org)にログイン
-2. Account Settings > API tokens
-3. "Add API token"をクリック
-4. Scope: "Entire account" または特定のプロジェクト
-5. トークンをコピー（**一度だけ表示されます**）
+### 2. **security.yml** - セキュリティスキャン
+- **トリガー**: main/developブランチへのpush、PR、毎週日曜日
+- **スキャン項目**:
+  - **Bandit**: セキュリティ脆弱性検出
+  - **Safety**: 依存関係の脆弱性チェック
+  - **CodeQL**: GitHub Advanced Security
+  - **ライセンスチェック**: pip-licenses
 
-### 2. GitHub Secretsの設定
+### 3. **release.yml** - 自動リリース
+- **トリガー**: `v*` タグプッシュ、workflow_dispatch
+- **プロセス**:
+  1. バージョン整合性チェック
+  2. 品質チェック実行
+  3. パッケージビルド
+  4. ドキュメント自動更新
+  5. GitHub Release作成
+  6. PyPI自動公開
 
-1. GitHubリポジトリの Settings > Secrets and variables > Actions
-2. "New repository secret"をクリック
-3. Name: `PYPI_API_TOKEN`
-4. Secret: コピーしたAPIトークンをペースト
-5. "Add secret"をクリック
+## 📋 設定要件
 
-### 3. リリースの実行
+### GitHub Secrets
+以下のシークレットを設定してください：
 
+```
+PYPI_API_TOKEN - PyPI APIトークン（リリース用）
+```
+
+### GitHub Environments
+PyPI公開用に `pypi` 環境を作成し、保護ルールを設定することを推奨します。
+
+## 🔧 使用方法
+
+### 開発フロー
 ```bash
-# バージョンを上げてコミット
-git add -A
-git commit -m "Release v0.2.2: New features"
+# 開発
+git checkout develop
+git add -A && git commit -m "feat: new feature"
+git push origin develop
 
-# タグを作成してプッシュ
-git tag v0.2.2
-git push origin main --tags
+# プルリクエスト作成 → CI自動実行
+
+# リリース
+git checkout main
+git merge develop
+git tag v1.0.2
+git push origin main --tags  # → 自動リリース実行
 ```
 
-これだけで自動的に以下が実行されます：
-1. 🧪 **テスト実行**: Python 3.8-3.12 × PyQt5/PyQt6/PySide6の組み合わせ
-2. 📦 **パッケージビルド**: wheel と tar.gz の生成
-3. ✅ **品質チェック**: twine check でパッケージの検証
-4. 🚀 **PyPIリリース**: 自動的にPyPIに公開
-
-## 📋 ワークフローファイル
-
-### `publish-to-pypi.yml`
-- **トリガー**: `v*` タグのプッシュ時
-- **機能**: テスト→ビルド→PyPIリリース
-
-### `ci-cd-tests.yml` 
-- **トリガー**: mainブランチ、PRの作成・更新時
-- **機能**: 継続的インテグレーションテスト
-
-## 🔧 Trusted Publishing（推奨）
-
-APIトークンの代わりに、より安全なTrusted Publishingも設定可能：
-
-1. PyPIのプロジェクトページ → Publishing → "Add a new publisher"
-2. GitHub Actionsを選択し、リポジトリ情報を入力
-3. `publish-to-pypi.yml`から`password:`行を削除
-
-## 🎯 リリース戦略
-
-### セマンティックバージョニング
-- **v0.x.y** (パッチ): バグフィックス
-- **v0.x.0** (マイナー): 新機能
-- **v1.0.0** (メジャー): 破壊的変更
-
-### ブランチ戦略
-- `main`: 安定版、プロダクション準備済み
-- `develop`: 開発版、新機能の統合
-- `feature/*`: 機能ブランチ
-
-## 📊 CI/CDステータス
-
-以下のバッジをREADMEに追加することを推奨：
-
-```markdown
-[![CI/CD Tests](https://github.com/scottlz0310/Qt-Theme-Manager/actions/workflows/ci-cd-tests.yml/badge.svg)](https://github.com/scottlz0310/Qt-Theme-Manager/actions/workflows/ci-cd-tests.yml)
-[![PyPI version](https://badge.fury.io/py/qt-theme-manager.svg)](https://badge.fury.io/py/qt-theme-manager)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/qt-theme-manager)](https://pypi.org/project/qt-theme-manager/)
+### 手動リリース
+```bash
+# GitHub Actionsページから workflow_dispatch を実行
+# バージョン番号を入力（例: 1.0.2）
 ```
+
+## 📊 品質基準
+
+### テストカバレッジ
+- **最低要件**: 95%
+- **現在**: 98.80%
+
+### セキュリティ
+- Bandit: 1件のLow severity（意図的なexcept pass）
+- Safety: 依存関係の脆弱性なし
+- CodeQL: 静的解析パス
+
+### コード品質
+- ruff: 全チェックパス
+- mypy: strict モード、型エラーなし
 
 ## 🚨 トラブルシューティング
 
 ### よくある問題
 
-1. **テストの失敗**: 
-   - ローカルでのテスト実行: `python test_theme_manager.py`
-   - 全Qt框架での動作確認
+1. **テスト失敗**
+   ```bash
+   uv run pytest tests/ -v
+   ```
 
-2. **ビルドエラー**:
-   - `python -m build` でローカルビルドテスト
-   - `twine check dist/*` でパッケージ検証
+2. **型エラー**
+   ```bash
+   uv run mypy qt_theme_manager/
+   ```
 
-3. **PyPIアップロードの失敗**:
-   - APIトークンの確認
-   - バージョン番号の重複チェック
+3. **フォーマットエラー**
+   ```bash
+   uv run ruff format qt_theme_manager/
+   ```
 
-### ログの確認
+4. **セキュリティ警告**
+   ```bash
+   uv run bandit -r qt_theme_manager/
+   ```
 
-GitHub ActionsのログでCI/CDの詳細を確認：
-1. リポジトリの Actions タブ
-2. 失敗したワークフローをクリック
-3. 各ジョブのログを確認
+### ワークフロー失敗時の対処
+
+1. **Actions**タブでログを確認
+2. 該当するジョブの詳細ログを確認
+3. ローカルで同じコマンドを実行して再現
+4. 修正後、再プッシュで自動再実行
+
+## 📈 メトリクス
+
+### CI実行時間（目安）
+- **ci.yml**: 約5-10分（マトリックス並列実行）
+- **security.yml**: 約3-5分
+- **release.yml**: 約10-15分
+
+### 成功率
+- **目標**: 95%以上
+- **現在**: 安定稼働中
 
 ---
 
-これらの設定により、開発者は単純に `git tag && git push --tags` するだけで、
-自動的にテスト・ビルド・PyPIリリースが実行されます！ 🎉
+これらのワークフローにより、コード品質の維持、セキュリティの確保、自動リリースが実現されています。

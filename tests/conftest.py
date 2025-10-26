@@ -2,10 +2,10 @@
 Pytest configuration and shared fixtures for qt_theme_manager tests.
 """
 
-import os
 import sys
+from collections.abc import Generator
 from pathlib import Path
-from typing import Any, Dict, Generator, Optional
+from typing import Any, Dict
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -135,9 +135,7 @@ def no_qt_available() -> Generator[None, None, None]:
 
     # Mock import failures
     def mock_import(name, *args, **kwargs):
-        if any(
-            name.startswith(qt_mod) for qt_mod in ["PySide6", "PyQt6", "PyQt5"]
-        ):
+        if any(name.startswith(qt_mod) for qt_mod in ["PySide6", "PyQt6", "PyQt5"]):
             raise ImportError(f"No module named '{name}'")
         return original_import(name, *args, **kwargs)
 
@@ -228,29 +226,21 @@ def is_macos() -> bool:
 # Skip markers for platform-specific tests
 def pytest_configure(config):
     """Configure pytest markers."""
-    config.addinivalue_line(
-        "markers", "windows: mark test to run only on Windows"
-    )
+    config.addinivalue_line("markers", "windows: mark test to run only on Windows")
     config.addinivalue_line("markers", "linux: mark test to run only on Linux")
     config.addinivalue_line("markers", "macos: mark test to run only on macOS")
     config.addinivalue_line(
         "markers", "qt_required: mark test as requiring Qt framework"
     )
-    config.addinivalue_line(
-        "markers", "integration: mark test as integration test"
-    )
+    config.addinivalue_line("markers", "integration: mark test as integration test")
 
 
 def pytest_runtest_setup(item):
     """Setup for individual test runs."""
     # Skip platform-specific tests
-    if item.get_closest_marker("windows") and not sys.platform.startswith(
-        "win"
-    ):
+    if item.get_closest_marker("windows") and not sys.platform.startswith("win"):
         pytest.skip("Windows-only test")
-    if item.get_closest_marker("linux") and not sys.platform.startswith(
-        "linux"
-    ):
+    if item.get_closest_marker("linux") and not sys.platform.startswith("linux"):
         pytest.skip("Linux-only test")
     if item.get_closest_marker("macos") and sys.platform != "darwin":
         pytest.skip("macOS-only test")

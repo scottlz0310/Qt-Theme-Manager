@@ -3,7 +3,6 @@ Integration tests for Qt framework detection across different platforms and fram
 Tests the complete Qt detection workflow with real and mocked frameworks.
 """
 
-import sys
 from typing import Any, Dict
 from unittest.mock import MagicMock, patch
 
@@ -12,7 +11,6 @@ import pytest
 from qt_theme_manager.qt.detection import (
     QtDetector,
     QtFrameworkNotFoundError,
-    QtVersionError,
     clear_qt_cache,
     detect_qt_framework,
     get_qt_framework_info,
@@ -182,9 +180,7 @@ class TestQtFrameworkDetectionIntegration:
         framework1, modules1 = detector.detect_qt_framework()
 
         # Force re-detection
-        framework2, modules2 = detector.detect_qt_framework(
-            force_redetect=True
-        )
+        framework2, modules2 = detector.detect_qt_framework(force_redetect=True)
 
         assert framework1 == framework2 == "PySide6"
         # Modules might be different objects due to re-import
@@ -339,9 +335,7 @@ class TestQtFrameworkSpecificBehavior:
                 "PySide6": MagicMock(__version__="6.2.0"),
                 "PySide6.QtCore": MagicMock(
                     QObject=mock_qt_modules["QObject"],
-                    Signal=mock_qt_modules[
-                        "pyqtSignal"
-                    ],  # PySide6 uses Signal
+                    Signal=mock_qt_modules["pyqtSignal"],  # PySide6 uses Signal
                 ),
                 "PySide6.QtWidgets": MagicMock(
                     QApplication=mock_qt_modules["QApplication"],

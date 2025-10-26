@@ -5,7 +5,7 @@ Handles loading and parsing of theme_settings.json file.
 
 import json
 from pathlib import Path
-from typing import Any, Dict, Optional, Union
+from typing import Any, Optional, Union
 
 
 class ThemeLoader:
@@ -25,9 +25,9 @@ class ThemeLoader:
             self.config_path = current_dir / "config" / "theme_settings.json"
         else:
             self.config_path = Path(config_path)
-        self._settings: Optional[Dict[str, Any]] = None
+        self._settings: Optional[dict[str, Any]] = None
 
-    def load_settings(self) -> Dict[str, Any]:
+    def load_settings(self) -> dict[str, Any]:
         """
         Load theme settings from JSON file.
 
@@ -44,13 +44,13 @@ class ThemeLoader:
             )
 
         try:
-            with open(self.config_path, "r", encoding="utf-8") as f:
+            with open(self.config_path, encoding="utf-8") as f:
                 self._settings = json.load(f)
                 return self._settings
         except json.JSONDecodeError as e:
-            raise ValueError(f"Invalid JSON in theme configuration: {e}")
+            raise ValueError(f"Invalid JSON in theme configuration: {e}") from e
 
-    def get_available_themes(self) -> Dict[str, Dict[str, Any]]:
+    def get_available_themes(self) -> dict[str, dict[str, Any]]:
         """
         Get list of available themes.
 
@@ -82,7 +82,7 @@ class ThemeLoader:
                 return theme
         return "light"
 
-    def get_theme_config(self, theme_name: str) -> Optional[Dict[str, Any]]:
+    def get_theme_config(self, theme_name: str) -> Optional[dict[str, Any]]:
         """
         Get configuration for specific theme.
 
@@ -95,7 +95,7 @@ class ThemeLoader:
         available_themes = self.get_available_themes()
         return available_themes.get(theme_name)
 
-    def save_settings(self, settings: Dict[str, Any]) -> None:
+    def save_settings(self, settings: dict[str, Any]) -> None:
         """
         Save theme settings to JSON file.
 
@@ -113,7 +113,7 @@ class ThemeLoader:
             self._settings = settings
 
         except Exception as e:
-            raise IOError(f"Failed to save theme settings: {e}")
+            raise OSError(f"Failed to save theme settings: {e}") from e
 
     def reload_themes(self) -> None:
         """
@@ -138,9 +138,7 @@ class ThemeLoader:
 
         available_themes = self.get_available_themes()
         if theme_name not in available_themes:
-            raise ValueError(
-                f"Theme '{theme_name}' not found in available themes"
-            )
+            raise ValueError(f"Theme '{theme_name}' not found in available themes")
 
         self._settings["current_theme"] = theme_name
         self._settings["last_selected_theme"] = theme_name

@@ -6,13 +6,13 @@ Follows PEP 8 standards with 79-character line limit and comprehensive
 type hints and docstrings.
 """
 
-import json
 import copy
+import json
 import logging
 import logging.config
 import sys
 from pathlib import Path
-from typing import Any, Dict, Optional, Union
+from typing import Any, Optional, Union
 
 
 class LoggingConfig:
@@ -24,14 +24,12 @@ class LoggingConfig:
     """
 
     # Default logging configuration
-    DEFAULT_CONFIG: Dict[str, Any] = {
+    DEFAULT_CONFIG: dict[str, Any] = {
         "version": 1,
         "disable_existing_loggers": False,
         "formatters": {
             "standard": {
-                "format": (
-                    "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-                ),
+                "format": ("%(asctime)s - %(name)s - %(levelname)s - %(message)s"),
                 "datefmt": "%Y-%m-%d %H:%M:%S",
             },
             "simple": {"format": "%(name)s - %(levelname)s: %(message)s"},
@@ -122,9 +120,7 @@ class LoggingConfig:
             logger.info("Using fallback basic logging configuration")
 
     @classmethod
-    def _load_config(
-        cls, config_path: Optional[Union[str, Path]]
-    ) -> Dict[str, Any]:
+    def _load_config(cls, config_path: Optional[Union[str, Path]]) -> dict[str, Any]:
         """
         Load logging configuration from file or use default.
 
@@ -149,24 +145,22 @@ class LoggingConfig:
             )
 
         try:
-            with open(config_file, "r", encoding="utf-8") as f:
-                config: Dict[str, Any] = json.load(f)
+            with open(config_file, encoding="utf-8") as f:
+                config: dict[str, Any] = json.load(f)
 
             # Validate required keys
             required_keys = ["version", "formatters", "handlers", "loggers"]
             for key in required_keys:
                 if key not in config:
-                    raise ValueError(
-                        f"Missing required key '{key}' in logging config"
-                    )
+                    raise ValueError(f"Missing required key '{key}' in logging config")
 
             return config
 
         except json.JSONDecodeError as e:
-            raise ValueError(f"Invalid JSON in logging configuration: {e}")
+            raise ValueError(f"Invalid JSON in logging configuration: {e}") from e
 
     @classmethod
-    def _set_log_level(cls, config: Dict[str, Any], level: str) -> None:
+    def _set_log_level(cls, config: dict[str, Any], level: str) -> None:
         """
         Set log level in configuration.
 
@@ -191,7 +185,7 @@ class LoggingConfig:
             config["root"]["level"] = level
 
     @classmethod
-    def _disable_file_logging(cls, config: Dict[str, Any]) -> None:
+    def _disable_file_logging(cls, config: dict[str, Any]) -> None:
         """
         Disable file logging in configuration.
 
@@ -214,7 +208,7 @@ class LoggingConfig:
 
     @classmethod
     def _set_log_file_path(
-        cls, config: Dict[str, Any], log_file_path: Union[str, Path]
+        cls, config: dict[str, Any], log_file_path: Union[str, Path]
     ) -> None:
         """
         Set log file path in configuration.
@@ -231,7 +225,7 @@ class LoggingConfig:
             config["handlers"]["file"]["filename"] = str(log_file_path)
 
     @classmethod
-    def _validate_log_file_path(cls, config: Dict[str, Any]) -> None:
+    def _validate_log_file_path(cls, config: dict[str, Any]) -> None:
         """
         Validate that log file can be created.
 
@@ -254,8 +248,8 @@ class LoggingConfig:
         # Create directory if it doesn't exist
         try:
             log_dir.mkdir(parents=True, exist_ok=True)
-        except PermissionError:
-            raise PermissionError(f"Cannot create log directory: {log_dir}")
+        except PermissionError as e:
+            raise PermissionError(f"Cannot create log directory: {log_dir}") from e
 
         # Test if we can write to the log file
         try:
@@ -266,8 +260,8 @@ class LoggingConfig:
             with open(log_file_path, "a", encoding="utf-8") as f:
                 f.write("")  # Just test if we can write
 
-        except PermissionError:
-            raise PermissionError(f"Cannot write to log file: {log_file_path}")
+        except PermissionError as e:
+            raise PermissionError(f"Cannot write to log file: {log_file_path}") from e
 
     @classmethod
     def get_logger(cls, name: str) -> logging.Logger:
@@ -299,10 +293,10 @@ class LoggingConfig:
             with open(config_file, "w", encoding="utf-8") as f:
                 json.dump(cls.DEFAULT_CONFIG, f, indent=2, ensure_ascii=False)
 
-        except PermissionError:
+        except PermissionError as e:
             raise PermissionError(
                 f"Cannot write sample config to: {output_path}"
-            )
+            ) from e
 
 
 # Convenience function for quick setup

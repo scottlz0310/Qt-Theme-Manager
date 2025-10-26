@@ -4,9 +4,7 @@ Tests the complete configuration workflow including loading, validation, and err
 """
 
 import json
-import tempfile
 from pathlib import Path
-from typing import Any, Dict
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -23,7 +21,7 @@ class TestConfigurationProcessingIntegration:
 
         # Check if config file exists
         if config_path.exists():
-            with open(config_path, "r", encoding="utf-8") as f:
+            with open(config_path, encoding="utf-8") as f:
                 config_data = json.load(f)
 
             # Validate basic structure
@@ -52,7 +50,7 @@ class TestConfigurationProcessingIntegration:
         # Verify file was created and is readable
         assert config_file.exists()
 
-        with open(config_file, "r", encoding="utf-8") as f:
+        with open(config_file, encoding="utf-8") as f:
             loaded_config = json.load(f)
 
         assert loaded_config == test_config
@@ -73,7 +71,7 @@ class TestConfigurationProcessingIntegration:
             json.dump(valid_config, f)
 
         # Load and validate
-        with open(config_file, "r", encoding="utf-8") as f:
+        with open(config_file, encoding="utf-8") as f:
             loaded_config = json.load(f)
 
         # Basic validation
@@ -93,7 +91,7 @@ class TestConfigurationProcessingIntegration:
 
         # Should raise JSONDecodeError when trying to load
         with pytest.raises(json.JSONDecodeError):
-            with open(config_file, "r", encoding="utf-8") as f:
+            with open(config_file, encoding="utf-8") as f:
                 json.load(f)
 
     def test_config_file_permissions(self, temp_config_dir: Path):
@@ -111,7 +109,7 @@ class TestConfigurationProcessingIntegration:
         assert config_file.is_file()
 
         # Test reading permissions
-        with open(config_file, "r", encoding="utf-8") as f:
+        with open(config_file, encoding="utf-8") as f:
             loaded_data = json.load(f)
 
         assert loaded_data == test_config
@@ -144,14 +142,14 @@ class TestConfigurationProcessingIntegration:
             json.dump(original_data, f)
 
         # Create backup
-        with open(original_config, "r", encoding="utf-8") as f:
+        with open(original_config, encoding="utf-8") as f:
             backup_data = json.load(f)
 
         with open(backup_config, "w", encoding="utf-8") as f:
             json.dump(backup_data, f)
 
         # Verify backup
-        with open(backup_config, "r", encoding="utf-8") as f:
+        with open(backup_config, encoding="utf-8") as f:
             restored_data = json.load(f)
 
         assert restored_data == original_data
@@ -186,7 +184,7 @@ class TestConfigurationProcessingIntegration:
             json.dump(new_config, f)
 
         # Verify migration
-        with open(new_config_file, "r", encoding="utf-8") as f:
+        with open(new_config_file, encoding="utf-8") as f:
             migrated_config = json.load(f)
 
         assert migrated_config["name"] == "dark"
@@ -208,7 +206,7 @@ class TestConfigurationProcessingIntegration:
         # Simulate multiple concurrent reads
         results = []
         for _ in range(5):
-            with open(config_file, "r", encoding="utf-8") as f:
+            with open(config_file, encoding="utf-8") as f:
                 data = json.load(f)
                 results.append(data)
 
@@ -233,7 +231,7 @@ class TestConfigurationProcessingIntegration:
             json.dump(unicode_config, f, ensure_ascii=False, indent=2)
 
         # Read back and verify
-        with open(config_file, "r", encoding="utf-8") as f:
+        with open(config_file, encoding="utf-8") as f:
             loaded_config = json.load(f)
 
         assert loaded_config == unicode_config
@@ -257,7 +255,7 @@ class TestConfigurationProcessingIntegration:
             json.dump(initial_config, f, indent=2)
 
         # Step 2: Load and validate
-        with open(config_file, "r", encoding="utf-8") as f:
+        with open(config_file, encoding="utf-8") as f:
             loaded_config = json.load(f)
 
         assert loaded_config["name"] == "workflow_theme"
@@ -271,7 +269,7 @@ class TestConfigurationProcessingIntegration:
             json.dump(loaded_config, f, indent=2)
 
         # Step 5: Verify changes persisted
-        with open(config_file, "r", encoding="utf-8") as f:
+        with open(config_file, encoding="utf-8") as f:
             final_config = json.load(f)
 
         assert final_config["version"] == "1.1.0"
@@ -310,9 +308,7 @@ class TestLoggingConfigurationIntegration:
         logger1_again = get_logger("module1")
 
         assert logger1 is not logger2
-        assert (
-            logger1 is logger1_again
-        )  # Same module should return same logger
+        assert logger1 is logger1_again  # Same module should return same logger
 
     def test_logger_mocking(self):
         """Test logger mocking for testing purposes."""

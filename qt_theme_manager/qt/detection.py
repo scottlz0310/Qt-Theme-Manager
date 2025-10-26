@@ -4,7 +4,7 @@ Handles automatic detection of available Qt frameworks with \
 proper error handling.
 """
 
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Optional
 
 from ..config.logging_config import get_logger
 
@@ -28,9 +28,7 @@ class QtFrameworkNotFoundError(ImportError):
 class QtVersionError(ImportError):
     """Qt framework version requirement error."""
 
-    def __init__(
-        self, framework: str, current_version: str, required_version: str
-    ):
+    def __init__(self, framework: str, current_version: str, required_version: str):
         message = (
             f"{framework} version {current_version} is not supported. "
             f"Minimum required version: {required_version}"
@@ -46,12 +44,12 @@ class QtDetector:
 
     def __init__(self) -> None:
         self._cached_framework: Optional[str] = None
-        self._cached_modules: Optional[Dict[str, Any]] = None
+        self._cached_modules: Optional[dict[str, Any]] = None
         self._detection_attempted = False
 
     def detect_qt_framework(
         self, force_redetect: bool = False
-    ) -> Tuple[str, Dict[str, Any]]:
+    ) -> tuple[str, dict[str, Any]]:
         """
         Detect available Qt framework with caching.
 
@@ -65,14 +63,8 @@ class QtDetector:
             QtFrameworkNotFoundError: If no Qt framework is available
             QtVersionError: If Qt framework version is too old
         """
-        if (
-            not force_redetect
-            and self._cached_framework
-            and self._cached_modules
-        ):
-            logger.debug(
-                f"Using cached Qt framework: {self._cached_framework}"
-            )
+        if not force_redetect and self._cached_framework and self._cached_modules:
+            logger.debug(f"Using cached Qt framework: {self._cached_framework}")
             return self._cached_framework, self._cached_modules
 
         logger.debug("Detecting Qt framework...")
@@ -109,7 +101,7 @@ class QtDetector:
         logger.error("No compatible Qt framework found")
         raise QtFrameworkNotFoundError()
 
-    def _try_pyside6(self) -> Tuple[str, Dict[str, Any]]:
+    def _try_pyside6(self) -> tuple[str, dict[str, Any]]:
         """Try to import PySide6 and validate version."""
         try:
             from PySide6 import __version__ as pyside6_version
@@ -133,18 +125,16 @@ class QtDetector:
             return "PySide6", modules
 
         except ImportError as e:
-            raise ImportError(f"PySide6 not available: {e}")
+            raise ImportError(f"PySide6 not available: {e}") from e
 
-    def _try_pyqt6(self) -> Tuple[str, Dict[str, Any]]:
+    def _try_pyqt6(self) -> tuple[str, dict[str, Any]]:
         """Try to import PyQt6 and validate version."""
         try:
             from PyQt6.QtCore import QT_VERSION_STR, QObject, pyqtSignal
             from PyQt6.QtWidgets import QApplication, QWidget
 
             # Validate version
-            self._validate_version(
-                "PyQt6", QT_VERSION_STR, self.MIN_VERSIONS["PyQt6"]
-            )
+            self._validate_version("PyQt6", QT_VERSION_STR, self.MIN_VERSIONS["PyQt6"])
 
             modules = {
                 "QObject": QObject,
@@ -157,18 +147,16 @@ class QtDetector:
             return "PyQt6", modules
 
         except ImportError as e:
-            raise ImportError(f"PyQt6 not available: {e}")
+            raise ImportError(f"PyQt6 not available: {e}") from e
 
-    def _try_pyqt5(self) -> Tuple[str, Dict[str, Any]]:
+    def _try_pyqt5(self) -> tuple[str, dict[str, Any]]:
         """Try to import PyQt5 and validate version."""
         try:
             from PyQt5.QtCore import QT_VERSION_STR, QObject, pyqtSignal
             from PyQt5.QtWidgets import QApplication, QWidget
 
             # Validate version
-            self._validate_version(
-                "PyQt5", QT_VERSION_STR, self.MIN_VERSIONS["PyQt5"]
-            )
+            self._validate_version("PyQt5", QT_VERSION_STR, self.MIN_VERSIONS["PyQt5"])
 
             modules = {
                 "QObject": QObject,
@@ -181,7 +169,7 @@ class QtDetector:
             return "PyQt5", modules
 
         except ImportError as e:
-            raise ImportError(f"PyQt5 not available: {e}")
+            raise ImportError(f"PyQt5 not available: {e}") from e
 
     def _validate_version(
         self, framework: str, current_version: str, required_version: str
@@ -207,15 +195,13 @@ class QtDetector:
             required_parts.extend([0] * (max_len - len(required_parts)))
 
             if current_parts < required_parts:
-                raise QtVersionError(
-                    framework, current_version, required_version
-                )
+                raise QtVersionError(framework, current_version, required_version)
 
         except ValueError as e:
             logger.warning(f"Could not parse version {current_version}: {e}")
             # If we can't parse version, assume it's OK
 
-    def _cache_result(self, framework: str, modules: Dict[str, Any]) -> None:
+    def _cache_result(self, framework: str, modules: dict[str, Any]) -> None:
         """Cache detection result."""
         self._cached_framework = framework
         self._cached_modules = modules
@@ -225,7 +211,7 @@ class QtDetector:
         """Get cached framework name without triggering detection."""
         return self._cached_framework
 
-    def get_cached_modules(self) -> Optional[Dict[str, Any]]:
+    def get_cached_modules(self) -> Optional[dict[str, Any]]:
         """Get cached modules without triggering detection."""
         return self._cached_modules
 
@@ -255,7 +241,7 @@ _qt_detector = QtDetector()
 
 def detect_qt_framework(
     force_redetect: bool = False,
-) -> Tuple[str, Dict[str, Any]]:
+) -> tuple[str, dict[str, Any]]:
     """
     Detect available Qt framework (module-level convenience function).
 
@@ -282,7 +268,7 @@ def is_qt_available() -> bool:
     return _qt_detector.is_qt_available()
 
 
-def get_qt_framework_info() -> Optional[Dict[str, str]]:
+def get_qt_framework_info() -> Optional[dict[str, str]]:
     """
     Get information about the detected Qt framework.
 

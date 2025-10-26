@@ -6,8 +6,6 @@ Tests platform-specific behavior and compatibility across Windows, Linux, and ma
 import os
 import sys
 from pathlib import Path
-from typing import Any, Dict
-from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -88,9 +86,7 @@ class TestCrossPlatformCompatibility:
         assert is_qt_available() is True
 
         # Test macOS path handling
-        macos_path = Path(
-            "/Users/user/Library/Application Support/QtThemeManager"
-        )
+        macos_path = Path("/Users/user/Library/Application Support/QtThemeManager")
         assert macos_path.is_absolute()
         assert str(macos_path).startswith("/")
 
@@ -230,9 +226,7 @@ class TestCrossPlatformCompatibility:
             pytest.fail(f"Import failed: {e}")
 
     @pytest.mark.integration
-    def test_full_cross_platform_workflow(
-        self, temp_config_dir: Path, mock_pyside6
-    ):
+    def test_full_cross_platform_workflow(self, temp_config_dir: Path, mock_pyside6):
         """Test complete workflow across platforms."""
         # Step 1: Qt detection
         framework, modules = detect_qt_framework()
@@ -254,7 +248,7 @@ class TestCrossPlatformCompatibility:
         # Step 3: Verify file operations
         assert config_file.exists()
 
-        with open(config_file, "r", encoding="utf-8") as f:
+        with open(config_file, encoding="utf-8") as f:
             loaded_data = json.load(f)
 
         assert loaded_data["platform"] == sys.platform
@@ -283,10 +277,7 @@ class TestPlatformSpecificPaths:
             test_path = Path.home() / "AppData" / "Local" / "QtThemeManager"
         elif sys.platform == "darwin":
             test_path = (
-                Path.home()
-                / "Library"
-                / "Application Support"
-                / "QtThemeManager"
+                Path.home() / "Library" / "Application Support" / "QtThemeManager"
             )
         else:
             test_path = Path.home() / ".config" / "qt-theme-manager"
@@ -306,9 +297,7 @@ class TestPlatformSpecificPaths:
         assert temp_dir.is_dir()
 
         # Create temporary file
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
-        ) as f:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
             f.write('{"test": true}')
             temp_file_path = Path(f.name)
 
@@ -374,9 +363,7 @@ class TestResourceHandling:
             except ImportError as e:
                 # Some modules might not exist yet, that's OK
                 if "No module named" not in str(e):
-                    pytest.fail(
-                        f"Unexpected import error for {module_name}: {e}"
-                    )
+                    pytest.fail(f"Unexpected import error for {module_name}: {e}")
 
     def test_relative_import_handling(self):
         """Test that relative imports work correctly."""

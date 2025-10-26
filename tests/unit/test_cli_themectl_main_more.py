@@ -3,6 +3,7 @@ Additional coverage for qt_theme_manager.cli.themectl main() branches.
 """
 
 from unittest.mock import patch
+
 import pytest
 
 
@@ -11,9 +12,7 @@ def test_no_command_prints_help_returns_none() -> None:
 
     with patch("sys.argv", ["qt-theme-manager"]):
         # Spy on print_help via parser by patching print_help
-        with patch(
-            "argparse.ArgumentParser.print_help"
-        ) as mock_help:
+        with patch("argparse.ArgumentParser.print_help") as mock_help:
             result = themectl.main()
             assert result is None
             mock_help.assert_called()
@@ -31,9 +30,7 @@ def test_cli_init_config_error_returns_1() -> None:
     from qt_theme_manager.cli import themectl
 
     with patch("sys.argv", ["qt-theme-manager", "-c", "bad.json", "list"]):
-        with patch.object(
-            themectl, "ThemeCLI", side_effect=FileNotFoundError("x")
-        ):
+        with patch.object(themectl, "ThemeCLI", side_effect=FileNotFoundError("x")):
             rc = themectl.main()
             assert rc == 1
 
@@ -69,5 +66,3 @@ def test_command_exception_returns_1() -> None:
             inst.set_theme.side_effect = RuntimeError("boom")
             rc = themectl.main()
             assert rc == 1
-
-

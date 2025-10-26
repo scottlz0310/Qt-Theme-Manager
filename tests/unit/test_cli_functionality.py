@@ -3,10 +3,9 @@ Unit tests for CLI functionality.
 Tests command-line interface components in isolation.
 """
 
-import sys
 from io import StringIO
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -210,10 +209,7 @@ class TestCLIErrorHandling:
 
                     # Should show available themes
                     output = mock_stdout.getvalue()
-                    assert (
-                        "themes" in output.lower()
-                        or "available" in output.lower()
-                    )
+                    assert "themes" in output.lower() or "available" in output.lower()
 
         except ImportError:
             pytest.skip("CLI main module not yet implemented")
@@ -223,9 +219,7 @@ class TestCLIErrorHandling:
         try:
             from qt_theme_manager.cli.main import main
 
-            with patch(
-                "sys.argv", ["qt-theme-manager", "apply", "nonexistent_theme"]
-            ):
+            with patch("sys.argv", ["qt-theme-manager", "apply", "nonexistent_theme"]):
                 with patch("sys.stderr", new_callable=StringIO) as mock_stderr:
                     try:
                         main()
@@ -253,9 +247,7 @@ class TestCLIErrorHandling:
                     "sys.argv",
                     ["qt-theme-manager", "export", "dark", "/root/output.qss"],
                 ):
-                    with patch(
-                        "sys.stderr", new_callable=StringIO
-                    ) as mock_stderr:
+                    with patch("sys.stderr", new_callable=StringIO) as mock_stderr:
                         try:
                             main()
                         except SystemExit as exc_info:
@@ -351,9 +343,7 @@ class TestCLIIntegration:
         except ImportError:
             pytest.skip("CLI main module not yet implemented")
 
-    def test_cli_end_to_end_workflow(
-        self, temp_config_dir: Path, mock_pyside6
-    ):
+    def test_cli_end_to_end_workflow(self, temp_config_dir: Path, mock_pyside6):
         """Test complete CLI workflow."""
         try:
             from qt_theme_manager.cli.main import main

@@ -1,6 +1,6 @@
 from setuptools import setup
 
-with open("README.md", "r", encoding="utf-8") as fh:
+with open("README.md", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
@@ -20,8 +20,7 @@ setup(
         "Homepage": "https://github.com/scottlz0310/Qt-Theme-Manager",
         "Documentation": "https://github.com/scottlz0310/Qt-Theme-Manager/"
         "blob/main/README.md",
-        "Repository": "https://github.com/scottlz0310/"
-        "Qt-Theme-Manager",
+        "Repository": "https://github.com/scottlz0310/Qt-Theme-Manager",
         "Bug Tracker": "https://github.com/scottlz0310/Qt-Theme-Manager/issues",
     },
     packages=[

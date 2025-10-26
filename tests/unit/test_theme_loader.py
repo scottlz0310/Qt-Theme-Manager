@@ -4,7 +4,7 @@ Unit tests for ThemeLoader class.
 
 import json
 from pathlib import Path
-from unittest.mock import MagicMock, mock_open, patch
+from unittest.mock import mock_open, patch
 
 import pytest
 
@@ -91,9 +91,7 @@ class TestThemeLoader:
         ):
             loader = ThemeLoader()
 
-            with pytest.raises(
-                ValueError, match="Invalid JSON in theme configuration"
-            ):
+            with pytest.raises(ValueError, match="Invalid JSON in theme configuration"):
                 loader.load_settings()
 
     @patch("builtins.open", new_callable=mock_open)
@@ -125,9 +123,7 @@ class TestThemeLoader:
             assert current_theme == "light"
 
     @patch("builtins.open", new_callable=mock_open)
-    def test_get_current_theme_from_settings(
-        self, mock_file, sample_theme_settings
-    ):
+    def test_get_current_theme_from_settings(self, mock_file, sample_theme_settings):
         """Test getting current theme from settings."""
         with patch("json.load", return_value=sample_theme_settings):
             loader = ThemeLoader()
@@ -149,9 +145,7 @@ class TestThemeLoader:
             assert themes == {}
 
     @patch("builtins.open", new_callable=mock_open)
-    def test_get_available_themes_with_data(
-        self, mock_file, sample_theme_settings
-    ):
+    def test_get_available_themes_with_data(self, mock_file, sample_theme_settings):
         """Test getting available themes with data."""
         with patch("json.load", return_value=sample_theme_settings):
             loader = ThemeLoader()
@@ -175,9 +169,7 @@ class TestThemeLoader:
             assert theme_config["display_name"] == "Light Theme"
 
     @patch("builtins.open", new_callable=mock_open)
-    def test_get_theme_config_not_found(
-        self, mock_file, sample_theme_settings
-    ):
+    def test_get_theme_config_not_found(self, mock_file, sample_theme_settings):
         """Test getting theme configuration for non-existent theme."""
         with patch("json.load", return_value=sample_theme_settings):
             loader = ThemeLoader()
@@ -187,9 +179,7 @@ class TestThemeLoader:
             assert theme_config is None
 
     @patch("builtins.open", new_callable=mock_open)
-    def test_update_current_theme_success(
-        self, mock_file, sample_theme_settings
-    ):
+    def test_update_current_theme_success(self, mock_file, sample_theme_settings):
         """Test updating current theme successfully."""
         with patch("json.load", return_value=sample_theme_settings):
             with patch("json.dump") as mock_dump:
@@ -203,9 +193,7 @@ class TestThemeLoader:
                 mock_dump.assert_called_once()
 
     @patch("builtins.open", new_callable=mock_open)
-    def test_update_current_theme_invalid(
-        self, mock_file, sample_theme_settings
-    ):
+    def test_update_current_theme_invalid(self, mock_file, sample_theme_settings):
         """Test updating current theme with invalid theme name."""
         with patch("json.load", return_value=sample_theme_settings):
             loader = ThemeLoader()
@@ -241,9 +229,7 @@ class TestThemeLoaderErrorHandling:
             loader.load_settings()
 
     @patch("builtins.open", side_effect=PermissionError("Permission denied"))
-    def test_save_settings_permission_error(
-        self, mock_file, sample_theme_settings
-    ):
+    def test_save_settings_permission_error(self, mock_file, sample_theme_settings):
         """Test settings saving with permission error."""
         loader = ThemeLoader()
 
@@ -251,17 +237,13 @@ class TestThemeLoaderErrorHandling:
             loader.save_settings(sample_theme_settings)
 
     @patch("builtins.open", new_callable=mock_open)
-    def test_update_current_theme_save_failure(
-        self, mock_file, sample_theme_settings
-    ):
+    def test_update_current_theme_save_failure(self, mock_file, sample_theme_settings):
         """Test update current theme with save failure."""
         with patch("json.load", return_value=sample_theme_settings):
-            with patch("json.dump", side_effect=IOError("Save failed")):
+            with patch("json.dump", side_effect=OSError("Save failed")):
                 loader = ThemeLoader()
 
-                with pytest.raises(
-                    IOError, match="Failed to save theme settings"
-                ):
+                with pytest.raises(IOError, match="Failed to save theme settings"):
                     loader.update_current_theme("light")
 
     @patch("builtins.open", new_callable=mock_open)
@@ -338,9 +320,7 @@ class TestThemeLoaderIntegration:
                 mock_dump.assert_called_once()
 
     @patch("builtins.open", new_callable=mock_open)
-    def test_theme_data_loading_workflow(
-        self, mock_file, sample_theme_settings
-    ):
+    def test_theme_data_loading_workflow(self, mock_file, sample_theme_settings):
         """Test theme data loading workflow."""
         with patch("json.load", return_value=sample_theme_settings):
             loader = ThemeLoader()
@@ -351,18 +331,14 @@ class TestThemeLoaderIntegration:
 
             assert light_theme is not None
             assert dark_theme is not None
-            assert (
-                light_theme["backgroundColor"] != dark_theme["backgroundColor"]
-            )
+            assert light_theme["backgroundColor"] != dark_theme["backgroundColor"]
 
             # Test non-existent theme
             missing_theme = loader.get_theme_config("missing")
             assert missing_theme is None
 
     @patch("builtins.open", new_callable=mock_open)
-    def test_concurrent_access_handling(
-        self, mock_file, sample_theme_settings
-    ):
+    def test_concurrent_access_handling(self, mock_file, sample_theme_settings):
         """Test handling of concurrent access scenarios."""
         with patch("json.load", return_value=sample_theme_settings):
             # Create multiple loader instances
@@ -420,9 +396,7 @@ class TestThemeLoaderUtilities:
     @patch("builtins.open", new_callable=mock_open)
     def test_settings_caching_behavior(self, mock_file, sample_theme_settings):
         """Test that settings are cached after first load."""
-        with patch(
-            "json.load", return_value=sample_theme_settings
-        ) as mock_load:
+        with patch("json.load", return_value=sample_theme_settings) as mock_load:
             loader = ThemeLoader()
 
             # First call should load from file

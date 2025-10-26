@@ -52,9 +52,7 @@ class ThemeCLI:
                         f"Configuration file not found: {config_path}"
                     )
                 if not config_file.is_file():
-                    raise ValueError(
-                        f"Configuration path is not a file: {config_path}"
-                    )
+                    raise ValueError(f"Configuration path is not a file: {config_path}")
 
             self.controller = ThemeController(config_path)
             self.loader = ThemeLoader(config_path)
@@ -213,9 +211,7 @@ class ThemeCLI:
                     output_dir.mkdir(parents=True, exist_ok=True)
                     logger.info(f"Created output directory: {output_dir}")
                 except PermissionError:
-                    logger.error(
-                        f"Permission denied creating directory: {output_dir}"
-                    )
+                    logger.error(f"Permission denied creating directory: {output_dir}")
                     sys.exit(1)
 
             # Check if output file already exists
@@ -225,13 +221,10 @@ class ThemeCLI:
             success = self.controller.export_qss(output_path, theme_name)
 
             if success:
-                file_size = (
-                    output_file.stat().st_size if output_file.exists() else 0
-                )
+                file_size = output_file.stat().st_size if output_file.exists() else 0
                 print(f"QSS exported to '{output_path}' ({file_size} bytes)")
                 logger.info(
-                    f"Successfully exported QSS to '{output_path}' "
-                    f"({file_size} bytes)"
+                    f"Successfully exported QSS to '{output_path}' ({file_size} bytes)"
                 )
             else:
                 logger.error("Failed to export QSS")
@@ -310,10 +303,7 @@ class ThemeCLI:
 
             else:
                 available_list = sorted(themes.keys()) if themes else []
-                print(
-                    f"Current theme '{current_theme}' not found in "
-                    f"configuration."
-                )
+                print(f"Current theme '{current_theme}' not found in configuration.")
                 if available_list:
                     print(f"Available themes: {', '.join(available_list)}")
                 logger.warning(
@@ -395,9 +385,7 @@ Supported Qt Frameworks:
     set_parser.add_argument("theme", help="Theme name to activate")
 
     # Export command
-    export_parser = subparsers.add_parser(
-        "export", help="Export theme QSS to file"
-    )
+    export_parser = subparsers.add_parser("export", help="Export theme QSS to file")
     export_parser.add_argument("theme", help="Theme name to export")
     export_parser.add_argument("output", help="Output file path")
 

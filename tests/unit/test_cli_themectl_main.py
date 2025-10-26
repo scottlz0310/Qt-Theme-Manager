@@ -143,5 +143,3 @@ def test_command_exception_returns_1() -> None:
             instance.set_theme.side_effect = RuntimeError("boom")
             rc = themectl.main()
             assert rc == 1
-
-

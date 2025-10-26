@@ -49,9 +49,7 @@ class TestThemeController:
 
     @patch("qt_theme_manager.qt.controller.detect_qt_framework")
     @patch("builtins.open", new_callable=mock_open)
-    def test_init_with_qt_available(
-        self, mock_file, mock_detect, mock_theme_settings
-    ):
+    def test_init_with_qt_available(self, mock_file, mock_detect, mock_theme_settings):
         """Test ThemeController initialization with Qt available."""
         mock_detect.return_value = (
             "PySide6",
@@ -185,9 +183,7 @@ class TestThemeController:
             mock_widget.setStyleSheet.assert_called_once()
 
     @patch("builtins.open", new_callable=mock_open)
-    def test_apply_theme_to_widget_qt_unavailable(
-        self, mock_file, mock_theme_settings
-    ):
+    def test_apply_theme_to_widget_qt_unavailable(self, mock_file, mock_theme_settings):
         """Test theme application to widget when Qt is unavailable."""
         mock_widget = MagicMock()
 
@@ -301,9 +297,7 @@ class TestApplyThemeToWidget:
             assert result is True
 
     @patch("builtins.open", new_callable=mock_open)
-    def test_apply_theme_to_widget_failure(
-        self, mock_file, mock_theme_settings
-    ):
+    def test_apply_theme_to_widget_failure(self, mock_file, mock_theme_settings):
         """Test theme application failure."""
         mock_widget = MagicMock()
 
@@ -322,9 +316,7 @@ class TestApplyThemeToWidget:
             "qt_theme_manager.qt.controller.ThemeController"
         ) as mock_controller_class:
             mock_controller = MagicMock()
-            mock_controller.apply_theme_to_widget.side_effect = Exception(
-                "Test error"
-            )
+            mock_controller.apply_theme_to_widget.side_effect = Exception("Test error")
             mock_controller_class.return_value = mock_controller
 
             result = apply_theme_to_widget(mock_widget)
@@ -381,9 +373,7 @@ class TestThemeControllerErrorHandling:
             assert result is False
 
     @patch("builtins.open", new_callable=mock_open)
-    def test_handle_widget_application_error(
-        self, mock_file, mock_theme_settings
-    ):
+    def test_handle_widget_application_error(self, mock_file, mock_theme_settings):
         """Test handling of widget application error."""
         mock_widget = MagicMock()
         mock_widget.setStyleSheet.side_effect = Exception("Widget error")
@@ -401,7 +391,7 @@ class TestThemeControllerErrorHandling:
         with patch("json.load", return_value=mock_theme_settings):
             controller = ThemeController()
 
-            with patch("builtins.open", side_effect=IOError("Export error")):
+            with patch("builtins.open", side_effect=OSError("Export error")):
                 result = controller.export_qss("test.qss")
 
                 assert result is False

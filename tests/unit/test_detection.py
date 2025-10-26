@@ -140,17 +140,11 @@ class TestQtDetection(unittest.TestCase):
                 ) as mock_pyqt5:
                     mock_pyqt5.side_effect = ImportError("PyQt5 not available")
 
-                    with self.assertRaises(
-                        QtFrameworkNotFoundError
-                    ) as context:
+                    with self.assertRaises(QtFrameworkNotFoundError) as context:
                         self.detector.detect_qt_framework()
 
-                    self.assertIn(
-                        "No Qt framework found", str(context.exception)
-                    )
-                    self.assertIn(
-                        "pip install PySide6", str(context.exception)
-                    )
+                    self.assertIn("No Qt framework found", str(context.exception))
+                    self.assertIn("pip install PySide6", str(context.exception))
 
     def test_version_validation(self) -> None:
         """Test Qt framework version validation."""
@@ -161,12 +155,8 @@ class TestQtDetection(unittest.TestCase):
         with self.assertRaises(QtVersionError) as context:
             self.detector._validate_version("PySide6", "5.15.0", "6.0.0")
 
-        self.assertIn(
-            "version 5.15.0 is not supported", str(context.exception)
-        )
-        self.assertIn(
-            "Minimum required version: 6.0.0", str(context.exception)
-        )
+        self.assertIn("version 5.15.0 is not supported", str(context.exception))
+        self.assertIn("Minimum required version: 6.0.0", str(context.exception))
 
     def test_version_parsing(self) -> None:
         """Test version string parsing."""
@@ -180,15 +170,11 @@ class TestQtDetection(unittest.TestCase):
         try:
             self.detector._validate_version("PySide6", "invalid", "6.0.0")
         except QtVersionError:
-            self.fail(
-                "Version validation should not fail for unparseable versions"
-            )
+            self.fail("Version validation should not fail for unparseable versions")
 
     def test_caching(self) -> None:
         """Test detection result caching."""
-        with patch(
-            "qt_theme_manager.qt.detection.QtDetector._try_pyside6"
-        ) as mock_try:
+        with patch("qt_theme_manager.qt.detection.QtDetector._try_pyside6") as mock_try:
             mock_result = (
                 "PySide6",
                 {
@@ -214,9 +200,7 @@ class TestQtDetection(unittest.TestCase):
 
     def test_force_redetect(self) -> None:
         """Test forcing re-detection bypasses cache."""
-        with patch(
-            "qt_theme_manager.qt.detection.QtDetector._try_pyside6"
-        ) as mock_try:
+        with patch("qt_theme_manager.qt.detection.QtDetector._try_pyside6") as mock_try:
             mock_result = (
                 "PySide6",
                 {
@@ -243,9 +227,7 @@ class TestQtDetection(unittest.TestCase):
         # Create a fresh detector for this test
         detector = QtDetector()
 
-        with patch(
-            "qt_theme_manager.qt.detection.QtDetector._try_pyside6"
-        ) as mock_try:
+        with patch("qt_theme_manager.qt.detection.QtDetector._try_pyside6") as mock_try:
             mock_try.return_value = ("PySide6", {"version": "6.2.0"})
 
             self.assertTrue(detector.is_qt_available())
@@ -272,9 +254,7 @@ class TestQtDetection(unittest.TestCase):
 
     def test_module_level_functions(self) -> None:
         """Test module-level convenience functions."""
-        with patch(
-            "qt_theme_manager.qt.detection._qt_detector"
-        ) as mock_detector:
+        with patch("qt_theme_manager.qt.detection._qt_detector") as mock_detector:
             mock_detector.detect_qt_framework.return_value = (
                 "PySide6",
                 {"version": "6.2.0"},
@@ -296,9 +276,7 @@ class TestQtDetection(unittest.TestCase):
 
     def test_clear_cache(self) -> None:
         """Test cache clearing functionality."""
-        with patch(
-            "qt_theme_manager.qt.detection.QtDetector._try_pyside6"
-        ) as mock_try:
+        with patch("qt_theme_manager.qt.detection.QtDetector._try_pyside6") as mock_try:
             mock_try.return_value = ("PySide6", {"version": "6.2.0"})
 
             # Populate cache

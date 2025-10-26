@@ -2,8 +2,6 @@
 Unit tests for StylesheetGenerator class.
 """
 
-from unittest.mock import MagicMock, patch
-
 import pytest
 
 from qt_theme_manager.qt.stylesheet import StylesheetGenerator
