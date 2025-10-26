@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "qt-theme-manager"
-version = "1.0.1"
+version = "1.1.0"
 description = "A pure theme management library for PyQt5/PyQt6/PySide6 applications with automatic Qt framework detection"
 readme = "README.md"
 license = { file = "LICENSE" }
