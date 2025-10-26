@@ -73,6 +73,12 @@ jobs:
         git diff --staged --quiet || git commit -m "chore: bump version to ${{ steps.version.outputs.version }}"
         git push
 
+    - name: Create and push tag
+      if: github.event_name == 'workflow_dispatch'
+      run: |
+        git tag ${{ steps.version.outputs.tag }}
+        git push origin ${{ steps.version.outputs.tag }}
+
     - name: Verify version consistency (tag push)
       if: github.event_name == 'push'
       run: |
