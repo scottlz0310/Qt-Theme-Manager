@@ -22,3 +22,26 @@ repos:
       - id: mypy
         files: ^qt_theme_manager/
         additional_dependencies: [types-setuptools]
+
+  - repo: local
+    hooks:
+      - id: ci-tests
+        name: Run CI tests locally
+        entry: uv run pytest tests/ --cov=qt_theme_manager --cov-report=term-missing
+        language: system
+        pass_filenames: false
+        stages: [manual]
+
+      - id: security-scan
+        name: Run security scans locally
+        entry: bash -c 'uv run bandit -r qt_theme_manager/ -q && uv run safety check --json --output /dev/null'
+        language: system
+        pass_filenames: false
+        stages: [manual]
+
+      - id: full-ci-check
+        name: Full CI pipeline check
+        entry: bash -c 'echo "Running full CI check..." && uv run ruff check qt_theme_manager/ && uv run mypy qt_theme_manager/ && uv run pytest tests/ --cov=qt_theme_manager --cov-fail-under=95 && uv run bandit -r qt_theme_manager/ -q'
+        language: system
+        pass_filenames: false
+        stages: [manual]

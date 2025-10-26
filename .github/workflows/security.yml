@@ -34,7 +34,9 @@ jobs:
         uv run bandit -r qt_theme_manager/
 
     - name: Run Safety check
-      run: uv run safety check --json --output safety-report.json || true
+      run: |
+        uv run safety check --output text > safety-report.txt || true
+        uv run safety check || true
 
     - name: Upload security reports
       uses: actions/upload-artifact@v4
@@ -43,7 +45,7 @@ jobs:
         name: security-reports
         path: |
           bandit-report.json
-          safety-report.json
+          safety-report.txt
 
   codeql:
     runs-on: ubuntu-latest
