@@ -112,8 +112,9 @@ class ThemeController(QtQObject):
         if hasattr(super(), "__init__"):
             try:
                 super().__init__()  # type: ignore[safe-super]
-            except Exception:
+            except Exception:  # nosec B110
                 # Handle case where Qt is not properly initialized
+                # This is intentional - we want to continue even if Qt init fails
                 pass
 
         self.loader = ThemeLoader(config_path)
