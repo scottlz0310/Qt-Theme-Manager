@@ -39,7 +39,7 @@ jobs:
         uv run safety check || true
 
     - name: Upload security reports
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       if: always()
       with:
         name: security-reports
@@ -93,7 +93,7 @@ jobs:
         uv run pip-licenses --format=markdown --output-file=licenses.md
 
     - name: Upload license reports
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: license-reports
         path: |
