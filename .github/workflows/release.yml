@@ -154,9 +154,42 @@ jobs:
         DATE=$(date +"%Y-%m-%d")
         VERSION="${{ needs.validate.outputs.version }}"
 
-        # CHANGELOGの更新
+        # 前回のタグを取得
+        PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+
+        # コンベンショナルコミットから変更を収集
+        if [ -n "$PREV_TAG" ]; then
+          COMMITS=$(git log ${PREV_TAG}..HEAD --pretty=format:"%s" --no-merges)
+        else
+          COMMITS=$(git log --pretty=format:"%s" --no-merges)
+        fi
+
+        # カテゴリ別に分類
+        FEATURES=$(echo "$COMMITS" | grep "^feat" | sed 's/^feat[:(].*[):]\s*/- /' || true)
+        FIXES=$(echo "$COMMITS" | grep "^fix" | sed 's/^fix[:(].*[):]\s*/- /' || true)
+        DOCS=$(echo "$COMMITS" | grep "^docs" | sed 's/^docs[:(].*[):]\s*/- /' || true)
+        CHORES=$(echo "$COMMITS" | grep "^chore" | sed 's/^chore[:(].*[):]\s*/- /' || true)
+        TESTS=$(echo "$COMMITS" | grep "^test" | sed 's/^test[:(].*[):]\s*/- /' || true)
+
+        # 新しいエントリを作成
+        NEW_ENTRY="## [$VERSION] - $DATE\n"
+        [ -n "$FEATURES" ] && NEW_ENTRY+="\n### Added\n$FEATURES\n"
+        [ -n "$FIXES" ] && NEW_ENTRY+="\n### Fixed\n$FIXES\n"
+        [ -n "$DOCS" ] && NEW_ENTRY+="\n### Documentation\n$DOCS\n"
+        [ -n "$CHORES" ] && NEW_ENTRY+="\n### Changed\n$CHORES\n"
+        [ -n "$TESTS" ] && NEW_ENTRY+="\n### Tests\n$TESTS\n"
+
+        # CHANGELOGに追加
         if [ -f CHANGELOG.md ]; then
-          sed -i "s/## \[Unreleased\]/## [Unreleased]\n\n## [$VERSION] - $DATE/" CHANGELOG.md
+          # ## [Unreleased]がある場合は置換、ない場合は# Changelogの後に挿入
+          if grep -q "## \[Unreleased\]" CHANGELOG.md; then
+            sed -i "s/## \[Unreleased\]/## [Unreleased]\n\n$NEW_ENTRY/" CHANGELOG.md
+          else
+            sed -i "/# Changelog/a\\n$NEW_ENTRY" CHANGELOG.md
+          fi
+        else
+          # CHANGELOGが存在しない場合は新規作成
+          echo -e "# Changelog\n\n$NEW_ENTRY" > CHANGELOG.md
         fi
 
     - name: Update version badges
