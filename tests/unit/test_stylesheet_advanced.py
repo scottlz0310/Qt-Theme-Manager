@@ -285,8 +285,13 @@ class TestStylesheetAdvanced(unittest.TestCase):
         advanced_qss = advanced_generator.generate_qss()
         advanced_time = time.time() - start_time
 
-        # Advanced mode should not be more than 3x slower
-        self.assertLess(advanced_time, basic_time * 3)
+        # Advanced mode should not be more than 3x slower (if basic_time > 0)
+        # If basic_time is 0 (very fast), just check that advanced_time is reasonable
+        if basic_time > 0:
+            self.assertLess(advanced_time, basic_time * 3)
+        else:
+            # Both are very fast, just ensure advanced_time is reasonable (< 1 second)
+            self.assertLess(advanced_time, 1.0)
 
         # Advanced QSS should be significantly larger
         self.assertGreater(len(advanced_qss), len(basic_qss) * 2)
