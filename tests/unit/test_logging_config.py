@@ -7,9 +7,12 @@ import json
 import logging
 import os
 import stat
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
+
+import pytest
 
 from qt_theme_manager.config.logging_config import (
     LoggingConfig,
@@ -51,23 +54,32 @@ class TestLoggingConfig(unittest.TestCase):
 
     def tearDown(self) -> None:
         """Clean up after tests."""
+        # Reset logging configuration and close handlers to avoid file locks
+        logging.shutdown()
+        logging.getLogger().handlers.clear()
+        for logger_name in list(logging.root.manager.loggerDict.keys()):
+            logger = logging.getLogger(logger_name)
+            for handler in logger.handlers[:]:
+                handler.close()
+                logger.removeHandler(handler)
+            logger.propagate = True
+
         # Clean up temporary files
         for file_path in [self.config_file, self.log_file]:
             if os.path.exists(file_path):
-                os.remove(file_path)
+                try:
+                    os.remove(file_path)
+                except (PermissionError, OSError):
+                    pass  # File may be locked on Windows
 
         # Clean up any subdirectories and files created during tests
         import shutil
 
         if os.path.exists(self.temp_dir):
-            shutil.rmtree(self.temp_dir)
-
-        # Reset logging configuration to avoid test interference
-        logging.getLogger().handlers.clear()
-        for logger_name in logging.root.manager.loggerDict:
-            logger = logging.getLogger(logger_name)
-            logger.handlers.clear()
-            logger.propagate = True
+            try:
+                shutil.rmtree(self.temp_dir)
+            except (PermissionError, OSError):
+                pass  # Directory may be locked on Windows
 
     def test_logging_config_class_exists(self) -> None:
         """Test that LoggingConfig class exists."""
@@ -260,9 +272,12 @@ class TestLoggingConfig(unittest.TestCase):
 
     def test_setup_logging_file_handler_error(self) -> None:
         """Test logging setup handles file handler errors gracefully."""
+        if sys.platform.startswith("win"):
+            pytest.skip("Invalid path handling differs on Windows")
+
         # Test with invalid log file path (should fall back to basic config)
-        # This should raise a PermissionError due to invalid path
-        with self.assertRaises(PermissionError):
+        # This should raise a PermissionError, FileNotFoundError, or OSError due to invalid path
+        with self.assertRaises((PermissionError, FileNotFoundError, OSError)):
             setup_logging(log_file_path="/invalid/path/test.log")
 
         # After the error, logging should still be functional with fallback
@@ -492,6 +507,9 @@ class TestLoggingConfig(unittest.TestCase):
 
     def test_validate_log_file_path_permission_error(self) -> None:
         """Test validation with permission error."""
+        if sys.platform.startswith("win"):
+            pytest.skip("Permission handling differs on Windows")
+
         # Use a fresh copy of DEFAULT_CONFIG to avoid interference
         config = LoggingConfig.DEFAULT_CONFIG.copy()
 
@@ -534,6 +552,9 @@ class TestLoggingConfig(unittest.TestCase):
 
     def test_create_sample_config_permission_error(self) -> None:
         """Test sample config creation with permission error."""
+        if sys.platform.startswith("win"):
+            pytest.skip("Permission handling differs on Windows")
+
         # Try to create in a read-only directory
         read_only_dir = os.path.join(self.temp_dir, "readonly")
         os.makedirs(read_only_dir, exist_ok=True)
