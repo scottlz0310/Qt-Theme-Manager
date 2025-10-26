@@ -159,16 +159,21 @@ class TestCrossPlatformCompatibility:
 
         file1.write_text("content1", encoding="utf-8")
 
-        # On case-insensitive systems (Windows, macOS default),
-        # these might be the same file
-        if file1.exists() and file2.exists():
+        # Check if filesystem is case-sensitive by testing if file2 exists
+        # without creating it (on case-insensitive systems, file2 == file1)
+        is_case_sensitive = not file2.exists()
+
+        if is_case_sensitive:
             # Case-sensitive system (Linux)
             file2.write_text("content2", encoding="utf-8")
             assert file1.read_text(encoding="utf-8") == "content1"
             assert file2.read_text(encoding="utf-8") == "content2"
         else:
-            # Case-insensitive system
+            # Case-insensitive system (Windows, macOS default)
+            # file1 and file2 refer to the same file
             assert file1.exists()
+            assert file2.exists()
+            assert file1.read_text(encoding="utf-8") == "content1"
 
     def test_permission_handling(self, temp_config_dir: Path):
         """Test file permission handling across platforms."""

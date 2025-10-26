@@ -261,8 +261,8 @@ class TestLoggingConfig(unittest.TestCase):
     def test_setup_logging_file_handler_error(self) -> None:
         """Test logging setup handles file handler errors gracefully."""
         # Test with invalid log file path (should fall back to basic config)
-        # This should raise a PermissionError due to invalid path
-        with self.assertRaises(PermissionError):
+        # This should raise a PermissionError or FileNotFoundError due to invalid path
+        with self.assertRaises((PermissionError, FileNotFoundError)):
             setup_logging(log_file_path="/invalid/path/test.log")
 
         # After the error, logging should still be functional with fallback
