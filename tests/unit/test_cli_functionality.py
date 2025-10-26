@@ -83,7 +83,7 @@ class TestCLIArgumentParsing:
                         pass  # CLI might exit, that's OK
 
                     # Should produce some output
-                    output = mock_stdout.getvalue()
+                    mock_stdout.getvalue()
                     # Output could be help, error, or actual functionality
 
         except ImportError:
@@ -149,7 +149,7 @@ class TestCLIThemeOperations:
                     except SystemExit:
                         pass
 
-                    output = mock_stdout.getvalue()
+                    mock_stdout.getvalue()
                     # Should contain some theme information
 
         except ImportError:
@@ -161,7 +161,7 @@ class TestCLIThemeOperations:
             from qt_theme_manager.cli.main import main
 
             with patch("sys.argv", ["qt-theme-manager", "apply", "dark"]):
-                with patch("sys.stdout", new_callable=StringIO) as mock_stdout:
+                with patch("sys.stdout", new_callable=StringIO):
                     try:
                         main()
                     except SystemExit:
@@ -247,7 +247,7 @@ class TestCLIErrorHandling:
                     "sys.argv",
                     ["qt-theme-manager", "export", "dark", "/root/output.qss"],
                 ):
-                    with patch("sys.stderr", new_callable=StringIO) as mock_stderr:
+                    with patch("sys.stderr", new_callable=StringIO):
                         try:
                             main()
                         except SystemExit as exc_info:
@@ -299,7 +299,7 @@ class TestCLIConfiguration:
                         pass
 
                     # Verbose mode should produce more output
-                    output = mock_stdout.getvalue()
+                    mock_stdout.getvalue()
 
         except ImportError:
             pytest.skip("CLI main module not yet implemented")
@@ -317,7 +317,7 @@ class TestCLIConfiguration:
                         pass
 
                     # Quiet mode should produce minimal output
-                    output = mock_stdout.getvalue()
+                    mock_stdout.getvalue()
 
         except ImportError:
             pytest.skip("CLI main module not yet implemented")
@@ -332,7 +332,7 @@ class TestCLIIntegration:
             from qt_theme_manager.cli.main import main
 
             with patch("sys.argv", ["qt-theme-manager", "list"]):
-                with patch("sys.stdout", new_callable=StringIO) as mock_stdout:
+                with patch("sys.stdout", new_callable=StringIO):
                     try:
                         main()
                     except SystemExit:

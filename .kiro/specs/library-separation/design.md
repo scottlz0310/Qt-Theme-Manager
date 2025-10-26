@@ -104,15 +104,15 @@ except ImportError:
 MIGRATION_MAP = {
     # GUI起動スクリプト
     "launch_theme_editor.py": "migrate/launch_theme_editor.py",
-    "launch_zebra_theme_editor.py": "migrate/launch_zebra_theme_editor.py", 
+    "launch_zebra_theme_editor.py": "migrate/launch_zebra_theme_editor.py",
     "launch_gui_preview.py": "migrate/launch_gui_preview.py",
-    
+
     # エディタ関連
     "theme_editor_zebra_extension.py": "migrate/theme_editor_zebra_extension.py",
     "zebra_pattern_editor.py": "migrate/zebra_pattern_editor.py",
     "analyze_zebra_colors.py": "migrate/analyze_zebra_colors.py",
     "improve_zebra_colors.py": "migrate/improve_zebra_colors.py",
-    
+
     # ディレクトリ
     "examples/": "migrate/examples/",
     "scripts/": "migrate/scripts/",
@@ -165,7 +165,7 @@ class MigrationStatus:
 ```python
 class QtFrameworkNotFoundError(ImportError):
     """Qt framework not found error with installation guidance."""
-    
+
     def __init__(self):
         message = (
             "No Qt framework found. Please install one of:\n"
@@ -180,7 +180,7 @@ class QtFrameworkNotFoundError(ImportError):
 ```python
 class MigrationError(Exception):
     """File migration error with detailed context."""
-    
+
     def __init__(self, source: str, destination: str, reason: str):
         message = f"Failed to migrate {source} to {destination}: {reason}"
         super().__init__(message)
@@ -250,7 +250,7 @@ dependencies = []  # Qt自動検出のため基本依存なし
 
 [project.optional-dependencies]
 pyqt5 = ["PyQt5>=5.15.0"]
-pyqt6 = ["PyQt6>=6.2.0"] 
+pyqt6 = ["PyQt6>=6.2.0"]
 pyside6 = ["PySide6>=6.0.0"]
 dev = ["pytest>=6.0", "pytest-qt>=4.0", "black", "isort", "flake8"]
 ```

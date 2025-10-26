@@ -40,9 +40,9 @@ theme-editor  # pip install qt-theme-manager後
 
 ### 主要機能
 - **リアルタイムコントラスト調整**: 1.15:1から1.80:1まで精密制御
-- **3段階アクセシビリティレベル**: 
+- **3段階アクセシビリティレベル**:
   - 控えめ (1.15:1) - 日常使用に適した控えめなコントラスト
-  - 中程度 (1.30:1) - バランスの取れた視認性  
+  - 中程度 (1.30:1) - バランスの取れた視認性
   - 高 (1.80:1) - 明確な識別が必要な場合
 - **科学的色計算**: HSL/HSV色空間での精密な明度調整
 - **WCAG 2.1準拠**: アクセシビリティガイドラインに基づいた色彩設計
@@ -50,7 +50,7 @@ theme-editor  # pip install qt-theme-manager後
 
 ### 使用手順
 1. **背景色設定**: 基本色タブで背景色を選択
-2. **ゼブラタブでの調整**: 
+2. **ゼブラタブでの調整**:
    - コントラスト比をスライダーまたは直接入力で調整
    - アクセシビリティレベルボタンでプリセット選択
    - 生成方法（自動/HSL/HSV）を選択
@@ -96,7 +96,7 @@ optimal_text = ColorUtils.get_optimal_text_color("#007acc")  # "#ffffff"
 # 明度を20%上げる
 brighter = ColorUtils.adjust_brightness("#007acc", 0.2)
 
-# 彩度を30%下げる  
+# 彩度を30%下げる
 desaturated = ColorUtils.adjust_saturation("#007acc", -0.3)
 ```
 
@@ -109,11 +109,11 @@ desaturated = ColorUtils.adjust_saturation("#007acc", -0.3)
 def generate_color_palette(self):
     """Generate harmonious color palette based on primary color."""
     primary_color = self.current_theme_config.get("primaryColor", "#007acc")
-    
+
     # HSV変換
     r, g, b = ColorUtils.hex_to_rgb(primary_color)
     h, s, v = colorsys.rgb_to_hsv(r/255.0, g/255.0, b/255.0)
-    
+
     # 補色生成（色相を180度回転）
     accent_h = (h + 0.5) % 1.0
     accent_r, accent_g, accent_b = colorsys.hsv_to_rgb(accent_h, s * 0.8, v * 0.9)
@@ -162,8 +162,8 @@ def generate_color_palette(self):
 
 #### WCAG準拠チェック
 ```
-コントラスト比: 4.51:1  
-WCAG AA: ✅  
+コントラスト比: 4.51:1
+WCAG AA: ✅
 WCAG AAA: ❌
 ```
 
@@ -240,13 +240,13 @@ python demo_theme_editor.py
 def get_luminance(hex_color: str) -> float:
     r, g, b = hex_to_rgb(hex_color)
     r, g, b = r/255.0, g/255.0, b/255.0
-    
+
     # ガンマ補正
     def gamma_correct(c):
         return c/12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
-    
+
     r, g, b = map(gamma_correct, [r, g, b])
-    
+
     # 輝度計算
     return 0.2126 * r + 0.7152 * g + 0.0722 * b
 ```
@@ -256,10 +256,10 @@ def get_luminance(hex_color: str) -> float:
 def get_contrast_ratio(color1: str, color2: str) -> float:
     l1 = get_luminance(color1)
     l2 = get_luminance(color2)
-    
+
     lighter = max(l1, l2)
     darker = min(l1, l2)
-    
+
     return (lighter + 0.05) / (darker + 0.05)
 ```
 
@@ -385,15 +385,15 @@ print(f"最適化結果: {text_color}, コントラスト比: {ratio:.2f}")
 1. **基本設定** (2分)
    - ベースカラーを選択
    - テーマタイプ（ライト/ダーク）を決定
-   
+
 2. **自動最適化** (30秒)
    - 「全コンポーネント自動調整」をクリック
    - アクセシビリティ情報を確認
-   
+
 3. **手動調整** (5分)
    - 各コンポーネントタブで細かい調整
    - プレビューで実際の見栄えを確認
-   
+
 4. **保存と適用** (30秒)
    - テーマを保存
    - アプリケーションで即座に利用
@@ -401,11 +401,11 @@ print(f"最適化結果: {text_color}, コントラスト比: {ratio:.2f}")
 ## 🔮 今後の拡張予定と改善点
 
 ### 現在実装済みの高度機能
-✅ **WCAG 2.1準拠のコントラスト計算**  
-✅ **20種類以上のQtコンポーネント対応**  
-✅ **HSV色空間での直感的調整**  
-✅ **リアルタイム100msプレビュー**  
-✅ **インテリジェントな色彩生成**  
+✅ **WCAG 2.1準拠のコントラスト計算**
+✅ **20種類以上のQtコンポーネント対応**
+✅ **HSV色空間での直感的調整**
+✅ **リアルタイム100msプレビュー**
+✅ **インテリジェントな色彩生成**
 ✅ **CLI統合とJSON設定**
 
 ### 近日実装予定 🚧

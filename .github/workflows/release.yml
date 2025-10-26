@@ -17,18 +17,18 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.version }}
       tag: ${{ steps.version.outputs.tag }}
-    
+
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Install uv
       uses: astral-sh/setup-uv@v3
       with:
         version: "latest"
-    
+
     - name: Set up Python
       run: uv python install 3.11
-    
+
     - name: Determine version
       id: version
       run: |
@@ -41,14 +41,14 @@ jobs:
         fi
         echo "version=${VERSION}" >> $GITHUB_OUTPUT
         echo "tag=${TAG}" >> $GITHUB_OUTPUT
-    
+
     - name: Validate version format
       run: |
         if ! echo "${{ steps.version.outputs.version }}" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$'; then
           echo "Invalid version format: ${{ steps.version.outputs.version }}"
           exit 1
         fi
-    
+
     - name: Check version consistency
       run: |
         PYPROJECT_VERSION=$(uv run python -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])")
@@ -56,7 +56,7 @@ jobs:
           echo "Version mismatch: pyproject.toml has $PYPROJECT_VERSION, expected ${{ steps.version.outputs.version }}"
           exit 1
         fi
-    
+
     - name: Run tests
       run: |
         uv sync --group dev
@@ -68,22 +68,22 @@ jobs:
   build:
     needs: validate
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Install uv
       uses: astral-sh/setup-uv@v3
       with:
         version: "latest"
-    
+
     - name: Set up Python
       run: uv python install 3.11
-    
+
     - name: Build package
       run: |
         uv build
-    
+
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
@@ -93,44 +93,44 @@ jobs:
   update-docs:
     needs: [validate, build]
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v4
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-    
+
     - name: Install uv
       uses: astral-sh/setup-uv@v3
       with:
         version: "latest"
-    
+
     - name: Set up Python
       run: uv python install 3.11
-    
+
     - name: Update CHANGELOG
       run: |
         DATE=$(date +"%Y-%m-%d")
         VERSION="${{ needs.validate.outputs.version }}"
-        
+
         # CHANGELOGの更新
         if [ -f CHANGELOG.md ]; then
           sed -i "s/## \[Unreleased\]/## [Unreleased]\n\n## [$VERSION] - $DATE/" CHANGELOG.md
         fi
-    
+
     - name: Update version badges
       run: |
         VERSION="${{ needs.validate.outputs.version }}"
-        
+
         # README.mdのバージョンバッジを更新
         if [ -f README.md ]; then
           sed -i "s/qt-theme-manager-[0-9]\+\.[0-9]\+\.[0-9]\+/qt-theme-manager-$VERSION/g" README.md
         fi
-        
+
         # README_ja.mdのバージョンバッジを更新
         if [ -f README_ja.md ]; then
           sed -i "s/qt-theme-manager-[0-9]\+\.[0-9]\+\.[0-9]\+/qt-theme-manager-$VERSION/g" README_ja.md
         fi
-    
+
     - name: Commit documentation updates
       run: |
         git config --local user.email "action@github.com"
@@ -142,34 +142,34 @@ jobs:
   release:
     needs: [validate, build, update-docs]
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    
+
     - name: Download build artifacts
       uses: actions/download-artifact@v4
       with:
         name: dist
         path: dist/
-    
+
     - name: Generate release notes
       id: release_notes
       run: |
         VERSION="${{ needs.validate.outputs.version }}"
-        
+
         # CHANGELOGから該当バージョンの変更内容を抽出
         if [ -f CHANGELOG.md ]; then
           NOTES=$(awk "/## \[$VERSION\]/,/## \[/{if(/## \[/ && !/## \[$VERSION\]/) exit; if(!/## \[$VERSION\]/) print}" CHANGELOG.md)
         else
           NOTES="Release $VERSION"
         fi
-        
+
         echo "notes<<EOF" >> $GITHUB_OUTPUT
         echo "$NOTES" >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
-    
+
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2
       with:
@@ -184,14 +184,14 @@ jobs:
     needs: [validate, build, release]
     runs-on: ubuntu-latest
     environment: pypi
-    
+
     steps:
     - name: Download build artifacts
       uses: actions/download-artifact@v4
       with:
         name: dist
         path: dist/
-    
+
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:

@@ -38,8 +38,8 @@ from zebra_pattern_editor import ZebraPatternGenerator
 # Basic zebra color generation
 base_color = "#ffffff"
 zebra_color = ZebraPatternGenerator.generate_zebra_color(
-    base_color, 
-    contrast_target=1.2, 
+    base_color,
+    contrast_target=1.2,
     method="auto"
 )
 print(f"Base: {base_color} → Zebra: {zebra_color}")
@@ -108,11 +108,11 @@ class MinimalApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Minimal Theme App")
-        
+
         # Central widget
         label = QLabel("Hello, ThemeManager!")
         self.setCentralWidget(label)
-        
+
         # Apply theme
         apply_theme_to_widget(self)
 
@@ -133,7 +133,7 @@ Application with theme switching functionality
 
 import sys
 from PyQt5.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QVBoxLayout, 
+    QApplication, QMainWindow, QWidget, QVBoxLayout,
     QPushButton, QLabel, QComboBox
 )
 from qt_theme_manager.qt.controller import ThemeController
@@ -143,44 +143,44 @@ class ThemeSwitcherApp(QMainWindow):
         super().__init__()
         self.controller = ThemeController()
         self.setup_ui()
-        
+
     def setup_ui(self):
         self.setWindowTitle("Theme Switcher App")
-        
+
         # Central widget
         central_widget = QWidget()
         layout = QVBoxLayout(central_widget)
-        
+
         # Current theme display
         self.current_theme_label = QLabel()
         self.update_theme_label()
         layout.addWidget(self.current_theme_label)
-        
+
         # Theme selection combo box
         self.theme_combo = QComboBox()
         themes = self.controller.get_available_themes()
         for theme_name in themes.keys():
             display_name = themes[theme_name].get("display_name", theme_name)
             self.theme_combo.addItem(f"{display_name} ({theme_name})", theme_name)
-        
+
         self.theme_combo.currentTextChanged.connect(self.on_theme_changed)
         layout.addWidget(self.theme_combo)
-        
+
         # Sample button
         sample_button = QPushButton("Sample Button")
         layout.addWidget(sample_button)
-        
+
         self.setCentralWidget(central_widget)
-        
+
         # Apply initial theme
         self.controller.apply_theme_to_widget(self)
-        
+
     def update_theme_label(self):
         current_theme = self.controller.get_current_theme_name()
         themes = self.controller.get_available_themes()
         display_name = themes.get(current_theme, {}).get("display_name", current_theme)
         self.current_theme_label.setText(f"Current Theme: {display_name}")
-        
+
     def on_theme_changed(self):
         theme_data = self.theme_combo.currentData()
         if theme_data:
@@ -208,7 +208,7 @@ Complete GUI application example
 import sys
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
-    QPushButton, QLabel, QLineEdit, QTextEdit, QGroupBox, 
+    QPushButton, QLabel, QLineEdit, QTextEdit, QGroupBox,
     QListWidget, QMenuBar, QToolBar, QStatusBar, QAction
 )
 from PyQt5.QtCore import Qt
@@ -222,101 +222,101 @@ class FullGuiApp(QMainWindow):
         self.create_menu()
         self.create_toolbar()
         self.create_status_bar()
-        
+
     def setup_ui(self):
         self.setWindowTitle("Complete GUI Application")
         self.setGeometry(100, 100, 800, 600)
-        
+
         # Central widget
         central_widget = QWidget()
         main_layout = QHBoxLayout(central_widget)
-        
+
         # Left side: Input area
         left_group = QGroupBox("Input Area")
         left_layout = QVBoxLayout(left_group)
-        
+
         left_layout.addWidget(QLabel("Name:"))
         self.name_input = QLineEdit()
         left_layout.addWidget(self.name_input)
-        
+
         left_layout.addWidget(QLabel("Message:"))
         self.message_input = QTextEdit()
         self.message_input.setMaximumHeight(100)
         left_layout.addWidget(self.message_input)
-        
+
         add_button = QPushButton("Add")
         add_button.clicked.connect(self.add_item)
         left_layout.addWidget(add_button)
-        
+
         main_layout.addWidget(left_group)
-        
+
         # Right side: List display
         right_group = QGroupBox("Message List")
         right_layout = QVBoxLayout(right_group)
-        
+
         self.message_list = QListWidget()
         right_layout.addWidget(self.message_list)
-        
+
         clear_button = QPushButton("Clear")
         clear_button.clicked.connect(self.clear_list)
         right_layout.addWidget(clear_button)
-        
+
         main_layout.addWidget(right_group)
-        
+
         self.setCentralWidget(central_widget)
-        
+
         # Apply theme
         self.controller.apply_theme_to_widget(self)
-        
+
     def create_menu(self):
         menubar = self.menuBar()
-        
+
         # File menu
         file_menu = menubar.addMenu("File")
-        
+
         new_action = QAction("New", self)
         file_menu.addAction(new_action)
-        
+
         open_action = QAction("Open", self)
         file_menu.addAction(open_action)
-        
+
         file_menu.addSeparator()
-        
+
         exit_action = QAction("Exit", self)
         exit_action.triggered.connect(self.close)
         file_menu.addAction(exit_action)
-        
+
         # Theme menu
         theme_menu = menubar.addMenu("Themes")
-        
+
         themes = self.controller.get_available_themes()
         for theme_name, theme_config in themes.items():
             display_name = theme_config.get("display_name", theme_name)
             action = QAction(display_name, self)
             action.triggered.connect(lambda checked, name=theme_name: self.change_theme(name))
             theme_menu.addAction(action)
-        
+
     def create_toolbar(self):
         toolbar = QToolBar()
         self.addToolBar(toolbar)
-        
+
         add_action = QAction("Add", self)
         add_action.triggered.connect(self.add_item)
         toolbar.addAction(add_action)
-        
+
         clear_action = QAction("Clear", self)
         clear_action.triggered.connect(self.clear_list)
         toolbar.addAction(clear_action)
-        
+
     def create_status_bar(self):
         self.status_bar = QStatusBar()
         self.setStatusBar(self.status_bar)
         self.status_bar.showMessage("Ready")
-        
+
     def add_item(self):
         name = self.name_input.text()
         message = self.message_input.toPlainText()
-        
+
         if name and message:
             item_text = f"{name}: {message}"
             self.message_list.addItem(item_text)
@@ -325,11 +325,11 @@ class FullGuiApp(QMainWindow):
             self.status_bar.showMessage(f"Message added: {name}")
         else:
             self.status_bar.showMessage("Please enter both name and message")
-            
+
     def clear_list(self):
         self.message_list.clear()
         self.status_bar.showMessage("List cleared")
-        
+
     def change_theme(self, theme_name):
         self.controller.set_theme(theme_name)
         self.controller.apply_theme_to_widget(self)
@@ -398,26 +398,26 @@ def create_custom_theme_demo():
     with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
         json.dump(custom_theme_config, f, indent=2, ensure_ascii=False)
         custom_config_path = f.name
-    
+
     try:
         # Initialize ThemeController with custom configuration
         controller = ThemeController(custom_config_path)
-        
+
         # Display available themes
         themes = controller.get_available_themes()
         print("Custom themes available:")
         for name, config in themes.items():
             print(f"  - {config['display_name']} ({name})")
-        
+
         # Generate and export QSS
         output_path = "custom_purple_theme.qss"
         success = controller.export_qss(output_path, "custom_purple")
-        
+
         if success:
             print(f"Custom theme QSS exported to {output_path}")
-        
+
         return controller
-        
+
     finally:
         # Clean up temporary file
         os.unlink(custom_config_path)
@@ -473,18 +473,18 @@ class AdvancedThemeManager:
     def __init__(self):
         self.controller = ThemeController()
         self.loader = ThemeLoader()
-        
+
     def get_theme_statistics(self):
         """Get theme statistics"""
         themes = self.controller.get_available_themes()
-        
+
         stats = {
             "total_themes": len(themes),
             "dark_themes": 0,
             "light_themes": 0,
             "color_themes": 0
         }
-        
+
         for name, config in themes.items():
             if "dark" in name:
                 stats["dark_themes"] += 1
@@ -492,18 +492,18 @@ class AdvancedThemeManager:
                 stats["light_themes"] += 1
             else:
                 stats["color_themes"] += 1
-                
+
         return stats
-    
+
     def generate_theme_report(self):
         """Generate theme report"""
         themes = self.controller.get_available_themes()
         current = self.controller.get_current_theme_name()
-        
+
         report = f"Theme Report\n{'='*50}\n"
         report += f"Current Theme: {current}\n"
         report += f"Available Themes: {len(themes)}\n\n"
-        
+
         for name, config in themes.items():
             report += f"Theme: {name}\n"
             report += f"  Display Name: {config.get('display_name', 'N/A')}\n"
@@ -511,18 +511,18 @@ class AdvancedThemeManager:
             report += f"  Background: {config.get('backgroundColor', 'N/A')}\n"
             report += f"  Text Color: {config.get('textColor', 'N/A')}\n"
             report += "-" * 30 + "\n"
-            
+
         return report
-    
+
     def create_theme_preview_qss(self, theme_name):
         """Generate preview QSS for specific theme"""
         themes = self.controller.get_available_themes()
         if theme_name not in themes:
             return None
-            
+
         theme_config = themes[theme_name]
         generator = StylesheetGenerator(theme_config)
-        
+
         # Generate basic preview QSS
         preview_qss = f"""
 /* {theme_config.get('display_name', theme_name)} Theme Preview */
@@ -540,19 +540,19 @@ class AdvancedThemeManager:
 
 def main():
     manager = AdvancedThemeManager()
-    
+
     # Display statistics
     stats = manager.get_theme_statistics()
     print("Theme Statistics:")
     for key, value in stats.items():
         print(f"  {key}: {value}")
-    
+
     print("\n" + "="*50)
-    
+
     # Generate report
     report = manager.generate_theme_report()
     print(report)
-    
+
     # Generate preview QSS
     preview_qss = manager.create_theme_preview_qss("dark")
     if preview_qss:
@@ -574,7 +574,7 @@ Application with animated theme switching
 
 import sys
 from PyQt5.QtWidgets import (
-    QApplication, QMainWindow, QWidget, QVBoxLayout, 
+    QApplication, QMainWindow, QWidget, QVBoxLayout,
     QPushButton, QLabel, QGraphicsOpacityEffect
 )
 from PyQt5.QtCore import QPropertyAnimation, QEasingCurve, pyqtSlot
@@ -585,41 +585,41 @@ class AnimatedThemeApp(QMainWindow):
         super().__init__()
         self.controller = ThemeController()
         self.setup_ui()
-        
+
     def setup_ui(self):
         self.setWindowTitle("Animated Theme Switcher")
-        
+
         central_widget = QWidget()
         layout = QVBoxLayout(central_widget)
-        
+
         # Theme display label
         self.theme_label = QLabel("Current Theme")
         self.theme_label.setStyleSheet("font-size: 18px; font-weight: bold;")
         layout.addWidget(self.theme_label)
-        
+
         # Theme switching buttons
         themes = ["dark", "light", "blue", "green"]
         for theme in themes:
             button = QPushButton(f"{theme.capitalize()} Theme")
             button.clicked.connect(lambda checked, t=theme: self.change_theme_animated(t))
             layout.addWidget(button)
-            
+
         self.setCentralWidget(central_widget)
-        
+
         # Apply initial theme
         self.controller.apply_theme_to_widget(self)
         self.update_theme_label()
-        
+
         # Set up opacity effect
         self.opacity_effect = QGraphicsOpacityEffect()
         self.setGraphicsEffect(self.opacity_effect)
-        
+
     def update_theme_label(self):
         current_theme = self.controller.get_current_theme_name()
         themes = self.controller.get_available_themes()
         display_name = themes.get(current_theme, {}).get("display_name", current_theme)
         self.theme_label.setText(f"Current Theme: {display_name}")
-        
+
     def change_theme_animated(self, theme_name):
         # Fade out animation
         self.fade_out_animation = QPropertyAnimation(self.opacity_effect, b"opacity")
@@ -629,14 +629,14 @@ class AnimatedThemeApp(QMainWindow):
         self.fade_out_animation.setEasingCurve(QEasingCurve.OutCubic)
         self.fade_out_animation.finished.connect(lambda: self.apply_theme_and_fade_in(theme_name))
         self.fade_out_animation.start()
-        
+
     @pyqtSlot()
     def apply_theme_and_fade_in(self, theme_name):
         # Apply theme
         self.controller.set_theme(theme_name)
         self.controller.apply_theme_to_widget(self)
         self.update_theme_label()
-        
+
         # Fade in animation
         self.fade_in_animation = QPropertyAnimation(self.opacity_effect, b"opacity")
         self.fade_in_animation.setDuration(200)

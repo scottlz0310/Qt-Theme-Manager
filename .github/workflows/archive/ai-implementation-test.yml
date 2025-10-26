@@ -2,9 +2,9 @@ name: AI Implementation Test
 
 on:
   push:
-    branches: 
+    branches:
       - 'feature/gpt4.1'
-      - 'feature/cs4.0' 
+      - 'feature/cs4.0'
       - 'feature/cursor'
       - 'analysis'
       - 'integration'
@@ -14,15 +14,15 @@ on:
 jobs:
   ai-implementation-test:
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-    
+
     - name: Cache pip dependencies
       uses: actions/cache@v3
       with:
@@ -30,13 +30,13 @@ jobs:
         key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
         restore-keys: |
           ${{ runner.os }}-pip-
-    
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -e .
         pip install PyQt6  # AI実装用デフォルトフレームワーク
-    
+
     - name: Validate package structure
       run: |
         echo "Checking package structure..."
@@ -46,12 +46,12 @@ jobs:
         else
           echo "ℹ️  qt_theme_studio package not yet created (expected during early implementation)"
         fi
-    
+
     - name: Check for syntax errors
       run: |
         echo "Checking for Python syntax errors..."
         find . -name "*.py" -not -path "./.git/*" -not -path "./__pycache__/*" | xargs python -m py_compile
-    
+
     - name: Run basic import tests
       run: |
         echo "Testing basic imports..."
@@ -61,14 +61,14 @@ jobs:
             print('✅ qt_theme_manager import successful')
         except ImportError as e:
             print(f'ℹ️  theme_manager import issue: {e}')
-        
+
         try:
             import PyQt6.QtWidgets
             print('✅ PyQt6 import successful')
         except ImportError as e:
             print(f'❌ PyQt6 import failed: {e}')
         "
-    
+
     - name: Test new launcher (if exists)
       run: |
         if [ -f "launch_theme_studio.py" ]; then
@@ -77,14 +77,14 @@ jobs:
         else
           echo "ℹ️  Unified launcher not yet created"
         fi
-    
+
     - name: Generate implementation report
       run: |
         echo "=== AI Implementation Progress Report ===" > implementation_report.txt
         echo "Branch: ${{ github.ref_name }}" >> implementation_report.txt
         echo "Date: $(date)" >> implementation_report.txt
         echo "" >> implementation_report.txt
-        
+
         echo "## Package Structure:" >> implementation_report.txt
         if [ -d "qt_theme_studio" ]; then
           find qt_theme_studio -type f -name "*.py" | wc -l | xargs echo "Python files created:" >> implementation_report.txt
@@ -92,23 +92,23 @@ jobs:
         else
           echo "qt_theme_studio package: Not created yet" >> implementation_report.txt
         fi
-        
+
         echo "" >> implementation_report.txt
         echo "## File Analysis:" >> implementation_report.txt
         find . -name "*.py" -not -path "./.git/*" -not -path "./__pycache__/*" | wc -l | xargs echo "Total Python files:" >> implementation_report.txt
-        
+
         echo "" >> implementation_report.txt
         echo "## Recent Changes:" >> implementation_report.txt
         git log --oneline -5 >> implementation_report.txt
-        
+
         cat implementation_report.txt
-    
+
     - name: Upload implementation report
       uses: actions/upload-artifact@v3
       with:
         name: implementation-report-${{ github.ref_name }}
         path: implementation_report.txt
-    
+
     - name: Branch-specific validation
       run: |
         case "${{ github.ref_name }}" in

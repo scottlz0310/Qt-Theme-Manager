@@ -105,7 +105,7 @@ jobs:
           else
             echo "Qt framework test script not found, skipping..."
           fi
-          
+
           echo "=== STEP: Running main test suite ==="
           bash test_release.sh
 

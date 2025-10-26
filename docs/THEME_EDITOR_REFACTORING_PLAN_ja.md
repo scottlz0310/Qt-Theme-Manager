@@ -1,9 +1,9 @@
 # テーマエディターリファクタリング計画書 v1.0.0
 
-**目標バージョン**: v1.0.0 (メジャーバージョンリリース)  
-**作成日**: 2025年7月24日  
-**ステータス**: 計画フェーズ  
-**予想期間**: 2-3週間  
+**目標バージョン**: v1.0.0 (メジャーバージョンリリース)
+**作成日**: 2025年7月24日
+**ステータス**: 計画フェーズ
+**予想期間**: 2-3週間
 
 ## 🎯 プロジェクト概要
 
@@ -124,7 +124,7 @@ qt_theme_studio/                    # 🆕 新しい統合アプリケーショ�
 ```
 # 旧個別ランチャー（削除対象）
 launch_theme_editor.py              # → 削除
-launch_zebra_theme_editor.py        # → 削除  
+launch_zebra_theme_editor.py        # → 削除
 launch_gui_preview.py               # → 削除
 
 # 新しい統合ランチャー
@@ -688,42 +688,42 @@ class ThemeStudioLogger:
     def __init__(self, name: str = "ThemeStudio"):
         self.logger = logging.getLogger(name)
         self.setup_logger()
-    
+
     def setup_logger(self):
         """ロガーの初期設定"""
         self.logger.setLevel(logging.DEBUG)
-        
+
         # ファイルハンドラー（詳細ログ）
         file_handler = self._create_file_handler()
         file_handler.setLevel(logging.DEBUG)
-        
+
         # コンソールハンドラー（重要ログのみ）
         console_handler = self._create_console_handler()
         console_handler.setLevel(logging.INFO)
-        
+
         # フォーマッター
         formatter = logging.Formatter(
             '%(asctime)s | %(name)s | %(levelname)s | %(filename)s:%(lineno)d | %(message)s'
         )
-        
+
         file_handler.setFormatter(formatter)
         console_handler.setFormatter(formatter)
-        
+
         self.logger.addHandler(file_handler)
         self.logger.addHandler(console_handler)
-    
+
     def _create_file_handler(self):
         """ログファイルハンドラーの作成"""
         log_dir = Path.home() / ".qt_theme_studio" / "logs"
         log_dir.mkdir(parents=True, exist_ok=True)
-        
+
         log_file = log_dir / f"theme_studio_{datetime.now().strftime('%Y%m%d')}.log"
         return logging.FileHandler(log_file, encoding='utf-8')
-    
+
     def _create_console_handler(self):
         """コンソールハンドラーの作成"""
         return logging.StreamHandler(sys.stdout)
-    
+
     def log_qt_framework_info(self):
         """Qtフレームワーク情報のログ出力"""
         try:
@@ -731,19 +731,19 @@ class ThemeStudioLogger:
             self.info(f"PyQt6 detected: {PyQt6.QtCore.PYQT_VERSION_STR}")
         except ImportError:
             pass
-        
+
         try:
             import PyQt5
             self.info(f"PyQt5 detected: {PyQt5.QtCore.PYQT_VERSION_STR}")
         except ImportError:
             pass
-        
+
         try:
             import PySide6
             self.info(f"PySide6 detected: {PySide6.__version__}")
         except ImportError:
             pass
-    
+
     def log_performance_metrics(self, operation: str, duration: float, **kwargs):
         """パフォーマンスメトリクスのログ出力"""
         metrics = {
@@ -752,14 +752,14 @@ class ThemeStudioLogger:
             **kwargs
         }
         self.info(f"Performance: {metrics}")
-    
+
     def log_user_action(self, action: str, details: dict = None):
         """ユーザーアクションのログ出力"""
         log_data = {'user_action': action}
         if details:
             log_data.update(details)
         self.info(f"User Action: {log_data}")
-    
+
     def log_error_with_context(self, error: Exception, context: dict = None):
         """エラーとコンテキスト情報のログ出力"""
         error_data = {
@@ -768,19 +768,19 @@ class ThemeStudioLogger:
             'context': context or {}
         }
         self.error(f"Error occurred: {error_data}", exc_info=True)
-    
+
     def debug(self, message: str):
         self.logger.debug(message)
-    
+
     def info(self, message: str):
         self.logger.info(message)
-    
+
     def warning(self, message: str):
         self.logger.warning(message)
-    
+
     def error(self, message: str, exc_info: bool = False):
         self.logger.error(message, exc_info=exc_info)
-    
+
     def critical(self, message: str):
         self.logger.critical(message)
 
@@ -844,32 +844,32 @@ class QtFrameworkManager:
         self.logger = ThemeStudioLogger("QtFrameworkManager")
         self.backup_dir = Path.home() / ".qt_theme_studio" / "framework_backups"
         self.backup_dir.mkdir(parents=True, exist_ok=True)
-    
+
     def detect_current_framework(self) -> Optional[QtFramework]:
         """現在インストールされているQtフレームワークを検出"""
         frameworks = []
-        
+
         try:
             import PyQt6
             frameworks.append(QtFramework.PYQT6)
             self.logger.debug(f"PyQt6 detected: {PyQt6.QtCore.PYQT_VERSION_STR}")
         except ImportError:
             pass
-        
+
         try:
             import PyQt5
             frameworks.append(QtFramework.PYQT5)
             self.logger.debug(f"PyQt5 detected: {PyQt5.QtCore.PYQT_VERSION_STR}")
         except ImportError:
             pass
-        
+
         try:
             import PySide6
             frameworks.append(QtFramework.PYSIDE6)
             self.logger.debug(f"PySide6 detected: {PySide6.__version__}")
         except ImportError:
             pass
-        
+
         if len(frameworks) == 1:
             return frameworks[0]
         elif len(frameworks) > 1:
@@ -878,7 +878,7 @@ class QtFrameworkManager:
         else:
             self.logger.warning("No Qt framework detected")
             return None
-    
+
     def get_framework_packages(self, framework: QtFramework) -> List[str]:
         """フレームワークに必要なパッケージリストを取得"""
         package_map = {
@@ -887,31 +887,31 @@ class QtFrameworkManager:
             QtFramework.PYSIDE6: ["PySide6"]
         }
         return package_map.get(framework, [])
-    
+
     def create_environment_backup(self) -> str:
         """現在の環境をバックアップ"""
         backup_name = f"backup_{QtFramework.__name__}_{int(time.time())}"
         backup_path = self.backup_dir / f"{backup_name}.txt"
-        
+
         try:
             # pip freeze の結果を保存
-            result = subprocess.run([sys.executable, "-m", "pip", "freeze"], 
+            result = subprocess.run([sys.executable, "-m", "pip", "freeze"],
                                   capture_output=True, text=True, check=True)
-            
+
             with open(backup_path, 'w', encoding='utf-8') as f:
                 f.write(result.stdout)
-            
+
             self.logger.info(f"Environment backup created: {backup_path}")
             return str(backup_path)
-        
+
         except subprocess.CalledProcessError as e:
             self.logger.error(f"Failed to create backup: {e}")
             raise
-    
+
     def uninstall_qt_frameworks(self) -> bool:
         """すべてのQtフレームワークをアンインストール"""
         qt_packages = ["PyQt5", "PyQt5-tools", "PyQt6", "PyQt6-tools", "PySide6"]
-        
+
         try:
             for package in qt_packages:
                 self.logger.info(f"Uninstalling {package}...")
@@ -919,22 +919,22 @@ class QtFrameworkManager:
                     [sys.executable, "-m", "pip", "uninstall", package, "-y"],
                     capture_output=True, text=True
                 )
-                
+
                 if result.returncode == 0:
                     self.logger.info(f"Successfully uninstalled {package}")
                 else:
                     self.logger.debug(f"Package {package} was not installed or already removed")
-            
+
             return True
-        
+
         except Exception as e:
             self.logger.error(f"Error during uninstallation: {e}")
             return False
-    
+
     def install_framework(self, framework: QtFramework) -> bool:
         """指定されたQtフレームワークをインストール"""
         packages = self.get_framework_packages(framework)
-        
+
         try:
             for package in packages:
                 self.logger.info(f"Installing {package}...")
@@ -943,18 +943,18 @@ class QtFrameworkManager:
                     capture_output=True, text=True, check=True
                 )
                 self.logger.info(f"Successfully installed {package}")
-            
+
             return True
-        
+
         except subprocess.CalledProcessError as e:
             self.logger.error(f"Failed to install {framework.value}: {e}")
             return False
-    
-    def switch_framework(self, target_framework: QtFramework, 
+
+    def switch_framework(self, target_framework: QtFramework,
                         create_backup: bool = True) -> bool:
         """Qtフレームワークを安全に切り替え"""
         self.logger.info(f"Starting framework switch to {target_framework.value}")
-        
+
         # バックアップ作成
         backup_path = None
         if create_backup:
@@ -963,21 +963,21 @@ class QtFrameworkManager:
             except Exception as e:
                 self.logger.error(f"Backup creation failed: {e}")
                 return False
-        
+
         # 現在のフレームワークを記録
         current = self.detect_current_framework()
         if current:
             self.logger.info(f"Current framework: {current.value}")
-        
+
         try:
             # 既存フレームワークのアンインストール
             if not self.uninstall_qt_frameworks():
                 raise Exception("Failed to uninstall existing frameworks")
-            
+
             # 新しいフレームワークのインストール
             if not self.install_framework(target_framework):
                 raise Exception(f"Failed to install {target_framework.value}")
-            
+
             # 切り替え成功の確認
             new_framework = self.detect_current_framework()
             if new_framework == target_framework:
@@ -985,10 +985,10 @@ class QtFrameworkManager:
                 return True
             else:
                 raise Exception("Framework switch verification failed")
-        
+
         except Exception as e:
             self.logger.error(f"Framework switch failed: {e}")
-            
+
             # ロールバック処理
             if backup_path and Path(backup_path).exists():
                 self.logger.info("Attempting rollback...")
@@ -997,26 +997,26 @@ class QtFrameworkManager:
                     self.logger.info("Rollback completed")
                 except Exception as rollback_error:
                     self.logger.critical(f"Rollback failed: {rollback_error}")
-            
+
             return False
-    
+
     def restore_from_backup(self, backup_path: str) -> bool:
         """バックアップから環境を復元"""
         try:
             # 現在の環境をクリア
             self.uninstall_qt_frameworks()
-            
+
             # バックアップから復元
             subprocess.run([sys.executable, "-m", "pip", "install", "-r", backup_path],
                          check=True)
-            
+
             self.logger.info(f"Environment restored from {backup_path}")
             return True
-        
+
         except Exception as e:
             self.logger.error(f"Failed to restore from backup: {e}")
             return False
-    
+
     def test_framework_compatibility(self, framework: QtFramework) -> Dict[str, bool]:
         """フレームワーク互換性テスト"""
         results = {
@@ -1024,7 +1024,7 @@ class QtFrameworkManager:
             'widget_creation': False,
             'stylesheet_support': False
         }
-        
+
         try:
             if framework == QtFramework.PYQT5:
                 from PyQt5.QtWidgets import QApplication, QWidget
@@ -1035,50 +1035,50 @@ class QtFrameworkManager:
             elif framework == QtFramework.PYSIDE6:
                 from PySide6.QtWidgets import QApplication, QWidget
                 from PySide6.QtCore import Qt
-            
+
             results['import_success'] = True
-            
+
             # ウィジェット作成テスト
             app = QApplication.instance() or QApplication([])
             widget = QWidget()
             results['widget_creation'] = True
-            
+
             # スタイルシートテスト
             widget.setStyleSheet("background-color: red;")
             results['stylesheet_support'] = True
-            
+
             widget.close()
-            
+
         except Exception as e:
             self.logger.error(f"Compatibility test failed: {e}")
-        
+
         return results
 
 # CLI インターフェース
 class QtFrameworkCLI:
     def __init__(self):
         self.manager = QtFrameworkManager()
-    
+
     def run_interactive_mode(self):
         """対話式フレームワーク切り替え"""
         print("Qt Framework Manager")
         print("=" * 30)
-        
+
         current = self.manager.detect_current_framework()
         if current:
             print(f"Current framework: {current.value}")
         else:
             print("No Qt framework detected")
-        
+
         print("\nAvailable frameworks:")
         for i, framework in enumerate(QtFramework, 1):
             print(f"{i}. {framework.value}")
-        
+
         try:
             choice = int(input("\nSelect framework to switch to (1-3): "))
             if 1 <= choice <= 3:
                 target = list(QtFramework)[choice - 1]
-                
+
                 confirm = input(f"Switch to {target.value}? (y/N): ")
                 if confirm.lower() == 'y':
                     success = self.manager.switch_framework(target)
@@ -1090,7 +1090,7 @@ class QtFrameworkCLI:
                     print("Operation cancelled.")
             else:
                 print("Invalid choice.")
-        
+
         except (ValueError, KeyboardInterrupt):
             print("\nOperation cancelled.")
 
@@ -1124,34 +1124,34 @@ class SettingsPanel(QWidget):
         super().__init__()
         self.framework_manager = QtFrameworkManager()
         self.init_ui()
-    
+
     def init_ui(self):
         layout = QVBoxLayout()
-        
+
         # フレームワーク選択コンボボックス
         self.framework_combo = QComboBox()
         for framework in QtFramework:
             self.framework_combo.addItem(framework.value, framework)
-        
+
         # 切り替えボタン
         switch_button = QPushButton("Switch Framework")
         switch_button.clicked.connect(self.switch_framework)
-        
+
         layout.addWidget(QLabel("Qt Framework:"))
         layout.addWidget(self.framework_combo)
         layout.addWidget(switch_button)
         self.setLayout(layout)
-    
+
     def switch_framework(self):
         selected_framework = self.framework_combo.currentData()
-        
+
         # 確認ダイアログ
         reply = QMessageBox.question(
             self, "Confirm Switch",
             f"Switch to {selected_framework.value}?\nThis will restart the application.",
             QMessageBox.Yes | QMessageBox.No
         )
-        
+
         if reply == QMessageBox.Yes:
             success = self.framework_manager.switch_framework(selected_framework)
             if success:

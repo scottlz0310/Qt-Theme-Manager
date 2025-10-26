@@ -20,7 +20,7 @@ Qt-Theme-Managerは純粋なライブラリとして設計されており、以�
 ## Table of Contents
 
 1. [ThemeController](#themecontroller)
-2. [ThemeLoader](#themeloader) 
+2. [ThemeLoader](#themeloader)
 3. [StylesheetGenerator](#stylesheetgenerator)
 4. [Utility Functions](#utility-functions)
 5. [Configuration File Specification](#configuration-file-specification)
@@ -322,7 +322,7 @@ apply_theme_to_application("blue")
 ```json
 {
   "current_theme": "dark",
-  "last_selected_theme": "dark", 
+  "last_selected_theme": "dark",
   "theme_switching_enabled": true,
   "remember_theme_choice": true,
   "version": "0.0.1",
@@ -342,7 +342,7 @@ apply_theme_to_application("blue")
   "display_name": "Dark Mode",
   "description": "Dark background low-strain theme",
   "primaryColor": "#222831",
-  "accentColor": "#00adb5", 
+  "accentColor": "#00adb5",
   "backgroundColor": "#1a1a1a",
   "textColor": "#eeeeee",
   "button": {
@@ -439,7 +439,7 @@ import json
 def safe_theme_setup():
     try:
         controller = ThemeController()
-        
+
         # Check theme existence
         available_themes = controller.get_available_themes()
         if "dark" in available_themes:
@@ -450,7 +450,7 @@ def safe_theme_setup():
                 print("Failed to set theme")
         else:
             print("Specified theme is not available")
-            
+
     except FileNotFoundError:
         print("Configuration file not found")
     except json.JSONDecodeError:
@@ -477,11 +477,11 @@ safe_theme_setup()
 class MyApp:
     def __init__(self):
         self.theme_controller = ThemeController()  # Create only once
-        
+
     def setup_ui(self):
         # Apply only to parent widget
         self.theme_controller.apply_theme_to_widget(self.main_window)
-        
+
     def batch_theme_changes(self):
         # Batch changes (save only at the end)
         self.theme_controller.set_theme("dark", save_settings=False)

@@ -5,7 +5,7 @@ Pytest configuration and shared fixtures for qt_theme_manager tests.
 import sys
 from collections.abc import Generator
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -24,7 +24,7 @@ def qt_theme_manager_path(project_root: Path) -> Path:
 
 
 @pytest.fixture
-def mock_qt_modules() -> Dict[str, Any]:
+def mock_qt_modules() -> dict[str, Any]:
     """Create mock Qt modules for testing without Qt dependencies."""
     mock_qobject = MagicMock()
     mock_qobject.__name__ = "QObject"
@@ -49,7 +49,7 @@ def mock_qt_modules() -> Dict[str, Any]:
 
 @pytest.fixture
 def mock_pyside6(
-    mock_qt_modules: Dict[str, Any],
+    mock_qt_modules: dict[str, Any],
 ) -> Generator[None, None, None]:
     """Mock PySide6 modules for testing."""
     with patch.dict(
@@ -70,7 +70,7 @@ def mock_pyside6(
 
 
 @pytest.fixture
-def mock_pyqt6(mock_qt_modules: Dict[str, Any]) -> Generator[None, None, None]:
+def mock_pyqt6(mock_qt_modules: dict[str, Any]) -> Generator[None, None, None]:
     """Mock PyQt6 modules for testing."""
     with patch.dict(
         "sys.modules",
@@ -91,7 +91,7 @@ def mock_pyqt6(mock_qt_modules: Dict[str, Any]) -> Generator[None, None, None]:
 
 
 @pytest.fixture
-def mock_pyqt5(mock_qt_modules: Dict[str, Any]) -> Generator[None, None, None]:
+def mock_pyqt5(mock_qt_modules: dict[str, Any]) -> Generator[None, None, None]:
     """Mock PyQt5 modules for testing."""
     with patch.dict(
         "sys.modules",
@@ -158,7 +158,7 @@ def temp_config_dir(tmp_path: Path) -> Path:
 
 
 @pytest.fixture
-def sample_theme_config() -> Dict[str, Any]:
+def sample_theme_config() -> dict[str, Any]:
     """Sample theme configuration for testing."""
     return {
         "name": "test_theme",

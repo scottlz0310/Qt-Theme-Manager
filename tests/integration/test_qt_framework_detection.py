@@ -3,7 +3,7 @@ Integration tests for Qt framework detection across different platforms and fram
 Tests the complete Qt detection workflow with real and mocked frameworks.
 """
 
-from typing import Any, Dict
+from typing import Any
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -21,7 +21,7 @@ from qt_theme_manager.qt.detection import (
 class TestQtFrameworkDetectionIntegration:
     """Integration tests for Qt framework detection system."""
 
-    def test_detection_priority_order(self, mock_qt_modules: Dict[str, Any]):
+    def test_detection_priority_order(self, mock_qt_modules: dict[str, Any]):
         """Test that Qt frameworks are detected in correct priority order."""
         clear_qt_cache()
 
@@ -67,7 +67,7 @@ class TestQtFrameworkDetectionIntegration:
             assert "version" in modules
             assert modules["version"] == "6.0.0"
 
-    def test_fallback_to_pyqt6(self, mock_qt_modules: Dict[str, Any]):
+    def test_fallback_to_pyqt6(self, mock_qt_modules: dict[str, Any]):
         """Test fallback to PyQt6 when PySide6 is not available."""
         clear_qt_cache()
 
@@ -99,7 +99,7 @@ class TestQtFrameworkDetectionIntegration:
                 assert framework == "PyQt6"
                 assert modules["version"] == "6.2.0"
 
-    def test_fallback_to_pyqt5(self, mock_qt_modules: Dict[str, Any]):
+    def test_fallback_to_pyqt5(self, mock_qt_modules: dict[str, Any]):
         """Test fallback to PyQt5 when PySide6 and PyQt6 are not available."""
         clear_qt_cache()
 
@@ -147,7 +147,7 @@ class TestQtFrameworkDetectionIntegration:
     @pytest.mark.skip(
         reason="Qt version validation test requires complex mocking in test environment"
     )
-    def test_version_validation_too_old(self, mock_qt_modules: Dict[str, Any]):
+    def test_version_validation_too_old(self, mock_qt_modules: dict[str, Any]):
         """Test version validation with too old Qt version."""
         # This test is skipped because Qt is available in test environment
         # and complex mocking is required to simulate version validation failure
@@ -242,7 +242,7 @@ class TestQtFrameworkDetectionIntegration:
         assert info is not None
         assert info["framework"] == framework
 
-    def test_version_parsing_edge_cases(self, mock_qt_modules: Dict[str, Any]):
+    def test_version_parsing_edge_cases(self, mock_qt_modules: dict[str, Any]):
         """Test version parsing with various version formats."""
         clear_qt_cache()
 
@@ -325,7 +325,7 @@ class TestCrossPlatformCompatibility:
 class TestQtFrameworkSpecificBehavior:
     """Test framework-specific behavior and compatibility."""
 
-    def test_pyside6_specific_features(self, mock_qt_modules: Dict[str, Any]):
+    def test_pyside6_specific_features(self, mock_qt_modules: dict[str, Any]):
         """Test PySide6-specific detection features."""
         clear_qt_cache()
 
@@ -347,7 +347,7 @@ class TestQtFrameworkSpecificBehavior:
             assert framework == "PySide6"
             assert "pyqtSignal" in modules  # Mapped from Signal
 
-    def test_pyqt6_specific_features(self, mock_qt_modules: Dict[str, Any]):
+    def test_pyqt6_specific_features(self, mock_qt_modules: dict[str, Any]):
         """Test PyQt6-specific detection features."""
         clear_qt_cache()
 
@@ -378,7 +378,7 @@ class TestQtFrameworkSpecificBehavior:
                 assert framework == "PyQt6"
                 assert modules["version"] == "6.2.0"
 
-    def test_pyqt5_specific_features(self, mock_qt_modules: Dict[str, Any]):
+    def test_pyqt5_specific_features(self, mock_qt_modules: dict[str, Any]):
         """Test PyQt5-specific detection features."""
         clear_qt_cache()
 

@@ -107,9 +107,9 @@ class TestPublicAPICompatibility:
 
         if hasattr(qt_theme_manager, "__all__"):
             for export_name in qt_theme_manager.__all__:
-                assert hasattr(qt_theme_manager, export_name), (
-                    f"Missing export: {export_name}"
-                )
+                assert hasattr(
+                    qt_theme_manager, export_name
+                ), f"Missing export: {export_name}"
 
     def test_submodule_imports(self):
         """Test that submodules can be imported."""
@@ -248,7 +248,7 @@ class TestAPISignatures:
 
             from qt_theme_manager import apply_theme_to_widget
 
-            sig = inspect.signature(apply_theme_to_widget)
+            inspect.signature(apply_theme_to_widget)
 
             # Function should exist and be callable
             assert callable(apply_theme_to_widget)
@@ -344,9 +344,9 @@ class TestVersionCompatibility:
         import re
 
         version_pattern = r"^\d+\.\d+\.\d+.*$"
-        assert re.match(version_pattern, version), (
-            f"Version {version} doesn't match expected pattern"
-        )
+        assert re.match(
+            version_pattern, version
+        ), f"Version {version} doesn't match expected pattern"
 
     def test_metadata_attributes(self):
         """Test that metadata attributes are present and correct type."""
@@ -359,13 +359,13 @@ class TestVersionCompatibility:
         }
 
         for attr_name, expected_type in metadata_attrs.items():
-            assert hasattr(qt_theme_manager, attr_name), (
-                f"Missing attribute: {attr_name}"
-            )
+            assert hasattr(
+                qt_theme_manager, attr_name
+            ), f"Missing attribute: {attr_name}"
             attr_value = getattr(qt_theme_manager, attr_name)
-            assert isinstance(attr_value, expected_type), (
-                f"{attr_name} should be {expected_type}, got {type(attr_value)}"
-            )
+            assert isinstance(
+                attr_value, expected_type
+            ), f"{attr_name} should be {expected_type}, got {type(attr_value)}"
 
 
 class TestDeprecationHandling:
@@ -383,9 +383,9 @@ class TestDeprecationHandling:
         ]
 
         for deprecated_name in deprecated_names:
-            assert not hasattr(qt_theme_manager, deprecated_name), (
-                f"Deprecated name {deprecated_name} found in public API"
-            )
+            assert not hasattr(
+                qt_theme_manager, deprecated_name
+            ), f"Deprecated name {deprecated_name} found in public API"
 
     def test_clean_namespace(self):
         """Test that package namespace is clean."""

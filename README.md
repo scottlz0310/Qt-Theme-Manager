@@ -139,7 +139,7 @@ pip install qt-theme-manager
 
 # Install with your preferred Qt framework
 pip install qt-theme-manager[pyqt6]    # For PyQt6 (recommended)
-pip install qt-theme-manager[pyqt5]    # For PyQt5  
+pip install qt-theme-manager[pyqt5]    # For PyQt5
 pip install qt-theme-manager[pyside6]  # For PySide6
 
 # Install with all Qt frameworks
@@ -274,7 +274,7 @@ The library includes 16 built-in themes:
 
 ### Core Themes
 - **light** - Light mode with bright background
-- **dark** - Dark mode with low-strain colors  
+- **dark** - Dark mode with low-strain colors
 - **high_contrast** - High contrast for accessibility
 
 ### Color Themes
@@ -379,7 +379,7 @@ qt_theme_manager/               # ライブラリコアパッケージ
 ### 移行されたGUIツール
 以下のGUIツールは**qt-theme-studio**リポジトリに移行されました：
 - テーマエディタ
-- プレビューアプリケーション  
+- プレビューアプリケーション
 - Zebraパターンエディタ
 - 各種起動スクリプト
 

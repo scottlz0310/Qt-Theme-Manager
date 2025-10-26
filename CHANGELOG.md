@@ -67,7 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 🎯 **Library Philosophy**
 This release represents a fundamental shift towards:
 - **Separation of Concerns**: Clean separation between library and GUI tools
-- **Maintainability**: Easier maintenance through focused responsibilities  
+- **Maintainability**: Easier maintenance through focused responsibilities
 - **Extensibility**: Better foundation for future enhancements
 - **Developer Experience**: Improved IDE support with complete type information
 
@@ -120,7 +120,7 @@ For users upgrading from v0.2.x:
 ### 🚀 Added
 - **エントリーポイント追加**
   - `theme-editor` コマンド: GUIテーマエディターの直接起動
-  - `theme-preview` コマンド: テーマプレビューウィンドウの直接起動  
+  - `theme-preview` コマンド: テーマプレビューウィンドウの直接起動
   - `theme-manager` コマンド: CLIツールの統一インターフェース
 
 ### 🎨 Added
@@ -136,7 +136,7 @@ For users upgrading from v0.2.x:
   - モダンなPython環境に最適化
   - CI/CDテストマトリックスから Python 3.8 削除
 
-### 🔄 Added  
+### 🔄 Added
 - **テーマフォーマット変換機能**
   - カスタムテーマ→Qt-Theme-Manager形式変換ツール
   - 16テーマの完全変換対応（アクセシビリティ改善版含む）
@@ -182,11 +182,11 @@ For users upgrading from v0.2.x:
   - すべてのQtフレームワークでの動作を確認
 
 - **起動方法の統一**
-  - `python -m theme_manager.qt.theme_editor` 
+  - `python -m theme_manager.qt.theme_editor`
   - `python launch_theme_editor.py`
   - 両方の方法で確実にGUIが起動するように修正
 
-### 📦 Changed  
+### 📦 Changed
 - デフォルトのQtフレームワークをPyQt6に変更
 - エラーハンドリングとログの改善
 - KeyboardInterrupt（Ctrl+C）サポートを追加
@@ -201,7 +201,7 @@ For users upgrading from v0.2.x:
   - リアルタイムプレビュー機能
   - コンポーネント別詳細設定
   - アクセシビリティ機能（コントラスト比チェック）
-  
+
 - 🖥️ **GUIツールのpipエントリーポイント**
   - `theme-editor` コマンドでテーマエディター起動
   - `theme-preview` コマンドでプレビュー起動

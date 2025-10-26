@@ -4,13 +4,12 @@ covering command behaviors and error handling to improve coverage.
 """
 
 from pathlib import Path
-from typing import Dict
 from unittest.mock import MagicMock, patch
 
 import pytest
 
 
-def _make_themes() -> Dict[str, Dict[str, str]]:
+def _make_themes() -> dict[str, dict[str, str]]:
     return {
         "light": {
             "display_name": "Light Theme",

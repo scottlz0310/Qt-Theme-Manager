@@ -1,5 +1,5 @@
 #!/bin/bash
-# 
+#
 # 自動リリーススクリプト
 # 使用方法: ./release.sh <version> [description]
 # 例: ./release.sh 0.2.2 "Add new features and bug fixes"

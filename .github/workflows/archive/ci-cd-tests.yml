@@ -19,7 +19,7 @@ jobs:
             python-version: '3.9'
             qt-framework: pyqt5
           - os: ubuntu-latest
-            python-version: '3.9' 
+            python-version: '3.9'
             qt-framework: pyqt6
           - os: ubuntu-latest
             python-version: '3.10'
@@ -30,7 +30,7 @@ jobs:
           - os: ubuntu-latest
             python-version: '3.12'
             qt-framework: pyqt6
-          
+
           # Windows - 重要な組み合わせのみ
           - os: windows-latest
             python-version: '3.10'
@@ -38,7 +38,7 @@ jobs:
           - os: windows-latest
             python-version: '3.11'
             qt-framework: pyside6
-            
+
           # macOS - 重要な組み合わせのみ
           - os: macos-latest
             python-version: '3.10'
@@ -49,12 +49,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-    
+
     - name: Set up display (Linux)
       if: runner.os == 'Linux'
       run: |
@@ -63,12 +63,12 @@ jobs:
         export DISPLAY=:99
         Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
         sleep 3  # Wait for Xvfb to start
-    
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install pytest
-        
+
         # Install Qt framework
         if [ "${{ matrix.qt-framework }}" == "pyqt5" ]; then
           pip install PyQt5>=5.15.0
@@ -77,11 +77,11 @@ jobs:
         elif [ "${{ matrix.qt-framework }}" == "pyside6" ]; then
           pip install PySide6>=6.0.0
         fi
-        
+
         # Install package
         pip install -e .
       shell: bash
-    
+
     - name: Run comprehensive tests
       env:
         DISPLAY: :99
@@ -93,7 +93,7 @@ jobs:
         mkdir -p /tmp/runtime-runner
         bash test_release.sh
       shell: bash
-    
+
     - name: Test library functionality
       env:
         DISPLAY: :99
@@ -110,7 +110,7 @@ jobs:
         print('Core components imported successfully')
         "
       shell: bash
-    
+
     - name: Test CLI commands
       env:
         PYTHONIOENCODING: utf-8
@@ -125,25 +125,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
-    
+
     - name: Install build dependencies
       run: |
         python -m pip install --upgrade pip
         pip install build twine
-    
+
     - name: Build package
       run: |
         python -m build
-    
+
     - name: Check build
       run: |
         twine check dist/*
-    
+
     - name: Test installation from built package
       run: |
         pip install dist/*.whl

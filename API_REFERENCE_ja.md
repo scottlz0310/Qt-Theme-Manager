@@ -12,8 +12,8 @@ from zebra_pattern_editor import ZebraPatternGenerator
 
 # 特定のコントラスト比でゼブラ色を生成
 zebra_color = ZebraPatternGenerator.generate_zebra_color(
-    base_color="#ffffff", 
-    contrast_target=1.2, 
+    base_color="#ffffff",
+    contrast_target=1.2,
     method="auto"  # "auto", "hsl", "hsv"
 )
 
@@ -61,7 +61,7 @@ if ExtendedThemeEditor:
 
 1. [ゼブラパターン生成](#ゼブラパターン生成)
 2. [ThemeController](#themecontroller)
-3. [ThemeLoader](#themeloader) 
+3. [ThemeLoader](#themeloader)
 4. [StylesheetGenerator](#stylesheetgenerator)
 5. [ユーティリティ関数](#ユーティリティ関数)
 6. [設定ファイル仕様](#設定ファイル仕様)
@@ -362,7 +362,7 @@ apply_theme_to_application("blue")
 ```json
 {
   "current_theme": "dark",
-  "last_selected_theme": "dark", 
+  "last_selected_theme": "dark",
   "theme_switching_enabled": true,
   "remember_theme_choice": true,
   "version": "0.0.1",
@@ -382,7 +382,7 @@ apply_theme_to_application("blue")
   "display_name": "ダークモード",
   "description": "暗い背景の低負荷テーマ",
   "primaryColor": "#222831",
-  "accentColor": "#00adb5", 
+  "accentColor": "#00adb5",
   "backgroundColor": "#1a1a1a",
   "textColor": "#eeeeee",
   "button": {
@@ -479,7 +479,7 @@ import json
 def safe_theme_setup():
     try:
         controller = ThemeController()
-        
+
         # テーマの存在確認
         available_themes = controller.get_available_themes()
         if "dark" in available_themes:
@@ -490,7 +490,7 @@ def safe_theme_setup():
                 print("テーマの設定に失敗しました")
         else:
             print("指定されたテーマが利用できません")
-            
+
     except FileNotFoundError:
         print("設定ファイルが見つかりません")
     except json.JSONDecodeError:
@@ -517,11 +517,11 @@ safe_theme_setup()
 class MyApp:
     def __init__(self):
         self.theme_controller = ThemeController()  # 1回だけ作成
-        
+
     def setup_ui(self):
         # 親ウィジェットにのみ適用
         self.theme_controller.apply_theme_to_widget(self.main_window)
-        
+
     def batch_theme_changes(self):
         # 一括変更（保存は最後のみ）
         self.theme_controller.set_theme("dark", save_settings=False)

@@ -400,19 +400,19 @@ class TestThemeLoaderUtilities:
             loader = ThemeLoader()
 
             # First call should load from file
-            settings1 = loader.load_settings()
+            loader.load_settings()
             assert mock_load.call_count == 1
 
             # Subsequent calls should use cached settings
-            current_theme = loader.get_current_theme()
-            themes = loader.get_available_themes()
-            theme_config = loader.get_theme_config("light")
+            loader.get_current_theme()
+            loader.get_available_themes()
+            loader.get_theme_config("light")
 
             # json.load should still only be called once
             assert mock_load.call_count == 1
 
             # But we can force reload
-            settings2 = loader.load_settings()
+            loader.load_settings()
             assert mock_load.call_count == 2
 
     @patch("builtins.open", new_callable=mock_open)

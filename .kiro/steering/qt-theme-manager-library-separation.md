@@ -42,7 +42,7 @@ qt-theme-manager/
 
 ```
 ❌ launch_theme_editor.py
-❌ launch_zebra_theme_editor.py  
+❌ launch_zebra_theme_editor.py
 ❌ launch_gui_preview.py
 ❌ theme_editor_zebra_extension.py
 ❌ zebra_pattern_editor.py
@@ -136,7 +136,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "pytest>=6.0",
-    "pytest-qt>=4.0", 
+    "pytest-qt>=4.0",
     "black",
     "isort",
     "flake8",

@@ -15,13 +15,13 @@ maintainers = [
     {name = "scottlz0310", email = "scott.lz0310@gmail.com"}
 ]
 keywords = [
-    "theme", 
-    "qt", 
-    "styling", 
-    "pyside", 
-    "pyqt", 
-    "library", 
-    "ui", 
+    "theme",
+    "qt",
+    "styling",
+    "pyside",
+    "pyqt",
+    "library",
+    "ui",
     "desktop",
     "theme-management",
     "stylesheet"
@@ -74,17 +74,22 @@ pyqt5 = ["PyQt5>=5.15.0"]
 # 全Qtフレームワーク（統合テスト用）
 all-qt = [
     "PySide6>=6.0.0",
-    "PyQt6>=6.2.0", 
+    "PyQt6>=6.2.0",
     "PyQt5>=5.15.0",
+]
+
+# pre-commit
+pre-commit = [
+    "pre-commit>=3.0",
 ]
 
 # 完全な開発環境
 full-dev = [
     {include-group = "dev"},
     {include-group = "security"},
+    {include-group = "pre-commit"},
     {include-group = "all-qt"},
     "tox>=4.0",
-    "pre-commit>=3.0",
 ]
 
 [project.urls]
@@ -118,6 +123,9 @@ ignore = [
     "B008",  # do not perform function calls in argument defaults
     "C901",  # too complex
     "S101",  # use of assert
+    "S102",  # use of exec (needed for dynamic imports in tests)
+    "S108",  # hardcoded temp file (test files)
+    "S110",  # try-except-pass (intentional in Qt initialization)
 ]
 
 [tool.ruff.format]

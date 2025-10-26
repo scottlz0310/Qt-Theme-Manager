@@ -46,6 +46,8 @@ class ThemeLoader:
         try:
             with open(self.config_path, encoding="utf-8") as f:
                 self._settings = json.load(f)
+                if self._settings is None:
+                    raise ValueError("Theme configuration file is empty")
                 return self._settings
         except json.JSONDecodeError as e:
             raise ValueError(f"Invalid JSON in theme configuration: {e}") from e

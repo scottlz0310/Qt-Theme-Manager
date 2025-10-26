@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
+
       - name: Comprehensive debug information
         run: |
           echo "=== COMPREHENSIVE TAG DEBUG INFORMATION ==="
@@ -32,31 +32,31 @@ jobs:
           echo "=== TAG PATTERN MATCHING TESTS ==="
           TAG_NAME="${{ github.ref_name }}"
           echo "Current tag: '$TAG_NAME'"
-          
+
           # Test different regex patterns
           if [[ "$TAG_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "✅ Matches '^v[0-9]+\.[0-9]+\.[0-9]+$' (no anchors)"
           else
             echo "❌ Does NOT match '^v[0-9]+\.[0-9]+\.[0-9]+$'"
           fi
-          
+
           if [[ "$TAG_NAME" =~ v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
             echo "✅ Matches 'v[0-9]+\.[0-9]+\.[0-9]+' (basic pattern)"
           else
             echo "❌ Does NOT match 'v[0-9]+\.[0-9]+\.[0-9]+'"
           fi
-          
+
           if [[ "$TAG_NAME" == v*.*.* ]]; then
             echo "✅ Matches 'v*.*.*' (glob pattern)"
           else
             echo "❌ Does NOT match 'v*.*.*'"
           fi
-          
+
           echo ""
           echo "=== GIT INFORMATION ==="
           git log --oneline -1
           git tag --list --sort=-version:refname | head -10
-          
+
           echo ""
           echo "=== EVENT PAYLOAD ==="
           if [ -f "${{ github.event_path }}" ]; then
@@ -64,11 +64,11 @@ jobs:
           else
             echo "No event payload file found"
           fi
-          
+
           echo ""
           echo "=== ENVIRONMENT VARIABLES ==="
           env | grep -E "(GITHUB_|RUNNER_)" | sort
-          
+
           echo ""
           echo "=== END COMPREHENSIVE DEBUG ==="
 
@@ -81,7 +81,7 @@ jobs:
           echo "=== PYPI WORKFLOW TRIGGER TEST ==="
           TAG_NAME="${{ github.ref_name }}"
           echo "Tag: $TAG_NAME"
-          
+
           # Exact same pattern as PyPI workflow
           if [[ "$TAG_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             echo "✅ This tag SHOULD trigger the PyPI workflow"
@@ -90,7 +90,7 @@ jobs:
             echo "❌ This tag should NOT trigger the PyPI workflow"
             echo "Pattern failed: '^v[0-9]+\.[0-9]+\.[0-9]+$'"
           fi
-          
+
           echo ""
           echo "=== WORKFLOW FILE CHECK ==="
           if [ -f ".github/workflows/publish-to-pypi.yml" ]; then
