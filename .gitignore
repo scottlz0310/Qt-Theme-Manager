@@ -215,11 +215,9 @@ Thumbs.db
 *.whl
 .env.*
 .vscode.bak.*
-uv.lock
 *.sqlite3
 *.db
 node_modules/
-requirements.txt
 
 # Auto-generated entries
 *.pyc
