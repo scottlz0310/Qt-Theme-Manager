@@ -948,43 +948,43 @@ security = [
 [package.metadata.requires-dev]
 all-qt = [
     { name = "pyqt5", specifier = ">=5.15.11" },
-    { name = "pyqt6", specifier = ">=6.2.3" },
-    { name = "pyside6", specifier = ">=6.0.4" },
+    { name = "pyqt6", specifier = ">=6.10.1" },
+    { name = "pyside6", specifier = ">=6.10.1" },
 ]
 dev = [
-    { name = "mypy", specifier = ">=1.0.1" },
-    { name = "pytest", specifier = ">=7.4.4" },
+    { name = "mypy", specifier = ">=1.19.0" },
+    { name = "pytest", specifier = ">=9.0.2" },
     { name = "pytest-cov", specifier = ">=7.0.0" },
     { name = "pytest-mock", specifier = ">=3.15.1" },
-    { name = "pytest-qt", specifier = ">=4.0.2" },
-    { name = "ruff", specifier = ">=0.1.15" },
+    { name = "pytest-qt", specifier = ">=4.5.0" },
+    { name = "ruff", specifier = ">=0.14.8" },
     { name = "types-setuptools" },
 ]
 full-dev = [
-    { name = "bandit", extras = ["toml"], specifier = ">=1.7.10" },
-    { name = "mypy", specifier = ">=1.0.1" },
-    { name = "pip-licenses", specifier = ">=4.0.3" },
-    { name = "pre-commit", specifier = ">=3.8.0" },
+    { name = "bandit", extras = ["toml"], specifier = ">=1.9.2" },
+    { name = "mypy", specifier = ">=1.19.0" },
+    { name = "pip-licenses", specifier = ">=4.5.1" },
+    { name = "pre-commit", specifier = ">=4.5.0" },
     { name = "pyqt5", specifier = ">=5.15.11" },
-    { name = "pyqt6", specifier = ">=6.2.3" },
-    { name = "pyside6", specifier = ">=6.0.4" },
-    { name = "pytest", specifier = ">=7.4.4" },
+    { name = "pyqt6", specifier = ">=6.10.1" },
+    { name = "pyside6", specifier = ">=6.10.1" },
+    { name = "pytest", specifier = ">=9.0.2" },
     { name = "pytest-cov", specifier = ">=7.0.0" },
     { name = "pytest-mock", specifier = ">=3.15.1" },
-    { name = "pytest-qt", specifier = ">=4.0.2" },
-    { name = "ruff", specifier = ">=0.1.15" },
-    { name = "safety", specifier = ">=3.0.1" },
-    { name = "tox", specifier = ">=4.0.19" },
+    { name = "pytest-qt", specifier = ">=4.5.0" },
+    { name = "ruff", specifier = ">=0.14.8" },
+    { name = "safety", specifier = ">=3.7.0" },
+    { name = "tox", specifier = ">=4.32.0" },
     { name = "types-setuptools" },
 ]
-pre-commit = [{ name = "pre-commit", specifier = ">=3.8.0" }]
+pre-commit = [{ name = "pre-commit", specifier = ">=4.5.0" }]
 pyqt5 = [{ name = "pyqt5", specifier = ">=5.15.11" }]
-pyqt6 = [{ name = "pyqt6", specifier = ">=6.2.3" }]
-pyside6 = [{ name = "pyside6", specifier = ">=6.0.4" }]
+pyqt6 = [{ name = "pyqt6", specifier = ">=6.10.1" }]
+pyside6 = [{ name = "pyside6", specifier = ">=6.10.1" }]
 security = [
-    { name = "bandit", extras = ["toml"], specifier = ">=1.7.10" },
-    { name = "pip-licenses", specifier = ">=4.0.3" },
-    { name = "safety", specifier = ">=3.0.1" },
+    { name = "bandit", extras = ["toml"], specifier = ">=1.9.2" },
+    { name = "pip-licenses", specifier = ">=4.5.1" },
+    { name = "safety", specifier = ">=3.7.0" },
 ]
 
 [[package]]
