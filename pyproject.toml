@@ -41,7 +41,7 @@ classifiers = [
     "Topic :: Desktop Environment",
     "Environment :: X11 Applications :: Qt",
 ]
-requires-python = ">=3.10.19"
+requires-python = ">=3.14.1"
 dependencies = [
     # Qt自動検出システム - 実行時に PySide6 → PyQt6 → PyQt5 の順で自動選択
     # 依存関係を最小化し、ユーザーが任意のQtフレームワークを選択可能
@@ -50,7 +50,7 @@ dependencies = [
 [dependency-groups]
 # 開発依存関係
 dev = [
-    "pytest>=7.0.1",
+    "pytest>=7.4.4",
     "pytest-qt>=4.0.2",
     "pytest-cov>=7.0.0",
     "pytest-mock>=3.15.1",
@@ -80,7 +80,7 @@ all-qt = [
 
 # pre-commit
 pre-commit = [
-    "pre-commit>=3.0.4",
+    "pre-commit>=3.8.0",
 ]
 
 # 完全な開発環境
