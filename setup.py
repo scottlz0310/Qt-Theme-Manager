@@ -57,7 +57,7 @@ setup(
             "pytest>=9.0.2",
             "pytest-qt>=4.5.0",
             "pytest-cov>=7.0.0",
-            "black>=25.11.0",
+            "black>=25.12.0",
             "isort>=7.0.0",
             "flake8>=7.3.0",
             "mypy>=1.19.0",
