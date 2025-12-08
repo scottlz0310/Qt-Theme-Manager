@@ -963,7 +963,7 @@ dev = [
 full-dev = [
     { name = "bandit", extras = ["toml"], specifier = ">=1.9.2" },
     { name = "mypy", specifier = ">=1.19.0" },
-    { name = "pip-licenses", specifier = ">=4.5.1" },
+    { name = "pip-licenses", specifier = ">=5.5.0" },
     { name = "pre-commit", specifier = ">=4.5.0" },
     { name = "pyqt5", specifier = ">=5.15.11" },
     { name = "pyqt6", specifier = ">=6.10.1" },
@@ -983,7 +983,7 @@ pyqt6 = [{ name = "pyqt6", specifier = ">=6.10.1" }]
 pyside6 = [{ name = "pyside6", specifier = ">=6.10.1" }]
 security = [
     { name = "bandit", extras = ["toml"], specifier = ">=1.9.2" },
-    { name = "pip-licenses", specifier = ">=4.5.1" },
+    { name = "pip-licenses", specifier = ">=5.5.0" },
     { name = "safety", specifier = ">=3.7.0" },
 ]
 
