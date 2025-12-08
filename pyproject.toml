@@ -50,37 +50,37 @@ dependencies = [
 [dependency-groups]
 # 開発依存関係
 dev = [
-    "pytest>=7.4.4",
-    "pytest-qt>=4.0.2",
+    "pytest>=9.0.2",
+    "pytest-qt>=4.5.0",
     "pytest-cov>=7.0.0",
     "pytest-mock>=3.15.1",
-    "ruff>=0.1.15",
-    "mypy>=1.0.1",
+    "ruff>=0.14.8",
+    "mypy>=1.19.0",
     "types-setuptools",
 ]
 
 # セキュリティツール
 security = [
-    "bandit[toml]>=1.7.10",
-    "safety>=3.0.1",
-    "pip-licenses>=4.0.3",
+    "bandit[toml]>=1.9.2",
+    "safety>=3.7.0",
+    "pip-licenses>=4.5.1",
 ]
 
 # Qt フレームワーク選択肢（推奨順）
-pyside6 = ["PySide6>=6.0.4"]
-pyqt6 = ["PyQt6>=6.2.3"]
+pyside6 = ["PySide6>=6.10.1"]
+pyqt6 = ["PyQt6>=6.10.1"]
 pyqt5 = ["PyQt5>=5.15.11"]
 
 # 全Qtフレームワーク（統合テスト用）
 all-qt = [
-    "PySide6>=6.0.4",
-    "PyQt6>=6.2.3",
+    "PySide6>=6.10.1",
+    "PyQt6>=6.10.1",
     "PyQt5>=5.15.11",
 ]
 
 # pre-commit
 pre-commit = [
-    "pre-commit>=3.8.0",
+    "pre-commit>=4.5.0",
 ]
 
 # 完全な開発環境
@@ -89,7 +89,7 @@ full-dev = [
     {include-group = "security"},
     {include-group = "pre-commit"},
     {include-group = "all-qt"},
-    "tox>=4.0.19",
+    "tox>=4.32.0",
 ]
 
 [project.urls]
