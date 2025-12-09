@@ -41,7 +41,7 @@ classifiers = [
     "Topic :: Desktop Environment",
     "Environment :: X11 Applications :: Qt",
 ]
-requires-python = ">=3.14.1"
+requires-python = ">=3.14.2"
 dependencies = [
     # Qt自動検出システム - 実行時に PySide6 → PyQt6 → PyQt5 の順で自動選択
     # 依存関係を最小化し、ユーザーが任意のQtフレームワークを選択可能
