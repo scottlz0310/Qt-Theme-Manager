@@ -308,3 +308,6 @@ pids
 public
 yarn-debug.log*
 yarn-error.log*
+
+# Auto-generated entries from templates
+.pyrightcache/
