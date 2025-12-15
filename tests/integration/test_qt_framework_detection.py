@@ -3,6 +3,7 @@ Integration tests for Qt framework detection across different platforms and fram
 Tests the complete Qt detection workflow with real and mocked frameworks.
 """
 
+import importlib
 from typing import Any
 from unittest.mock import MagicMock, patch
 
@@ -71,14 +72,14 @@ class TestQtFrameworkDetectionIntegration:
         """Test fallback to PyQt6 when PySide6 is not available."""
         clear_qt_cache()
 
-        def mock_import(name, *args, **kwargs):
+        original_import_module = importlib.import_module
+
+        def mock_import_module(name: str, *args: Any, **kwargs: Any) -> Any:
             if name.startswith("PySide6"):
                 raise ImportError(f"No module named '{name}'")
-            return original_import(name, *args, **kwargs)
+            return original_import_module(name, *args, **kwargs)
 
-        original_import = __builtins__["__import__"]
-
-        with patch("builtins.__import__", side_effect=mock_import):
+        with patch("importlib.import_module", side_effect=mock_import_module):
             with patch.dict(
                 "sys.modules",
                 {
@@ -103,14 +104,14 @@ class TestQtFrameworkDetectionIntegration:
         """Test fallback to PyQt5 when PySide6 and PyQt6 are not available."""
         clear_qt_cache()
 
-        def mock_import(name, *args, **kwargs):
+        original_import_module = importlib.import_module
+
+        def mock_import_module(name: str, *args: Any, **kwargs: Any) -> Any:
             if name.startswith(("PySide6", "PyQt6")):
                 raise ImportError(f"No module named '{name}'")
-            return original_import(name, *args, **kwargs)
+            return original_import_module(name, *args, **kwargs)
 
-        original_import = __builtins__["__import__"]
-
-        with patch("builtins.__import__", side_effect=mock_import):
+        with patch("importlib.import_module", side_effect=mock_import_module):
             with patch.dict(
                 "sys.modules",
                 {
@@ -351,14 +352,14 @@ class TestQtFrameworkSpecificBehavior:
         """Test PyQt6-specific detection features."""
         clear_qt_cache()
 
-        def mock_import(name, *args, **kwargs):
+        original_import_module = importlib.import_module
+
+        def mock_import_module(name: str, *args: Any, **kwargs: Any) -> Any:
             if name.startswith("PySide6"):
                 raise ImportError(f"No module named '{name}'")
-            return original_import(name, *args, **kwargs)
+            return original_import_module(name, *args, **kwargs)
 
-        original_import = __builtins__["__import__"]
-
-        with patch("builtins.__import__", side_effect=mock_import):
+        with patch("importlib.import_module", side_effect=mock_import_module):
             with patch.dict(
                 "sys.modules",
                 {
@@ -382,14 +383,14 @@ class TestQtFrameworkSpecificBehavior:
         """Test PyQt5-specific detection features."""
         clear_qt_cache()
 
-        def mock_import(name, *args, **kwargs):
+        original_import_module = importlib.import_module
+
+        def mock_import_module(name: str, *args: Any, **kwargs: Any) -> Any:
             if name.startswith(("PySide6", "PyQt6")):
                 raise ImportError(f"No module named '{name}'")
-            return original_import(name, *args, **kwargs)
+            return original_import_module(name, *args, **kwargs)
 
-        original_import = __builtins__["__import__"]
-
-        with patch("builtins.__import__", side_effect=mock_import):
+        with patch("importlib.import_module", side_effect=mock_import_module):
             with patch.dict(
                 "sys.modules",
                 {

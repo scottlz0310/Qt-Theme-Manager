@@ -75,7 +75,8 @@ class QtDetector:
                 logger.info(f"Detected Qt framework: {framework}")
                 return framework, modules
             except (ImportError, QtVersionError) as e:
-                logger.debug(f"{detector.__name__} failed: {e}")
+                detector_name = getattr(detector, "__name__", type(detector).__name__)
+                logger.debug(f"{detector_name} failed: {e}")
 
         self._detection_attempted = True
         logger.error("No compatible Qt framework found")

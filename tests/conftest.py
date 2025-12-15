@@ -2,6 +2,7 @@
 Pytest configuration and shared fixtures for qt_theme_manager tests.
 """
 
+import importlib
 import sys
 from collections.abc import Generator
 from pathlib import Path
@@ -133,15 +134,15 @@ def no_qt_available() -> Generator[None, None, None]:
             original_modules[module] = sys.modules[module]
             del sys.modules[module]
 
-    # Mock import failures
-    def mock_import(name, *args, **kwargs):
-        if any(name.startswith(qt_mod) for qt_mod in ["PySide6", "PyQt6", "PyQt5"]):
+    def mock_import_module(name: str, *args: Any, **kwargs: Any) -> Any:
+        if name.startswith(("PySide6", "PyQt6", "PyQt5")):
             raise ImportError(f"No module named '{name}'")
-        return original_import(name, *args, **kwargs)
+        return original_import_module(name, *args, **kwargs)
 
-    original_import = __builtins__["__import__"]
+    original_import_module = importlib.import_module
 
-    with patch("builtins.__import__", side_effect=mock_import):
+    # Patch the import mechanism used by qt_theme_manager.qt.detection (importlib.import_module).
+    with patch("importlib.import_module", side_effect=mock_import_module):
         yield
 
     # Restore original modules
