@@ -55,7 +55,7 @@ dev = [
     "pytest-cov>=7.0.0",
     "pytest-mock>=3.15.1",
     "ruff>=0.14.9",
-    "mypy>=1.19.0",
+    "basedpyright>=1.12.0",
     "types-setuptools",
 ]
 
@@ -105,7 +105,7 @@ qt-theme-manager = "qt_theme_manager.cli.main:main"
 
 [tool.ruff]
 line-length = 88
-target-version = "py39"
+target-version = "py310"
 
 [tool.ruff.lint]
 select = [
@@ -134,20 +134,26 @@ indent-style = "space"
 skip-magic-trailing-comma = false
 line-ending = "auto"
 
-[tool.mypy]
-python_version = "3.9"
-warn_return_any = true
-warn_unused_configs = true
-disallow_untyped_defs = true
-ignore_missing_imports = true
-strict = true
+[tool.basedpyright]
+typeCheckingMode = "strict"
+pythonVersion = "3.10"
+pythonPlatform = "All"
+venvPath = "."
+venv = ".venv"
+include = ["qt_theme_manager"]
 exclude = [
-    "migrate/",
-    "temp/",
-    "sandbox/",
-    "build/",
-    "dist/",
+    "migrate",
+    "temp",
+    "sandbox",
+    "build",
+    "dist",
 ]
+reportMissingImports = "none"
+reportMissingTypeStubs = "warning"
+
+[[tool.basedpyright.executionEnvironments]]
+root = "qt_theme_manager"
+pythonVersion = "3.10"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

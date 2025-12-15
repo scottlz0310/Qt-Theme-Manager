@@ -12,7 +12,7 @@ import logging
 import logging.config
 import sys
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Any
 
 
 class LoggingConfig:
@@ -70,10 +70,10 @@ class LoggingConfig:
     @classmethod
     def setup_logging(
         cls,
-        config_path: Optional[Union[str, Path]] = None,
-        log_level: Optional[str] = None,
+        config_path: str | Path | None = None,
+        log_level: str | None = None,
         enable_file_logging: bool = True,
-        log_file_path: Optional[Union[str, Path]] = None,
+        log_file_path: str | Path | None = None,
     ) -> None:
         """
         Setup logging configuration.
@@ -120,7 +120,7 @@ class LoggingConfig:
             logger.info("Using fallback basic logging configuration")
 
     @classmethod
-    def _load_config(cls, config_path: Optional[Union[str, Path]]) -> dict[str, Any]:
+    def _load_config(cls, config_path: str | Path | None) -> dict[str, Any]:
         """
         Load logging configuration from file or use default.
 
@@ -208,7 +208,7 @@ class LoggingConfig:
 
     @classmethod
     def _set_log_file_path(
-        cls, config: dict[str, Any], log_file_path: Union[str, Path]
+        cls, config: dict[str, Any], log_file_path: str | Path
     ) -> None:
         """
         Set log file path in configuration.
@@ -277,7 +277,7 @@ class LoggingConfig:
         return logging.getLogger(name)
 
     @classmethod
-    def create_sample_config(cls, output_path: Union[str, Path]) -> None:
+    def create_sample_config(cls, output_path: str | Path) -> None:
         """
         Create sample logging configuration file.
 
@@ -301,10 +301,10 @@ class LoggingConfig:
 
 # Convenience function for quick setup
 def setup_logging(
-    config_path: Optional[Union[str, Path]] = None,
-    log_level: Optional[str] = None,
+    config_path: str | Path | None = None,
+    log_level: str | None = None,
     enable_file_logging: bool = True,
-    log_file_path: Optional[Union[str, Path]] = None,
+    log_file_path: str | Path | None = None,
 ) -> None:
     """
     Convenience function to setup logging.

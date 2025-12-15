@@ -5,13 +5,13 @@ Handles loading and parsing of theme_settings.json file.
 
 import json
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Any, cast
 
 
 class ThemeLoader:
     """Theme configuration loader for managing theme settings."""
 
-    def __init__(self, config_path: Optional[Union[str, Path]] = None):
+    def __init__(self, config_path: str | Path | None = None):
         """
         Initialize ThemeLoader with configuration file path.
 
@@ -25,7 +25,7 @@ class ThemeLoader:
             self.config_path = current_dir / "config" / "theme_settings.json"
         else:
             self.config_path = Path(config_path)
-        self._settings: Optional[dict[str, Any]] = None
+        self._settings: dict[str, Any] | None = None
 
     def load_settings(self) -> dict[str, Any]:
         """
@@ -62,10 +62,12 @@ class ThemeLoader:
         if self._settings is None:
             self.load_settings()
 
-        if self._settings is not None:
-            themes = self._settings.get("available_themes", {})
-            if isinstance(themes, dict):
-                return themes
+        if self._settings is None:
+            return {}
+
+        themes = self._settings.get("available_themes", {})
+        if isinstance(themes, dict):
+            return cast(dict[str, dict[str, Any]], themes)
         return {}
 
     def get_current_theme(self) -> str:
@@ -84,7 +86,7 @@ class ThemeLoader:
                 return theme
         return "light"
 
-    def get_theme_config(self, theme_name: str) -> Optional[dict[str, Any]]:
+    def get_theme_config(self, theme_name: str) -> dict[str, Any] | None:
         """
         Get configuration for specific theme.
 

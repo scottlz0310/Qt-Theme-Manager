@@ -10,7 +10,6 @@ import argparse
 import logging
 import sys
 from pathlib import Path
-from typing import Optional, Union
 
 from ..config.logging_config import get_logger
 from ..qt.controller import ThemeController
@@ -31,7 +30,7 @@ class ThemeCLI:
     without any GUI dependencies.
     """
 
-    def __init__(self, config_path: Optional[Union[str, Path]] = None) -> None:
+    def __init__(self, config_path: str | Path | None = None) -> None:
         """
         Initialize ThemeCLI with theme controller and loader.
 
@@ -316,7 +315,7 @@ class ThemeCLI:
             sys.exit(1)
 
 
-def main() -> Optional[int]:
+def main() -> int | None:
     """
     Main CLI entry point with comprehensive argument parsing.
 

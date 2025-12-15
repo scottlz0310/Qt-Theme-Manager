@@ -9,7 +9,6 @@ and minimal resource usage.
 """
 
 import sys
-from typing import Optional
 
 from ..config.logging_config import get_logger, setup_logging
 from .themectl import main as themectl_main
@@ -23,7 +22,7 @@ logger = get_logger(__name__)
 __all__ = ["main"]
 
 
-def main() -> Optional[int]:
+def main() -> int | None:
     """
     Main entry point for theme-manager CLI command.
 

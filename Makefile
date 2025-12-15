@@ -22,7 +22,7 @@ format-check: ## フォーマットチェックのみ実行
 	uv run ruff format --check qt_theme_manager/
 
 type-check: ## 型チェックを実行
-	uv run mypy qt_theme_manager/
+	uv run basedpyright qt_theme_manager/
 
 security: ## セキュリティスキャンを実行
 	uv run bandit -r qt_theme_manager/
@@ -48,4 +48,4 @@ clean: ## 一時ファイルを削除
 	find . -type f -name "*.pyc" -delete
 	find . -type d -name "__pycache__" -delete
 	find . -type d -name "*.egg-info" -exec rm -rf {} +
-	rm -rf .coverage htmlcov/ .pytest_cache/ .mypy_cache/ .ruff_cache/
+	rm -rf .coverage htmlcov/ .pytest_cache/ .pyrightcache/ .basedpyright/ .ruff_cache/

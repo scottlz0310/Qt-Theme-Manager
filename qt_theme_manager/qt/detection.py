@@ -1,12 +1,22 @@
 """
 Qt framework detection module.
-Handles automatic detection of available Qt frameworks with \
+Handles automatic detection of available Qt frameworks with
 proper error handling.
 """
 
-from typing import Any, Optional
+from __future__ import annotations
+
+import importlib
+from typing import cast
 
 from ..config.logging_config import get_logger
+from .types import (
+    QtApplicationType,
+    QtModuleMap,
+    QtObjectType,
+    QtSignalFactory,
+    QtWidgetType,
+)
 
 logger = get_logger(__name__)
 
@@ -14,7 +24,7 @@ logger = get_logger(__name__)
 class QtFrameworkNotFoundError(ImportError):
     """Qt framework not found error with installation guidance."""
 
-    def __init__(self, message: Optional[str] = None):
+    def __init__(self, message: str | None = None):
         if message is None:
             message = (
                 "No Qt framework found. Please install one of:\n"
@@ -39,29 +49,18 @@ class QtVersionError(ImportError):
 class QtDetector:
     """Qt framework detector with caching and version validation."""
 
-    # Minimum version requirements for each framework
     MIN_VERSIONS = {"PySide6": "6.0.0", "PyQt6": "6.2.0", "PyQt5": "5.15.0"}
 
     def __init__(self) -> None:
-        self._cached_framework: Optional[str] = None
-        self._cached_modules: Optional[dict[str, Any]] = None
+        self._cached_framework: str | None = None
+        self._cached_modules: QtModuleMap | None = None
         self._detection_attempted = False
 
     def detect_qt_framework(
         self, force_redetect: bool = False
-    ) -> tuple[str, dict[str, Any]]:
+    ) -> tuple[str, QtModuleMap]:
         """
         Detect available Qt framework with caching.
-
-        Args:
-            force_redetect: Force re-detection even if cached result exists
-
-        Returns:
-            Tuple of (framework_name, modules_dict)
-
-        Raises:
-            QtFrameworkNotFoundError: If no Qt framework is available
-            QtVersionError: If Qt framework version is too old
         """
         if not force_redetect and self._cached_framework and self._cached_modules:
             logger.debug(f"Using cached Qt framework: {self._cached_framework}")
@@ -69,57 +68,35 @@ class QtDetector:
 
         logger.debug("Detecting Qt framework...")
 
-        # Try PySide6 first (recommended)
-        try:
-            framework, modules = self._try_pyside6()
-            self._cache_result(framework, modules)
-            logger.info(f"Detected Qt framework: {framework}")
-            return framework, modules
-        except (ImportError, QtVersionError) as e:
-            logger.debug(f"PySide6 detection failed: {e}")
+        for detector in (self._try_pyside6, self._try_pyqt6, self._try_pyqt5):
+            try:
+                framework, modules = detector()
+                self._cache_result(framework, modules)
+                logger.info(f"Detected Qt framework: {framework}")
+                return framework, modules
+            except (ImportError, QtVersionError) as e:
+                logger.debug(f"{detector.__name__} failed: {e}")
 
-        # Try PyQt6 second
-        try:
-            framework, modules = self._try_pyqt6()
-            self._cache_result(framework, modules)
-            logger.info(f"Detected Qt framework: {framework}")
-            return framework, modules
-        except (ImportError, QtVersionError) as e:
-            logger.debug(f"PyQt6 detection failed: {e}")
-
-        # Try PyQt5 last
-        try:
-            framework, modules = self._try_pyqt5()
-            self._cache_result(framework, modules)
-            logger.info(f"Detected Qt framework: {framework}")
-            return framework, modules
-        except (ImportError, QtVersionError) as e:
-            logger.debug(f"PyQt5 detection failed: {e}")
-
-        # No framework found
         self._detection_attempted = True
         logger.error("No compatible Qt framework found")
         raise QtFrameworkNotFoundError()
 
-    def _try_pyside6(self) -> tuple[str, dict[str, Any]]:
+    def _try_pyside6(self) -> tuple[str, QtModuleMap]:
         """Try to import PySide6 and validate version."""
         try:
-            from PySide6 import __version__ as pyside6_version
-            from PySide6.QtCore import QObject
-            from PySide6.QtCore import Signal as pyqtSignal
-            from PySide6.QtWidgets import QApplication, QWidget
+            qt_package = importlib.import_module("PySide6")
+            qt_core = importlib.import_module("PySide6.QtCore")
+            qt_widgets = importlib.import_module("PySide6.QtWidgets")
 
-            # Validate version
-            self._validate_version(
-                "PySide6", pyside6_version, self.MIN_VERSIONS["PySide6"]
-            )
+            version = str(getattr(qt_package, "__version__", "0.0.0"))
+            self._validate_version("PySide6", version, self.MIN_VERSIONS["PySide6"])
 
-            modules = {
-                "QObject": QObject,
-                "pyqtSignal": pyqtSignal,
-                "QApplication": QApplication,
-                "QWidget": QWidget,
-                "version": pyside6_version,
+            modules: QtModuleMap = {
+                "QObject": cast(QtObjectType, qt_core.QObject),
+                "pyqtSignal": cast(QtSignalFactory, qt_core.Signal),
+                "QApplication": cast(QtApplicationType, qt_widgets.QApplication),
+                "QWidget": cast(QtWidgetType, qt_widgets.QWidget),
+                "version": version,
             }
 
             return "PySide6", modules
@@ -127,21 +104,21 @@ class QtDetector:
         except ImportError as e:
             raise ImportError(f"PySide6 not available: {e}") from e
 
-    def _try_pyqt6(self) -> tuple[str, dict[str, Any]]:
+    def _try_pyqt6(self) -> tuple[str, QtModuleMap]:
         """Try to import PyQt6 and validate version."""
         try:
-            from PyQt6.QtCore import QT_VERSION_STR, QObject, pyqtSignal
-            from PyQt6.QtWidgets import QApplication, QWidget
+            qt_core = importlib.import_module("PyQt6.QtCore")
+            qt_widgets = importlib.import_module("PyQt6.QtWidgets")
 
-            # Validate version
-            self._validate_version("PyQt6", QT_VERSION_STR, self.MIN_VERSIONS["PyQt6"])
+            version = str(getattr(qt_core, "QT_VERSION_STR", "0.0.0"))
+            self._validate_version("PyQt6", version, self.MIN_VERSIONS["PyQt6"])
 
-            modules = {
-                "QObject": QObject,
-                "pyqtSignal": pyqtSignal,
-                "QApplication": QApplication,
-                "QWidget": QWidget,
-                "version": QT_VERSION_STR,
+            modules: QtModuleMap = {
+                "QObject": cast(QtObjectType, qt_core.QObject),
+                "pyqtSignal": cast(QtSignalFactory, qt_core.pyqtSignal),
+                "QApplication": cast(QtApplicationType, qt_widgets.QApplication),
+                "QWidget": cast(QtWidgetType, qt_widgets.QWidget),
+                "version": version,
             }
 
             return "PyQt6", modules
@@ -149,21 +126,21 @@ class QtDetector:
         except ImportError as e:
             raise ImportError(f"PyQt6 not available: {e}") from e
 
-    def _try_pyqt5(self) -> tuple[str, dict[str, Any]]:
+    def _try_pyqt5(self) -> tuple[str, QtModuleMap]:
         """Try to import PyQt5 and validate version."""
         try:
-            from PyQt5.QtCore import QT_VERSION_STR, QObject, pyqtSignal
-            from PyQt5.QtWidgets import QApplication, QWidget
+            qt_core = importlib.import_module("PyQt5.QtCore")
+            qt_widgets = importlib.import_module("PyQt5.QtWidgets")
 
-            # Validate version
-            self._validate_version("PyQt5", QT_VERSION_STR, self.MIN_VERSIONS["PyQt5"])
+            version = str(getattr(qt_core, "QT_VERSION_STR", "0.0.0"))
+            self._validate_version("PyQt5", version, self.MIN_VERSIONS["PyQt5"])
 
-            modules = {
-                "QObject": QObject,
-                "pyqtSignal": pyqtSignal,
-                "QApplication": QApplication,
-                "QWidget": QWidget,
-                "version": QT_VERSION_STR,
+            modules: QtModuleMap = {
+                "QObject": cast(QtObjectType, qt_core.QObject),
+                "pyqtSignal": cast(QtSignalFactory, qt_core.pyqtSignal),
+                "QApplication": cast(QtApplicationType, qt_widgets.QApplication),
+                "QWidget": cast(QtWidgetType, qt_widgets.QWidget),
+                "version": version,
             }
 
             return "PyQt5", modules
@@ -174,22 +151,11 @@ class QtDetector:
     def _validate_version(
         self, framework: str, current_version: str, required_version: str
     ) -> None:
-        """
-        Validate Qt framework version meets minimum requirements.
-
-        Args:
-            framework: Framework name
-            current_version: Current installed version
-            required_version: Minimum required version
-
-        Raises:
-            QtVersionError: If version is too old
-        """
+        """Validate Qt framework version meets minimum requirements."""
         try:
             current_parts = [int(x) for x in current_version.split(".")]
             required_parts = [int(x) for x in required_version.split(".")]
 
-            # Pad shorter version with zeros
             max_len = max(len(current_parts), len(required_parts))
             current_parts.extend([0] * (max_len - len(current_parts)))
             required_parts.extend([0] * (max_len - len(required_parts)))
@@ -199,19 +165,18 @@ class QtDetector:
 
         except ValueError as e:
             logger.warning(f"Could not parse version {current_version}: {e}")
-            # If we can't parse version, assume it's OK
 
-    def _cache_result(self, framework: str, modules: dict[str, Any]) -> None:
+    def _cache_result(self, framework: str, modules: QtModuleMap) -> None:
         """Cache detection result."""
         self._cached_framework = framework
         self._cached_modules = modules
         self._detection_attempted = True
 
-    def get_cached_framework(self) -> Optional[str]:
+    def get_cached_framework(self) -> str | None:
         """Get cached framework name without triggering detection."""
         return self._cached_framework
 
-    def get_cached_modules(self) -> Optional[dict[str, Any]]:
+    def get_cached_modules(self) -> QtModuleMap | None:
         """Get cached modules without triggering detection."""
         return self._cached_modules
 
@@ -222,12 +187,7 @@ class QtDetector:
         self._detection_attempted = False
 
     def is_qt_available(self) -> bool:
-        """
-        Check if any Qt framework is available without raising exceptions.
-
-        Returns:
-            True if Qt framework is available, False otherwise
-        """
+        """Check if any Qt framework is available without raising exceptions."""
         try:
             self.detect_qt_framework()
             return True
@@ -235,46 +195,21 @@ class QtDetector:
             return False
 
 
-# Global detector instance for caching across the module
 _qt_detector = QtDetector()
 
 
-def detect_qt_framework(
-    force_redetect: bool = False,
-) -> tuple[str, dict[str, Any]]:
-    """
-    Detect available Qt framework (module-level convenience function).
-
-    Args:
-        force_redetect: Force re-detection even if cached result exists
-
-    Returns:
-        Tuple of (framework_name, modules_dict)
-
-    Raises:
-        QtFrameworkNotFoundError: If no Qt framework is available
-        QtVersionError: If Qt framework version is too old
-    """
+def detect_qt_framework(force_redetect: bool = False) -> tuple[str, QtModuleMap]:
+    """Detect available Qt framework (module-level convenience function)."""
     return _qt_detector.detect_qt_framework(force_redetect)
 
 
 def is_qt_available() -> bool:
-    """
-    Check if any Qt framework is available (module-level convenience function).
-
-    Returns:
-        True if Qt framework is available, False otherwise
-    """
+    """Check if any Qt framework is available (module-level convenience function)."""
     return _qt_detector.is_qt_available()
 
 
-def get_qt_framework_info() -> Optional[dict[str, str]]:
-    """
-    Get information about the detected Qt framework.
-
-    Returns:
-        Dictionary with framework info or None if not detected
-    """
+def get_qt_framework_info() -> dict[str, str] | None:
+    """Get information about the detected Qt framework."""
     try:
         framework, modules = _qt_detector.detect_qt_framework()
         return {

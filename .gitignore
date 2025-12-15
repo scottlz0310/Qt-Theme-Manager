@@ -169,10 +169,9 @@ venv.bak/
 # mkdocs documentation
 /site
 
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
+# BasedPyright
+.basedpyright/
+.pyrightcache/
 
 # Pyre type checker
 .pyre/
@@ -308,6 +307,3 @@ pids
 public
 yarn-debug.log*
 yarn-error.log*
-
-# Auto-generated entries from templates
-.pyrightcache/

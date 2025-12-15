@@ -8,7 +8,6 @@ library-only architecture with minimal dependencies and clean error handling.
 """
 
 import sys
-from typing import Optional
 
 from .cli.themectl import main as cli_main
 from .config.logging_config import get_logger, setup_logging
@@ -23,7 +22,7 @@ logger = get_logger(__name__)
 __all__ = ["main"]
 
 
-def main() -> Optional[int]:
+def main() -> int | None:
     """
     Main entry point for CLI operations only.
 

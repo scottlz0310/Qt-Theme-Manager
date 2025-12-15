@@ -35,7 +35,7 @@ uv sync --group dev --group security --group pyside6
 echo -e "\n${BLUE}🔍 コード品質チェック${NC}"
 run_check "Ruff リント" "uv run ruff check qt_theme_manager/"
 run_check "Ruff フォーマット" "uv run ruff format --check qt_theme_manager/"
-run_check "MyPy 型チェック" "uv run mypy qt_theme_manager/"
+run_check "BasedPyright 型チェック" "uv run basedpyright qt_theme_manager/"
 
 echo -e "\n${BLUE}🧪 テスト実行${NC}"
 run_check "PyTest テスト" "uv run pytest tests/ --cov=qt_theme_manager --cov-report=term-missing --cov-fail-under=95"

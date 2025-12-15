@@ -4,7 +4,7 @@ Handles theme switching, application, and state management.
 """
 
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Optional, Union
+from typing import TYPE_CHECKING, Any, Optional
 
 from ..config.logging_config import get_logger
 from .detection import (
@@ -14,109 +14,84 @@ from .detection import (
 )
 from .loader import ThemeLoader
 from .stylesheet import StylesheetGenerator
-
-if TYPE_CHECKING:
-    # Static type definitions for mypy
-    from typing import Protocol
-
-    class QObjectProtocol(Protocol):
-        def __init__(self) -> None: ...
-
-    class QWidgetProtocol(Protocol):
-        def setStyleSheet(self, stylesheet: str) -> None: ...
-
-    class QApplicationProtocol(Protocol):
-        @staticmethod
-        def instance() -> Optional["QApplicationProtocol"]: ...
-        def setStyleSheet(self, stylesheet: str) -> None: ...
-
-    # Type aliases for static analysis
-    QtQObject = QObjectProtocol
-    QtQWidget = QWidgetProtocol
-    QtQApplication = QApplicationProtocol
-else:
-    # Runtime type aliases (will be assigned dynamically)
-    QtQObject = Any
-    QtQWidget = Any
-    QtQApplication = Any
+from .types import (
+    QApplicationProtocol,
+    QtApplicationType,
+    QtModuleMap,
+    QtObjectType,
+    QtSignalFactory,
+    QtWidgetType,
+    QWidgetProtocol,
+)
 
 logger = get_logger(__name__)
 
-# Initialize Qt framework detection
+
+class _MockQObject:
+    def __init__(self) -> None:
+        pass
+
+
+class _MockQWidget(_MockQObject):
+    def setStyleSheet(self, stylesheet: str) -> None:
+        pass
+
+
+class _MockQApplication:
+    @staticmethod
+    def instance() -> Optional["_MockQApplication"]:
+        return None
+
+    def setStyleSheet(self, stylesheet: str) -> None:
+        pass
+
+
+class _MockSignal:
+    def connect(
+        self,
+        __slot: Any,
+        *,
+        type: int | None = None,  # noqa: A003 - Qt naming
+    ) -> None:
+        return None
+
+    def emit(self, *args: Any, **kwargs: Any) -> None:
+        return None
+
+
+def _mock_signal(*args: Any, **kwargs: Any) -> _MockSignal:
+    return _MockSignal()
+
+
+qt_available = False
+qt_framework = "None"
+qt_modules: QtModuleMap | None = None
+
+QObject: QtObjectType = _MockQObject
+QWidget: QtWidgetType = _MockQWidget
+QApplication: QtApplicationType = _MockQApplication
+pyqtSignal: QtSignalFactory = _mock_signal
+
 try:
     qt_framework, qt_modules = detect_qt_framework()
     qt_available = True
 
-    # Extract Qt classes from detected modules
     QObject = qt_modules["QObject"]
-    pyqtSignal = qt_modules["pyqtSignal"]
-    QApplication = qt_modules["QApplication"]
     QWidget = qt_modules["QWidget"]
+    QApplication = qt_modules["QApplication"]
+    pyqtSignal = qt_modules["pyqtSignal"]
 
-    logger.info(
-        f"Qt framework detected: {qt_framework} v{qt_modules.get('version', 'unknown')}"
-    )
-
+    logger.info(f"Qt framework detected: {qt_framework} v{qt_modules['version']}")
 except (QtFrameworkNotFoundError, QtVersionError) as e:
-    qt_available = False
-    qt_framework = "None"
     logger.warning(f"Qt framework not available: {e}")
 
-    # Create stub classes for when Qt is not available
-    class MockQObject:
-        def __init__(self) -> None:
-            pass
 
-    class MockQWidget:
-        def setStyleSheet(self, stylesheet: str) -> None:
-            pass
+class _ThemeControllerCore:
+    loader: ThemeLoader
+    current_theme_name: str
+    current_stylesheet: str
 
-    class MockQApplication:
-        @staticmethod
-        def instance() -> Optional["MockQApplication"]:
-            return None
-
-        def setStyleSheet(self, stylesheet: str) -> None:
-            pass
-
-    # Assign mock classes to expected names
-    QObject = MockQObject
-    QWidget = MockQWidget
-    QApplication = MockQApplication
-
-    # Create stub signal for compatibility
-    def pyqtSignal(*args: Any, **kwargs: Any) -> Any:
-        def decorator(func: Any) -> Any:
-            return func
-
-        return decorator
-
-
-# Update runtime type aliases
-QtQObject = QObject  # type: ignore[misc]
-QtQWidget = QWidget  # type: ignore[misc]
-QtQApplication = QApplication  # type: ignore[misc]
-
-
-class ThemeController(QtQObject):
-    """Main controller for theme management and application."""
-
-    def __init__(self, config_path: Optional[Union[str, Path]] = None) -> None:
-        """
-        Initialize ThemeController.
-
-        Args:
-            config_path: Path to theme configuration file
-        """
-        # Initialize Qt parent class if available
-        if hasattr(super(), "__init__"):
-            try:
-                super().__init__()  # type: ignore[safe-super]
-            except Exception:  # nosec B110
-                # Handle case where Qt is not properly initialized
-                # This is intentional - we want to continue even if Qt init fails
-                pass
-
+    def _init_core(self, config_path: str | Path | None = None) -> None:
         self.loader = ThemeLoader(config_path)
         self.current_theme_name = ""
         self.current_stylesheet = ""
@@ -204,7 +179,7 @@ class ThemeController(QtQObject):
             logger.error(f"Failed to set theme {theme_name}: {e}")
             return False
 
-    def apply_theme_to_widget(self, widget: QtQWidget) -> bool:
+    def apply_theme_to_widget(self, widget: QWidgetProtocol) -> bool:
         """
         Apply current theme to a specific widget.
 
@@ -231,7 +206,9 @@ class ThemeController(QtQObject):
             logger.error(f"Failed to apply theme to widget: {e}")
             return False
 
-    def apply_theme_to_application(self, app: Optional[QtQApplication] = None) -> bool:
+    def apply_theme_to_application(
+        self, app: QApplicationProtocol | None = None
+    ) -> bool:
         """
         Apply current theme to the entire application.
 
@@ -262,7 +239,7 @@ class ThemeController(QtQObject):
             return False
 
     def export_qss(
-        self, output_path: Union[str, Path], theme_name: Optional[str] = None
+        self, output_path: str | Path, theme_name: str | None = None
     ) -> bool:
         """
         Export current theme as QSS file.
@@ -317,10 +294,37 @@ class ThemeController(QtQObject):
             return False
 
 
+if TYPE_CHECKING:
+
+    class ThemeController(_ThemeControllerCore):
+        """Main controller for theme management and application."""
+
+        def __init__(self, config_path: str | Path | None = None) -> None:
+            self._init_core(config_path)
+
+else:
+
+    class ThemeController(QObject, _ThemeControllerCore):
+        """Main controller for theme management and application."""
+
+        def __init__(self, config_path: str | Path | None = None) -> None:
+            # Initialize Qt parent class if available
+            try:
+                super().__init__()  # type: ignore[misc]
+            except AttributeError:
+                pass
+            except Exception:  # nosec B110
+                # Handle case where Qt is not properly initialized
+                # This is intentional - we want to continue even if Qt init fails
+                pass
+
+            self._init_core(config_path)
+
+
 def apply_theme_to_widget(
-    widget: QtQWidget,
-    theme_name: Optional[str] = None,
-    config_path: Optional[Union[str, Path]] = None,
+    widget: QWidgetProtocol,
+    theme_name: str | None = None,
+    config_path: str | Path | None = None,
 ) -> bool:
     """
     Standalone function to apply theme to a widget.
@@ -348,9 +352,9 @@ def apply_theme_to_widget(
 
 
 def apply_theme_to_application(
-    app: Optional[QtQApplication] = None,
-    theme_name: Optional[str] = None,
-    config_path: Optional[Union[str, Path]] = None,
+    app: QApplicationProtocol | None = None,
+    theme_name: str | None = None,
+    config_path: str | Path | None = None,
 ) -> bool:
     """
     Standalone function to apply theme to application.

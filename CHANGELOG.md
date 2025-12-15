@@ -1,5 +1,14 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+- 型チェックエンジンをmypyからBasedPyright(strict)へ移行し、設定をpyproject.tomlに統合
+- 開発ツールチェーン（Makefile/local-ci/VS Code設定/cleanタスク）をBasedPyright対応に刷新
+
+### Removed
+- mypy関連依存関係・設定ファイル参照（pyproject, setup.py, MANIFEST, .gitignore など）
+
 ## [1.1.0] - 2025-10-26
 
 ### Added
