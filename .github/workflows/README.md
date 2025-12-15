@@ -6,11 +6,11 @@
 
 ### 1. **ci.yml** - 継続的インテグレーション
 - **トリガー**: main/developブランチへのpush、PR作成・更新
-- **マトリックス**: Ubuntu/Windows/macOS × Python 3.9/3.11/3.13
+- **マトリックス**: Ubuntu/Windows/macOS × Python 3.14.2
 - **チェック項目**:
   - ruff check (リント)
   - ruff format (フォーマット)
-  - mypy (型チェック)
+  - basedpyright (型チェック)
   - pytest (テスト + カバレッジ)
 - **カバレッジ**: Codecovに自動アップロード
 
@@ -81,7 +81,7 @@ git push origin main --tags  # → 自動リリース実行
 
 ### コード品質
 - ruff: 全チェックパス
-- mypy: strict モード、型エラーなし
+- basedpyright: strict モード、型エラーなし
 
 ## 🚨 トラブルシューティング
 
@@ -94,7 +94,7 @@ git push origin main --tags  # → 自動リリース実行
 
 2. **型エラー**
    ```bash
-   uv run mypy qt_theme_manager/
+   uv run basedpyright qt_theme_manager/
    ```
 
 3. **フォーマットエラー**

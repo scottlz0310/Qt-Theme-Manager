@@ -21,7 +21,7 @@ jobs:
         version: "latest"
 
     - name: Set up Python
-      run: uv python install 3.11
+      run: uv python install 3.14.2
 
     - name: Install dependencies
       run: |
@@ -80,7 +80,7 @@ jobs:
         version: "latest"
 
     - name: Set up Python
-      run: uv python install 3.11
+      run: uv python install 3.14.2
 
     - name: Install dependencies
       run: |

@@ -102,7 +102,7 @@ jobs:
         uv sync --group dev
         uv sync --group pyside6
         uv run ruff check qt_theme_manager/
-        uv run mypy qt_theme_manager/
+        uv run basedpyright qt_theme_manager/
         uv run pytest tests/
 
   build:
@@ -118,7 +118,7 @@ jobs:
         version: "latest"
 
     - name: Set up Python
-      run: uv python install 3.11
+      run: uv python install 3.14.2
 
     - name: Build package
       run: |
