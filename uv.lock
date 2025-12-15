@@ -911,7 +911,7 @@ all-qt = [
     { name = "pyside6", specifier = ">=6.10.1" },
 ]
 dev = [
-    { name = "basedpyright", specifier = ">=1.12.0" },
+    { name = "basedpyright", specifier = ">=1.12.6" },
     { name = "pytest", specifier = ">=9.0.2" },
     { name = "pytest-cov", specifier = ">=7.0.0" },
     { name = "pytest-mock", specifier = ">=3.15.1" },
@@ -921,7 +921,7 @@ dev = [
 ]
 full-dev = [
     { name = "bandit", extras = ["toml"], specifier = ">=1.9.2" },
-    { name = "basedpyright", specifier = ">=1.12.0" },
+    { name = "basedpyright", specifier = ">=1.12.6" },
     { name = "pip-licenses", specifier = ">=5.5.0" },
     { name = "pre-commit", specifier = ">=4.5.0" },
     { name = "pyqt5", specifier = ">=5.15.11" },
