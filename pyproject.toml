@@ -80,7 +80,7 @@ all-qt = [
 
 # pre-commit
 pre-commit = [
-    "pre-commit>=4.5.0",
+    "pre-commit>=4.5.1",
 ]
 
 # 完全な開発環境
