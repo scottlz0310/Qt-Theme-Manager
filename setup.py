@@ -51,7 +51,7 @@ setup(
     ],
     extras_require={
         "pyqt5": ["PyQt5>=5.15.11"],
-        "pyqt6": ["PyQt6>=6.10.1"],
+        "pyqt6": ["PyQt6>=6.10.2"],
         "pyside6": ["PySide6>=6.10.1"],
         "dev": [
             "pytest>=9.0.2",
@@ -60,11 +60,11 @@ setup(
             "black>=25.12.0",
             "isort>=7.0.0",
             "flake8>=7.3.0",
-            "basedpyright>=1.37.0",
+            "basedpyright>=1.37.1",
         ],
         "all": [
             "PyQt5>=5.15.11",
-            "PyQt6>=6.10.1",
+            "PyQt6>=6.10.2",
             "PySide6>=6.10.1",
         ],
     },
