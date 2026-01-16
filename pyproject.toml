@@ -54,7 +54,7 @@ dev = [
     "pytest-qt>=4.5.0",
     "pytest-cov>=7.0.0",
     "pytest-mock>=3.15.1",
-    "ruff>=0.14.11",
+    "ruff>=0.14.13",
     "basedpyright>=1.37.1",
     "types-setuptools",
 ]
