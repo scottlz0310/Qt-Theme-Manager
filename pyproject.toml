@@ -63,7 +63,7 @@ dev = [
 security = [
     "bandit[toml]>=1.9.3",
     "safety>=3.7.0",
-    "pip-licenses>=5.5.0",
+    "pip-licenses>=5.5.1",
 ]
 
 # Qt フレームワーク選択肢（推奨順）
