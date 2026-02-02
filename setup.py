@@ -52,7 +52,7 @@ setup(
     extras_require={
         "pyqt5": ["PyQt5>=5.15.11"],
         "pyqt6": ["PyQt6>=6.10.2"],
-        "pyside6": ["PySide6>=6.10.1"],
+        "pyside6": ["PySide6>=6.10.2"],
         "dev": [
             "pytest>=9.0.2",
             "pytest-qt>=4.5.0",
@@ -65,7 +65,7 @@ setup(
         "all": [
             "PyQt5>=5.15.11",
             "PyQt6>=6.10.2",
-            "PySide6>=6.10.1",
+            "PySide6>=6.10.2",
         ],
     },
     include_package_data=True,
