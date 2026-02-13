@@ -5,6 +5,7 @@
     "github>scottlz0310/renovate-config//presets/languages/python",
     "github>scottlz0310/renovate-config//presets/tools/precommit",
     "github>scottlz0310/renovate-config//presets/options/automerge",
+    "github>scottlz0310/renovate-config//presets/options/schedule",
     "github>scottlz0310/renovate-config//presets/options/security"
   ],
   "packageRules": [
