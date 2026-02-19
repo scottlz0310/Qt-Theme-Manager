@@ -89,7 +89,7 @@ full-dev = [
     {include-group = "security"},
     {include-group = "pre-commit"},
     {include-group = "all-qt"},
-    "tox>=4.36.0",
+    "tox>=4.36.1",
 ]
 
 [project.urls]
