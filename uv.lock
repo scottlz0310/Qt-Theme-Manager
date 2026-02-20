@@ -943,7 +943,7 @@ full-dev = [
     { name = "pytest-qt", specifier = ">=4.5.0" },
     { name = "ruff", specifier = ">=0.15.2" },
     { name = "safety", specifier = ">=3.7.0" },
-    { name = "tox", specifier = ">=4.36.1" },
+    { name = "tox", specifier = ">=4.38.0" },
     { name = "types-setuptools" },
 ]
 pre-commit = [{ name = "pre-commit", specifier = ">=4.5.1" }]
@@ -1152,7 +1152,7 @@ wheels = [
 
 [[package]]
 name = "tox"
-version = "4.39.0"
+version = "4.44.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "cachetools" },
@@ -1165,9 +1165,9 @@ dependencies = [
     { name = "pyproject-api" },
     { name = "virtualenv" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/51/78/6d66424337484631ee73264ee7a689540646fae6beca9a13bb847b6d96eb/tox-4.39.0.tar.gz", hash = "sha256:24c1813d1a99f5fd039e2ef66a644a9ad5e2094708f0143cbea28d0f6d37b2f1", size = 221354, upload-time = "2026-02-18T20:14:43.93Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/0b/73/dadb7954bdb3f67662322faaef9fe5ede418527d8cff0c57fa368c558f37/tox-4.44.0.tar.gz", hash = "sha256:0c911cbc448a2ac5dd7cbb6be2f9ffa26d0a10405982f9efea654803b23cec77", size = 243605, upload-time = "2026-02-20T21:29:15.879Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1c/82/ce1bd1a7502fa489b7ee193eb771571139f137affe8b80dd0a388a361aca/tox-4.39.0-py3-none-any.whl", hash = "sha256:cf24e9fc1a7846162f03b17c228d18c3677c1c0a71324106317907a9cf0af945", size = 185276, upload-time = "2026-02-18T20:14:42.278Z" },
+    { url = "https://files.pythonhosted.org/packages/78/cc/6f3b1775effb0511df6136fd66b59000b1a7977e7d908725d8336649d0fa/tox-4.44.0-py3-none-any.whl", hash = "sha256:b850fb8d1803d132c3120a189b2ae7fe319a07a9cb4254d81ac9c94e3230bc0f", size = 197333, upload-time = "2026-02-20T21:29:14.007Z" },
 ]
 
 [[package]]
