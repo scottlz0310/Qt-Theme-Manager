@@ -207,6 +207,7 @@ Thumbs.db
 
 # Theme-Manager specific
 *.json:Zone.Identifier
+output.qss
 
 # Added by add-autogen-gitignore.ps1 on 2025-09-03T15:56:26.0465222+09:00
 *.pyo
