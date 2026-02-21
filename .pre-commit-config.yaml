@@ -34,7 +34,7 @@ repos:
 
       - id: security-scan
         name: Run security scans locally
-        entry: bash -c 'uv run bandit -r qt_theme_manager/ -q && uv run safety check --json --output /dev/null'
+        entry: bash -c 'uv run bandit -r qt_theme_manager/ -q && uv run pip-audit --progress-spinner off --format=json --output /dev/null'
         language: system
         pass_filenames: false
         stages: [manual]

@@ -26,7 +26,7 @@ type-check: ## 型チェックを実行
 
 security: ## セキュリティスキャンを実行
 	uv run bandit -r qt_theme_manager/
-	uv run safety check
+	uv run pip-audit --progress-spinner off
 
 ci: ## ローカルCI/CDチェックを実行
 	./scripts/local-ci.sh

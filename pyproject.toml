@@ -62,7 +62,7 @@ dev = [
 # セキュリティツール
 security = [
     "bandit[toml]>=1.9.3",
-    "safety>=3.7.0",
+    "pip-audit>=2.10.0",
     "pip-licenses>=5.5.1",
 ]
 

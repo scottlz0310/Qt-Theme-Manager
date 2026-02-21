@@ -18,7 +18,7 @@
 - **トリガー**: main/developブランチへのpush、PR、毎週日曜日
 - **スキャン項目**:
   - **Bandit**: セキュリティ脆弱性検出
-  - **Safety**: 依存関係の脆弱性チェック
+  - **pip-audit**: 依存関係の脆弱性チェック
   - **CodeQL**: GitHub Advanced Security
   - **ライセンスチェック**: pip-licenses
 
@@ -76,7 +76,7 @@ git push origin main --tags  # → 自動リリース実行
 
 ### セキュリティ
 - Bandit: 1件のLow severity（意図的なexcept pass）
-- Safety: 依存関係の脆弱性なし
+- pip-audit: 依存関係の脆弱性なし
 - CodeQL: 静的解析パス
 
 ### コード品質
