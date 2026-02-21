@@ -42,7 +42,7 @@ run_check "PyTest テスト" "uv run pytest tests/ --cov=qt_theme_manager --cov-
 
 echo -e "\n${BLUE}🔒 セキュリティスキャン${NC}"
 run_check "Bandit セキュリティ" "uv run bandit -r qt_theme_manager/ -q --skip B110"
-run_check "Safety 脆弱性" "uv run safety check --output text"
+run_check "pip-audit 脆弱性" "uv run pip-audit --progress-spinner off --format=columns"
 
 echo -e "\n${GREEN}🎉 全てのチェックが完了しました！${NC}"
 echo -e "${YELLOW}💡 このスクリプトはGitHub Actionsのci.ymlとsecurity.ymlと同等のチェックを実行します${NC}"
