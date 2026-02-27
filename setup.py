@@ -60,7 +60,7 @@ setup(
             "black>=26.1.0",
             "isort>=8.0.0",
             "flake8>=7.3.0",
-            "basedpyright>=1.38.1",
+            "basedpyright>=1.38.2",
         ],
         "all": [
             "PyQt5>=5.15.11",

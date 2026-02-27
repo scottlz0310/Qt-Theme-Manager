@@ -54,8 +54,8 @@ dev = [
     "pytest-qt>=4.5.0",
     "pytest-cov>=7.0.0",
     "pytest-mock>=3.15.1",
-    "ruff>=0.15.2",
-    "basedpyright>=1.38.1",
+    "ruff>=0.15.4",
+    "basedpyright>=1.38.2",
     "types-setuptools",
 ]
 
@@ -89,7 +89,7 @@ full-dev = [
     {include-group = "security"},
     {include-group = "pre-commit"},
     {include-group = "all-qt"},
-    "tox>=4.44.0",
+    "tox>=4.45.0",
 ]
 
 [project.urls]
