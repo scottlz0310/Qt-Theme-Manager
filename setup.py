@@ -58,7 +58,7 @@ setup(
             "pytest-qt>=4.5.0",
             "pytest-cov>=7.0.0",
             "black>=26.1.0",
-            "isort>=8.0.0",
+            "isort>=8.0.1",
             "flake8>=7.3.0",
             "basedpyright>=1.38.2",
         ],
