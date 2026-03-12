@@ -16,6 +16,10 @@
         "pre-commit/mirrors-mypy"
       ],
       "enabled": false
+    },
+    {
+      "matchManagers": ["pep621"],
+      "rangeStrategy": "update-lockfile"
     }
   ]
 }
