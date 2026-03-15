@@ -57,10 +57,10 @@ setup(
             "pytest>=9.0.2",
             "pytest-qt>=4.5.0",
             "pytest-cov>=7.0.0",
-            "black>=26.3.1",
-            "isort>=8.0.1",
-            "flake8>=7.3.0",
+            "pytest-mock>=3.15.1",
+            "ruff>=0.15.5",
             "basedpyright>=1.38.2",
+            "types-setuptools",
         ],
         "all": [
             "PyQt5>=5.15.11",
