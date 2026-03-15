@@ -119,7 +119,7 @@ select = [
     "S",  # bandit
 ]
 ignore = [
-    "E501",  # line too long, handled by ruff
+    "E501",  # line too long, handled by ruff format
     "B008",  # do not perform function calls in argument defaults
     "C901",  # too complex
     "S101",  # use of assert
