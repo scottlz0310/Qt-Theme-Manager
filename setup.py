@@ -58,7 +58,7 @@ setup(
             "pytest-qt>=4.5.0",
             "pytest-cov>=7.1.0",
             "pytest-mock>=3.15.1",
-            "ruff>=0.15.8",
+            "ruff>=0.15.9",
             "basedpyright>=1.38.4",
             "types-setuptools",
         ],
