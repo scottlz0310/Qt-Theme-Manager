@@ -51,7 +51,7 @@ setup(
     ],
     extras_require={
         "pyqt5": ["PyQt5>=5.15.11"],
-        "pyqt6": ["PyQt6>=6.10.2"],
+        "pyqt6": ["PyQt6>=6.11.0"],
         "pyside6": ["PySide6>=6.11.0"],
         "dev": [
             "pytest>=9.0.2",
@@ -59,12 +59,12 @@ setup(
             "pytest-cov>=7.1.0",
             "pytest-mock>=3.15.1",
             "ruff>=0.15.9",
-            "basedpyright>=1.38.4",
+            "basedpyright>=1.39.0",
             "types-setuptools",
         ],
         "all": [
             "PyQt5>=5.15.11",
-            "PyQt6>=6.10.2",
+            "PyQt6>=6.11.0",
             "PySide6>=6.11.0",
         ],
     },
